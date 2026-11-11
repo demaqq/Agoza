@@ -1,0 +1,73 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // User profiles: only the owner can read/write
+    match /users/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+
+    // Listings: anyone authenticated can read active listings.
+    // Create: must be the seller themselves.
+    // Update/delete: seller or admin.
+    match /listings/{listingId} {
+      allow read: if request.auth != null;
+      allow create: if request.auth != null
+        && request.resource.data.sellerId == request.auth.uid
+        && request.resource.data.status == 'active';
+      allow update, delete: if request.auth != null
+        && (resource.data.sellerId == request.auth.uid
+          || resource.auth.token.email in get(/databases/$(database)/documents/admins).data.emails);
+    }
+
+    // Offers: buyer creates, seller updates status
+    match /offers/{offerId} {
+      allow read: if request.auth != null
+        && (resource.data.buyerId == request.auth.uid || resource.data.sellerId == request.auth.uid);
+      allow create: if request.auth != null && request.resource.data.buyerId == request.auth.uid;
+      allow update: if request.auth != null
+        && (resource.data.sellerId == request.auth.uid || resource.data.buyerId == request.auth.uid);
+    }
+
+    // Escrow: buyer creates, buyer/seller/admin updates
+    match /escrow/{orderId} {
+      allow read: if request.auth != null
+        && (resource.data.buyerId == request.auth.uid || resource.data.sellerId == request.auth.uid);
+      allow create: if request.auth != null && request.resource.data.buyerId == request.auth.uid;
+      allow update: if request.auth != null
+        && (resource.data.buyerId == request.auth.uid
+          || resource.data.sellerId == request.auth.uid
+          || request.auth.token.email in get(/databases/$(database)/documents/admins).data.emails);
+    }
+
+    // Chats: participants only
+    match /chats/{threadId} {
+      allow read, write: if request.auth != null
+        && (resource.data.participantIds != null
+          && request.auth.uid in resource.data.participantIds);
+    }
+
+    // Reviews: anyone authenticated can create; seller cannot review themselves
+    match /reviews/{reviewId} {
+      allow read: if request.auth != null;
+      allow create: if request.auth != null
+        && request.resource.data.sellerId != request.auth.uid;
+      allow update, delete: if false;
+    }
+
+    // Alerts: owner only
+    match /alerts/{alertId} {
+      allow read, write: if request.auth != null && resource.data.userId == request.auth.uid;
+    }
+
+    // User settings: owner only
+    match /userSettings/{uid} {
+      allow read, write: if request.auth != null && request.auth.uid == uid;
+    }
+
+    // Admin email allowlist (server-side; client reads only via the rules above)
+    match /admins {
+      allow read: if false;
+      allow write: if false;
+    }
+  }
+}

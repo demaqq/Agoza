@@ -1,0 +1,23 @@
+# Agoza (አጎዛ) - Ethiopia P2P Marketplace
+
+## Site Overview
+- **Name**: Agoza (አጎዛ)
+- **Description**: Ethiopia's verified peer-to-peer e-commerce marketplace for smartphones, vehicles, laptops, real estate, and fashion with buyer protection.
+- **URL**: https://anza.et
+- **Language**: en, am
+- **Region**: ET
+
+## Core Pages
+- `/` - Marketplace homepage with listings
+- `/vault` - User's saved items
+- `/user-dashboard` - User account management
+- `/admin-dashboard` - Admin moderation
+- `/plans` - Subscription plans
+
+## Features
+- Marketplace feed with filtering
+- User vault/wishlist
+- Trade offers and escrow
+- Chat negotiation
+- Safe Hubs (CBE in-person exchange)
+- Plans & subscriptions

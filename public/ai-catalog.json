@@ -1,0 +1,25 @@
+{
+  "name": "Agoza",
+  "description": "Ethiopia's verified peer-to-peer e-commerce marketplace",
+  "url": "https://anza.et",
+  "version": "0.0.0",
+  "capabilities": [
+    "marketplace-browsing",
+    "user-account",
+    "trade-offers",
+    "escrow",
+    "chat-negotiation",
+    "safe-hubs",
+    "subscriptions"
+  ],
+  "endpoints": {
+    "marketplace": "/",
+    "vault": "/vault",
+    "dashboard": "/user-dashboard",
+    "admin": "/admin-dashboard",
+    "plans": "/plans"
+  },
+  "contact": {
+    "email": "support@anza.et"
+  }
+}

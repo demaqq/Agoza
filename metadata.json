@@ -1,0 +1,6 @@
+{
+  "name": "Agoza | Ethiopia P2P Collectibles & Vault Marketplace",
+  "description": "Peer-to-peer marketplace for vintage treasures, rare artifacts, and verified collectibles. Trade, buy, or make offers with buyer protection across Ethiopia.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
