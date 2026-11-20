@@ -36,3 +36,8 @@ coverage/
 # Misc
 .pnpm-store
 .turbo/
+
+# Local build/type-check logs
+build_*.txt
+tsc_*.txt
+tsc_*.tsv

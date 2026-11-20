@@ -32,7 +32,7 @@ import {
   INITIAL_ALERTS,
   INITIAL_REVIEWS,
 } from '../data/mockData';
-import { TRANSLATIONS, Translations } from '../i18n/translations';
+import { getTranslations, LANGUAGE_LOCALES, Translations } from '../i18n/translations';
 import { checkSafetyCompliance } from '../utils/safetyFilter';
 import { aiScreenListing } from '../services/aiSafetyFilter';
 import {
@@ -42,24 +42,43 @@ import {
   fetchUserAccount,
   subscribeToAuth,
   computeIsAdmin,
-  type FirebaseUserAccount,
 } from '../firebase/authLazy';
 import {
   saveUserSettings,
   fetchUserSettings,
-  subscribeToListings,
   saveListing,
   updateListing,
   deleteListingDoc,
-  saveOffer,
   updateOfferStatus as firestoreUpdateOfferStatus,
-  saveEscrow,
   updateEscrow,
-  saveChatThread,
-  addMessageToThread,
-  saveReview,
-  saveAlert,
 } from '../firebase/firestore';
+
+/** Read + JSON.parse a localStorage key; corrupt or missing data falls back safely. */
+function loadJSON<T>(key: string, fallback: T): T {
+  try {
+    const raw = localStorage.getItem(key);
+    if (!raw) return fallback;
+    const parsed = JSON.parse(raw);
+    return (parsed ?? fallback) as T;
+  } catch {
+    return fallback;
+  }
+}
+
+function saveJSON(key: string, value: unknown): void {
+  try {
+    localStorage.setItem(key, JSON.stringify(value));
+  } catch {
+    /* quota exceeded / private mode — non-fatal */
+  }
+}
+
+/** Fire-and-forget Firestore write that never produces an unhandled rejection. */
+function persist(label: string, op: () => Promise<unknown>): void {
+  op().catch((e) => console.warn(`[firestore] ${label} failed:`, e));
+}
+
+const LANGUAGES: Language[] = ['en', 'am', 'ti', 'om', 'so'];
 
 export interface FilterState {
   category: CollectibleCategory;
@@ -69,6 +88,7 @@ export interface FilterState {
   rarity: ItemRarity | 'all';
   eraPeriod: HistoricalEraPeriod;
   openToTradeOnly: boolean;
+  verifiedSellersOnly: boolean;
   location: string;
   city: string;
   minPrice: number;
@@ -214,12 +234,6 @@ setActiveView: (view: 'marketplace' | 'vault' | 'user-dashboard' | 'admin-dashbo
 
 const ETB_TO_USD_RATE = 135;
 
-const ADMIN_EMAILS = new Set([
-  'admin@agoza.et',
-  'kirtasnetwork@gmail.com',
-  'moderator@agoza.et',
-]);
-
 const defaultFilters: FilterState = {
   category: 'all',
   subcategory: 'all',
@@ -228,10 +242,11 @@ const defaultFilters: FilterState = {
   rarity: 'all',
   eraPeriod: 'all',
   openToTradeOnly: false,
+  verifiedSellersOnly: false,
   location: 'all',
   city: 'all',
   minPrice: 0,
-  maxPrice: 10000000,
+  maxPrice: 0,
   sortBy: 'latest',
 };
 
@@ -264,7 +279,7 @@ export const MarketplaceProvider: React.FC<{ children: React.ReactNode }> = ({ c
       console.warn('Failed to parse cached items:', e);
     }
     // Always seed fresh modern P2P ecommerce items
-    localStorage.setItem('agoza_ecommerce_v6', JSON.stringify(INITIAL_COLLECTIBLES));
+    saveJSON('agoza_ecommerce_v6', INITIAL_COLLECTIBLES);
     return INITIAL_COLLECTIBLES;
   });
 
@@ -339,7 +354,11 @@ export const MarketplaceProvider: React.FC<{ children: React.ReactNode }> = ({ c
   };
 
   const login = async (emailOrPhone: string, password: string) => {
-    const email = emailOrPhone.includes('@') ? emailOrPhone : `${emailOrPhone}@trader.et`;
+    // Accounts are email-based; the old phone fallback (`<phone>@trader.et`) could never match.
+    const email = emailOrPhone.trim();
+    if (!email.includes('@')) {
+      return { success: false, error: getTranslations(language).auth.errEmail };
+    }
     const result = await loginUser(email, password);
     if (result.success) {
       setIsAuthModalOpen(false);
@@ -353,71 +372,57 @@ export const MarketplaceProvider: React.FC<{ children: React.ReactNode }> = ({ c
   };
 
   const [currency, setCurrency] = useState<Currency>(() => {
-    return (localStorage.getItem('agoza_currency') as Currency) || 'ETB';
+    return localStorage.getItem('agoza_currency') === 'USD' ? 'USD' : 'ETB';
   });
 
   const [language, setLanguage] = useState<Language>(() => {
-    return (localStorage.getItem('agoza_language') as Language) || 'en';
+    const saved = localStorage.getItem('agoza_language') as Language | null;
+    if (saved && LANGUAGES.includes(saved)) return saved;
+    // First visit: honour the browser's language when we support it.
+    const browser = (navigator.language || 'en').slice(0, 2) as Language;
+    return LANGUAGES.includes(browser) ? browser : 'en';
   });
 
   const [theme, setTheme] = useState<Theme>(() => {
     const saved = localStorage.getItem('agoza_theme');
-    return (saved as Theme) || 'dark';
+    if (saved === 'light' || saved === 'dark') return saved;
+    return window.matchMedia?.('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
   });
 
-  const [watchlist, setWatchlist] = useState<string[]>(() => {
-    const saved = localStorage.getItem('agoza_watchlist');
-    return saved ? JSON.parse(saved) : ['ad-01', 'ad-02'];
-  });
+  const [watchlist, setWatchlist] = useState<string[]>(() => loadJSON('agoza_watchlist', ['ad-01', 'ad-02']));
+  const [tradeOffers, setTradeOffers] = useState<TradeOffer[]>(() => loadJSON('agoza_offers', INITIAL_OFFERS));
+  const [escrowOrders, setEscrowOrders] = useState<EscrowTransaction[]>(() => loadJSON('agoza_escrow', INITIAL_ESCROW_ORDERS));
+  const [chatThreads, setChatThreads] = useState<ChatThread[]>(() => loadJSON('agoza_chats_v2', INITIAL_CHAT_THREADS));
+  const [activityFeed, setActivityFeed] = useState<ActivityItem[]>(() => loadJSON('agoza_activity', INITIAL_ACTIVITIES));
+  const [alertNotifications, setAlertNotifications] = useState<AlertNotification[]>(() => loadJSON('agoza_alerts', INITIAL_ALERTS));
 
-  const [tradeOffers, setTradeOffers] = useState<TradeOffer[]>(() => {
-    const saved = localStorage.getItem('agoza_offers');
-    return saved ? JSON.parse(saved) : INITIAL_OFFERS;
-  });
+  const [alertSettings, setAlertSettings] = useState<AlertSettings>(() =>
+    loadJSON<AlertSettings>('agoza_alert_settings', {
+      enableSms: true,
+      enableEmail: true,
+      phoneNumber: '',
+      emailAddress: '',
+      notifyOnOffers: true,
+      notifyOnEscrow: true,
+      notifyOnSwaps: true,
+    })
+  );
 
-  const [escrowOrders, setEscrowOrders] = useState<EscrowTransaction[]>(() => {
-    const saved = localStorage.getItem('agoza_escrow');
-    return saved ? JSON.parse(saved) : INITIAL_ESCROW_ORDERS;
-  });
-
-  const [chatThreads, setChatThreads] = useState<ChatThread[]>(() => {
-    const saved = localStorage.getItem('agoza_chats_v2');
-    return saved ? JSON.parse(saved) : INITIAL_CHAT_THREADS;
-  });
-
-  const [activityFeed, setActivityFeed] = useState<ActivityItem[]>(() => {
-    const saved = localStorage.getItem('agoza_activity');
-    return saved ? JSON.parse(saved) : INITIAL_ACTIVITIES;
-  });
-
-  const [alertNotifications, setAlertNotifications] = useState<AlertNotification[]>(() => {
-    const saved = localStorage.getItem('agoza_alerts');
-    return saved ? JSON.parse(saved) : INITIAL_ALERTS;
-  });
-
-  const [alertSettings, setAlertSettings] = useState<AlertSettings>(() => {
-    const saved = localStorage.getItem('agoza_alert_settings');
-    return saved
-      ? JSON.parse(saved)
-      : {
-          enableSms: true,
-          enableEmail: true,
-          phoneNumber: '+251 91 199 8877',
-          emailAddress: 'kirtasnetwork@gmail.com',
-          notifyOnOffers: true,
-          notifyOnEscrow: true,
-          notifyOnSwaps: true,
-        };
-  });
-
-  const [reviews, setReviews] = useState<SellerReview[]>(() => {
-    const saved = localStorage.getItem('agoza_reviews');
-    return saved ? JSON.parse(saved) : INITIAL_REVIEWS;
-  });
+  const [reviews, setReviews] = useState<SellerReview[]>(() => loadJSON('agoza_reviews', INITIAL_REVIEWS));
 
   useEffect(() => {
-    localStorage.setItem('agoza_reviews', JSON.stringify(reviews));
+    saveJSON('agoza_reviews', reviews);
   }, [reviews]);
+
+  // Fill empty alert contact details from the signed-in account.
+  useEffect(() => {
+    if (!currentUser) return;
+    setAlertSettings((prev) => ({
+      ...prev,
+      phoneNumber: prev.phoneNumber || currentUser.phone,
+      emailAddress: prev.emailAddress || currentUser.email,
+    }));
+  }, [currentUser]);
 
   const addReview = (review: Omit<SellerReview, 'id' | 'date'>) => {
     const newReview: SellerReview = {
@@ -548,25 +553,23 @@ export const MarketplaceProvider: React.FC<{ children: React.ReactNode }> = ({ c
   const activePlanDetails = getPlanById(userPlan);
 
   // Social Auto-Broadcasting & Omnichannel Marketing State
-  const [socialMarketingSettings, setSocialMarketingSettings] = useState<SocialMarketingSettings>(() => {
-    const saved = localStorage.getItem('agoza_social_settings');
-    return saved ? JSON.parse(saved) : DEFAULT_SOCIAL_SETTINGS;
-  });
+  const [socialMarketingSettings, setSocialMarketingSettings] = useState<SocialMarketingSettings>(() =>
+    loadJSON('agoza_social_settings', DEFAULT_SOCIAL_SETTINGS)
+  );
 
-  const [socialBroadcasts, setSocialBroadcasts] = useState<SocialBroadcastPayload[]>(() => {
-    const saved = localStorage.getItem('agoza_social_broadcasts');
-    return saved ? JSON.parse(saved) : [];
-  });
+  const [socialBroadcasts, setSocialBroadcasts] = useState<SocialBroadcastPayload[]>(() =>
+    loadJSON('agoza_social_broadcasts', [])
+  );
 
   const [isSocialModalOpen, setIsSocialModalOpen] = useState(false);
   const [activeBroadcastPayload, setActiveBroadcastPayload] = useState<SocialBroadcastPayload | null>(null);
 
   useEffect(() => {
-    localStorage.setItem('agoza_social_settings', JSON.stringify(socialMarketingSettings));
+    saveJSON('agoza_social_settings', socialMarketingSettings);
   }, [socialMarketingSettings]);
 
   useEffect(() => {
-    localStorage.setItem('agoza_social_broadcasts', JSON.stringify(socialBroadcasts));
+    saveJSON('agoza_social_broadcasts', socialBroadcasts);
   }, [socialBroadcasts]);
 
   const updateSocialMarketingSettings = (newSettings: Partial<SocialMarketingSettings>) => {
@@ -620,7 +623,7 @@ export const MarketplaceProvider: React.FC<{ children: React.ReactNode }> = ({ c
 
   // Persistence
   useEffect(() => {
-    localStorage.setItem('agoza_ecommerce_v6', JSON.stringify(collectibles));
+    saveJSON('agoza_ecommerce_v6', collectibles);
   }, [collectibles]);
 
   useEffect(() => {
@@ -632,51 +635,57 @@ export const MarketplaceProvider: React.FC<{ children: React.ReactNode }> = ({ c
   }, [language]);
 
   useEffect(() => {
-    localStorage.setItem('agoza_watchlist', JSON.stringify(watchlist));
+    saveJSON('agoza_watchlist', watchlist);
   }, [watchlist]);
 
   useEffect(() => {
-    localStorage.setItem('agoza_offers', JSON.stringify(tradeOffers));
+    saveJSON('agoza_offers', tradeOffers);
   }, [tradeOffers]);
 
   useEffect(() => {
-    localStorage.setItem('agoza_escrow', JSON.stringify(escrowOrders));
+    saveJSON('agoza_escrow', escrowOrders);
   }, [escrowOrders]);
 
   useEffect(() => {
-    localStorage.setItem('agoza_chats_v2', JSON.stringify(chatThreads));
+    saveJSON('agoza_chats_v2', chatThreads);
   }, [chatThreads]);
 
   useEffect(() => {
-    localStorage.setItem('agoza_activity', JSON.stringify(activityFeed));
+    saveJSON('agoza_activity', activityFeed);
   }, [activityFeed]);
 
   useEffect(() => {
-    localStorage.setItem('agoza_alerts', JSON.stringify(alertNotifications));
+    saveJSON('agoza_alerts', alertNotifications);
   }, [alertNotifications]);
 
   useEffect(() => {
-    localStorage.setItem('agoza_alert_settings', JSON.stringify(alertSettings));
+    saveJSON('agoza_alert_settings', alertSettings);
   }, [alertSettings]);
 
-  const t = TRANSLATIONS[language] || TRANSLATIONS.en;
+  const t = getTranslations(language);
+
+  // Keep <html lang> in sync so screen readers and fonts pick the right script.
+  useEffect(() => {
+    document.documentElement.lang = language;
+  }, [language]);
 
   const formatPrice = (priceETB: number) => {
+    const safe = Number.isFinite(priceETB) ? priceETB : 0;
     if (currency === 'USD') {
-      const usd = Math.round(priceETB / ETB_TO_USD_RATE);
-      return `$${usd.toLocaleString()}`;
+      const usd = Math.round(safe / ETB_TO_USD_RATE);
+      return `$${usd.toLocaleString('en-US')}`;
     }
-    return `${priceETB.toLocaleString()} Br`;
+    return `${Math.round(safe).toLocaleString('en-US')} Br`;
   };
 
   const toggleWatchlist = (id: string) => {
-    setWatchlist((prev) => {
-      const next = prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id];
-      setCollectibles((cols) =>
-        cols.map((c) => (c.id === id ? { ...c, likesCount: c.likesCount + (prev.includes(id) ? -1 : 1) } : c))
-      );
-      return next;
-    });
+    // Compute from current state outside the updater so the like-count side
+    // effect runs exactly once (updaters may be invoked twice in StrictMode).
+    const wasSaved = watchlist.includes(id);
+    setWatchlist((prev) => (prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]));
+    setCollectibles((cols) =>
+      cols.map((c) => (c.id === id ? { ...c, likesCount: Math.max(0, c.likesCount + (wasSaved ? -1 : 1)) } : c))
+    );
   };
 
   const resetFilters = () => {
@@ -860,11 +869,7 @@ export const MarketplaceProvider: React.FC<{ children: React.ReactNode }> = ({ c
     setCollectibles((prev) => [newItem, ...prev]);
 
     // Persist to Firestore (best-effort; offline cache keeps UI responsive)
-    try {
-      await saveListing(newItem);
-    } catch (e) {
-      console.warn('[firestore] failed to persist listing:', e);
-    }
+    if (currentUser) persist('saveListing', () => saveListing(newItem));
 
     // Push to Activity Feed
     const activity: ActivityItem = {
@@ -1004,12 +1009,7 @@ export const MarketplaceProvider: React.FC<{ children: React.ReactNode }> = ({ c
       sendAlert('sms', `Agoza Offer ${status.toUpperCase()}`, `The offer on "${offer.collectibleTitle}" was marked as ${status}.`);
     }
 
-    // Persist to Firestore (best-effort)
-    try {
-      firestoreUpdateOfferStatus(offerId, status, counterAmount);
-    } catch (e) {
-      console.warn('[firestore] failed to persist offer status:', e);
-    }
+    persist('updateOfferStatus', () => firestoreUpdateOfferStatus(offerId, status, counterAmount));
   };
 
   const createEscrowOrder = (
@@ -1073,12 +1073,7 @@ export const MarketplaceProvider: React.FC<{ children: React.ReactNode }> = ({ c
       })
     );
 
-    // Persist to Firestore (best-effort)
-    try {
-      updateEscrow(orderId, { status: 'funds-released' });
-    } catch (e) {
-      console.warn('[firestore] failed to persist escrow completion:', e);
-    }
+    persist('updateEscrow', () => updateEscrow(orderId, { status: 'funds-released' }));
 
     if (order) {
       const activity: ActivityItem = {
@@ -1130,7 +1125,8 @@ export const MarketplaceProvider: React.FC<{ children: React.ReactNode }> = ({ c
     );
 
     setTimeout(() => {
-      const responses = [
+      // Simulated seller reply (demo mode only — no real seller backend yet).
+    const responses = [
         "Selam! Yes, the item is available with complete papers. Can you meet at Bole Morning Star Hub?",
         "Amesegenalehu! That's a fair proposal. Let's arrange safe hub handoff so both sides are secured.",
         "Yes, original customs clearance and warranty are ready. What time works best for you?",
@@ -1196,37 +1192,37 @@ export const MarketplaceProvider: React.FC<{ children: React.ReactNode }> = ({ c
     setCollectibles((prev) =>
       prev.map((c) => (c.id === id ? { ...c, moderationStatus: 'approved', flagReason: undefined } : c))
     );
-    try { updateListing(id, { moderationStatus: 'approved', flagReason: undefined }); } catch (e) { console.warn('[firestore] approveListing:', e); }
+    persist('approveListing', () => updateListing(id, { moderationStatus: 'approved', flagReason: undefined }));
   };
 
   const rejectListing = (id: string, reason: string) => {
     setCollectibles((prev) =>
       prev.map((c) => (c.id === id ? { ...c, moderationStatus: 'flagged', flagReason: reason } : c))
     );
-    try { updateListing(id, { moderationStatus: 'flagged', flagReason: reason }); } catch (e) { console.warn('[firestore] rejectListing:', e); }
+    persist('rejectListing', () => updateListing(id, { moderationStatus: 'flagged', flagReason: reason }));
   };
 
   const flagListing = (id: string, reason: string) => {
     setCollectibles((prev) =>
       prev.map((c) => (c.id === id ? { ...c, moderationStatus: 'flagged', flagReason: reason } : c))
     );
-    try { updateListing(id, { moderationStatus: 'flagged', flagReason: reason }); } catch (e) { console.warn('[firestore] flagListing:', e); }
+    persist('flagListing', () => updateListing(id, { moderationStatus: 'flagged', flagReason: reason }));
   };
 
   const deleteListing = (id: string) => {
     setCollectibles((prev) => prev.filter((c) => c.id !== id));
-    try { deleteListingDoc(id); } catch (e) { console.warn('[firestore] deleteListing:', e); }
+    persist('deleteListing', () => deleteListingDoc(id));
   };
 
   const markAsSold = (id: string) => {
     setCollectibles((prev) =>
       prev.map((c) => (c.id === id ? { ...c, status: 'sold' } : c))
     );
-    try { updateListing(id, { status: 'sold' }); } catch (e) { console.warn('[firestore] markAsSold:', e); }
+    persist('markAsSold', () => updateListing(id, { status: 'sold' }));
   };
 
   const userListings = collectibles.filter(
-    (c) => c.seller.id === 'usr-me' || c.seller.name.includes('You')
+    (c) => c.seller.id === 'usr-me' || (currentUser != null && c.seller.id === currentUser.id) || c.seller.name.includes('You')
   );
 
   const isAdmin = Boolean(currentUser?.isAdmin);

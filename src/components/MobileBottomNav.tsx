@@ -11,16 +11,18 @@ export const MobileBottomNav: React.FC = () => {
     setIsMobileCategoriesOpen,
     chatThreads,
     isAdmin,
+    t,
   } = useMarketplace();
 
   const unreadChats = chatThreads.reduce((acc, t) => acc + (t.unreadCount || 0), 0);
 
   return (
-    <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-[#1e130c]/95 backdrop-blur-md border-t border-slate-200 dark:border-[#382214] h-16 px-1">
+    <nav aria-label={t.nav.marketplaceFeed} className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-[#1e130c]/95 backdrop-blur-md border-t border-slate-200 dark:border-[#382214] h-[calc(4rem+env(safe-area-inset-bottom))] pb-[env(safe-area-inset-bottom)] px-1">
       <div className={`grid ${isAdmin ? 'grid-cols-6' : 'grid-cols-5'} h-full items-center`}>
         {/* 1. Home */}
         <button
           onClick={() => setActiveView('marketplace')}
+          aria-current={activeView === 'marketplace' ? 'page' : undefined}
           className={`flex flex-col items-center justify-center h-full min-h-[44px] cursor-pointer transition-colors ${
             activeView === 'marketplace'
               ? 'text-[#1b5e20] dark:text-[#d4a373] font-bold'
@@ -28,7 +30,7 @@ export const MobileBottomNav: React.FC = () => {
           }`}
         >
           <Home className="w-5 h-5" />
-          <span className="text-[9.5px] tracking-tight mt-0.5">Home</span>
+          <span className="text-[10px] leading-tight tracking-tight mt-0.5 max-w-full truncate px-0.5">{t.nav.home}</span>
         </button>
 
         {/* 2. Categories */}
@@ -37,7 +39,7 @@ export const MobileBottomNav: React.FC = () => {
           className="flex flex-col items-center justify-center h-full min-h-[44px] text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white cursor-pointer transition-colors"
         >
           <Grid className="w-5 h-5" />
-          <span className="text-[9.5px] tracking-tight mt-0.5">Categories</span>
+          <span className="text-[10px] leading-tight tracking-tight mt-0.5 max-w-full truncate px-0.5">{t.nav.categories}</span>
         </button>
 
         {/* 3. Sell / Post Ad (Prominent Center Button) */}
@@ -45,7 +47,8 @@ export const MobileBottomNav: React.FC = () => {
           <button
             onClick={() => setIsListModalOpen(true)}
             className="w-11 h-11 rounded-full bg-[#1b5e20] dark:bg-[#d4a373] hover:bg-[#2e7d32] dark:hover:bg-[#e0b487] text-white dark:text-[#1e130c] shadow-lg flex items-center justify-center cursor-pointer -mt-4 transition-transform active:scale-95 border-2 border-white dark:border-[#1e130c]"
-            title="Post an Ad"
+            title={t.nav.postAd}
+            aria-label={t.nav.postAd}
           >
             <Plus className="w-5 h-5 stroke-[3]" />
           </button>
@@ -62,7 +65,7 @@ export const MobileBottomNav: React.FC = () => {
               <span className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-emerald-500 rounded-full" />
             )}
           </div>
-          <span className="text-[9.5px] tracking-tight mt-0.5">Chats</span>
+          <span className="text-[10px] leading-tight tracking-tight mt-0.5 max-w-full truncate px-0.5">{t.nav.chats}</span>
         </button>
 
         {/* 5. User Dashboard (My Ads) */}
@@ -75,7 +78,7 @@ export const MobileBottomNav: React.FC = () => {
           }`}
         >
           <User className="w-5 h-5" />
-          <span className="text-[9.5px] tracking-tight mt-0.5">My Ads</span>
+          <span className="text-[10px] leading-tight tracking-tight mt-0.5 max-w-full truncate px-0.5">{t.nav.myAds}</span>
         </button>
 
         {/* 6. Admin Panel (only visible to logged-in admins) */}
@@ -89,7 +92,7 @@ export const MobileBottomNav: React.FC = () => {
             }`}
           >
             <ShieldAlert className="w-5 h-5 text-amber-500" />
-            <span className="text-[9.5px] tracking-tight mt-0.5 text-amber-600 dark:text-amber-400 font-semibold">Admin</span>
+            <span className="text-[10px] leading-tight tracking-tight mt-0.5 max-w-full truncate px-0.5 text-amber-600 dark:text-amber-400 font-semibold">{t.nav.admin}</span>
           </button>
         )}
       </div>

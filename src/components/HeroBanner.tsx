@@ -1,67 +1,90 @@
 import React from 'react';
 import { useMarketplace } from '../context/MarketplaceContext';
-import { ArrowRight, Plus } from 'lucide-react';
+import { ArrowRight, Plus, ShieldCheck, MapPin, Tag } from 'lucide-react';
+import { ETHIOPIAN_CITIES } from '../data/citiesData';
 
 export const HeroBanner: React.FC = () => {
-  const { setIsListModalOpen } = useMarketplace();
+  const { setIsListModalOpen, collectibles, t } = useMarketplace();
+
+  const activeCount = collectibles.filter((c) => c.status === 'active').length;
+  const cityCount = ETHIOPIAN_CITIES.filter((c) => c.id !== 'all').length;
 
   const scrollToFeed = () => {
-    const el = document.getElementById('marketplace-feed-section');
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth' });
-    }
+    document.getElementById('marketplace-feed-section')?.scrollIntoView({ behavior: 'smooth' });
   };
 
+  const stats = [
+    { icon: Tag, value: activeCount.toLocaleString('en-US'), label: t.hero.statListings },
+    { icon: MapPin, value: `${cityCount}+`, label: t.hero.statCities },
+    { icon: ShieldCheck, value: '100%', label: t.hero.statProtected },
+  ];
+
   return (
-    <div className="relative overflow-hidden bg-neutral-900 text-white transition-colors">
-      {/* Background Graphic / Campaign Background with Dark Scrim Overlay */}
-      <div className="absolute inset-0 z-0 pointer-events-none">
-        <img
-          src="/src/assets/images/hero_p2p_marketplace_1793404546125.jpg"
-          alt="Ethiopia P2P Marketplace"
-          className="w-full h-full object-cover object-center filter contrast-125 brightness-75 scale-102"
-          referrerPolicy="no-referrer"
-        />
-        <div className="absolute inset-0 bg-gradient-to-r from-black/95 via-black/80 to-black/40" />
+    <section className="relative overflow-hidden bg-[#140c07] text-white">
+      {/* Decorative background: warm coffee gradient + subtle tibeb-inspired stripe */}
+      <div aria-hidden="true" className="absolute inset-0 pointer-events-none">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(212,163,115,0.28),transparent_55%),radial-gradient(ellipse_at_bottom_left,rgba(27,94,32,0.35),transparent_60%)]" />
+        <div className="absolute bottom-0 inset-x-0 h-1.5 flex">
+          <span className="flex-1 bg-[#1b8a3a]" />
+          <span className="flex-1 bg-[#f4c430]" />
+          <span className="flex-1 bg-[#d62828]" />
+        </div>
+        <div className="absolute inset-0 opacity-[0.06] bg-[repeating-linear-gradient(135deg,#fff_0_2px,transparent_2px_14px)]" />
       </div>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8 py-12 sm:py-18 lg:py-24">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 lg:py-20 grid lg:grid-cols-[1fr_auto] gap-10 items-center">
         <div className="max-w-3xl">
-          {/* Nike Spot Kicker Tag */}
-          <div className="flex items-center gap-2 text-xs font-black tracking-widest uppercase mb-3 text-neutral-300">
-            <span className="bg-white text-black px-2 py-0.5 font-extrabold rounded-xs text-[10px]">VERIFIED DROP</span>
-            <span>CBE SAFE HUB IN-PERSON EXCHANGE</span>
+          <div className="flex flex-wrap items-center gap-2 text-[11px] font-bold tracking-widest uppercase mb-4 text-[#e8cfb4]">
+            <span className="inline-flex items-center gap-1 bg-[#d4a373] text-[#1e130c] px-2 py-0.5 rounded-md">
+              <ShieldCheck className="w-3 h-3" />
+              {t.hero.kicker}
+            </span>
+            <span>{t.hero.kickerSub}</span>
           </div>
 
-          {/* Oversized Nike-Style Campaign Headline */}
-          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tighter uppercase text-white leading-none text-balance mb-4">
-            JUST DROPPED IN ADDIS.
+          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight text-white leading-[1.05] text-balance mb-4">
+            {t.heroHeadline}
           </h1>
 
-          <p className="text-sm sm:text-lg text-neutral-300 font-medium leading-relaxed max-w-2xl mb-8">
-            Explore authentic phones, vehicles, fashion, coffee, and electronics. Direct peer-to-peer trading protected by CBE Safe Hubs and Telebirr escrow across all Ethiopian regions.
+          <p className="text-sm sm:text-lg text-[#e4d4c4] leading-relaxed max-w-2xl mb-8 text-pretty">
+            {t.heroSubtitle}
           </p>
 
-          {/* Twin Action CTA Buttons (Nike-Style Pill Buttons) */}
           <div className="flex flex-wrap items-center gap-3">
             <button
               onClick={scrollToFeed}
-              className="py-3 px-8 bg-white hover:bg-neutral-200 text-black font-extrabold text-xs tracking-wider uppercase rounded-full shadow-lg transition-transform active:scale-95 cursor-pointer flex items-center gap-2 min-h-[44px]"
+              className="py-3 px-7 bg-[#d4a373] hover:bg-[#e0b487] text-[#1e130c] font-extrabold text-sm rounded-full shadow-lg transition-transform active:scale-95 cursor-pointer flex items-center gap-2 min-h-[48px] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
             >
-              <span>Shop Latest Listings</span>
+              <span>{t.hero.shopLatest}</span>
               <ArrowRight className="w-4 h-4 stroke-[2.5]" />
             </button>
 
             <button
               onClick={() => setIsListModalOpen(true)}
-              className="py-3 px-8 bg-transparent hover:bg-white/10 text-white border-2 border-white font-extrabold text-xs tracking-wider uppercase rounded-full shadow-lg transition-transform active:scale-95 cursor-pointer flex items-center gap-2 min-h-[44px]"
+              className="py-3 px-7 bg-white/5 hover:bg-white/10 text-white border border-white/40 font-bold text-sm rounded-full transition-transform active:scale-95 cursor-pointer flex items-center gap-2 min-h-[48px] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
             >
               <Plus className="w-4 h-4 stroke-[2.5]" />
-              <span>Post P2P Listing</span>
+              <span>{t.hero.postListing}</span>
             </button>
           </div>
         </div>
+
+        {/* Trust stats */}
+        <dl className="grid grid-cols-3 lg:grid-cols-1 gap-3 lg:w-56">
+          {stats.map(({ icon: Icon, value, label }) => (
+            <div
+              key={label}
+              className="rounded-2xl bg-white/[0.06] border border-white/10 backdrop-blur-sm p-3 sm:p-4 flex flex-col lg:flex-row lg:items-center gap-1 lg:gap-3"
+            >
+              <Icon className="w-5 h-5 text-[#d4a373] shrink-0" aria-hidden="true" />
+              <div>
+                <dd className="text-lg sm:text-2xl font-black tabular-nums leading-none">{value}</dd>
+                <dt className="text-[11px] sm:text-xs text-[#c4b19f] mt-1 leading-snug">{label}</dt>
+              </div>
+            </div>
+          ))}
+        </dl>
       </div>
-    </div>
+    </section>
   );
 };

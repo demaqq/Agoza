@@ -88,8 +88,8 @@ export const PlansView: React.FC = () => {
 
       {/* Checkout Drawer/Card if Active */}
       {selectedPlanForCheckout && checkoutPlan && (
-        <div className="max-w-2xl mx-auto p-6 rounded-3xl bg-amber-50 dark:bg-[#161928] border-2 border-amber-400 shadow-2xl space-y-5 animate-in fade-in">
-          <div className="flex items-center justify-between border-b border-amber-200 dark:border-[#2a2f47] pb-4">
+        <div className="max-w-2xl mx-auto p-6 rounded-3xl bg-amber-50 dark:bg-[#2d1c12] border-2 border-amber-400 shadow-2xl space-y-5 animate-in fade-in">
+          <div className="flex items-center justify-between border-b border-amber-200 dark:border-[#473020] pb-4">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-xl bg-amber-500 text-slate-950 flex items-center justify-center font-bold">
                 <Crown className="w-6 h-6" />
@@ -124,7 +124,7 @@ export const PlansView: React.FC = () => {
                 className={`p-3 rounded-xl border text-left cursor-pointer transition-all ${
                   paymentMethod === 'telebirr'
                     ? 'border-[#0072ce] bg-[#0072ce]/10 text-slate-900 dark:text-white ring-2 ring-[#0072ce]'
-                    : 'border-slate-200 dark:border-[#282d42] bg-white dark:bg-[#12141f] text-slate-600 dark:text-slate-300'
+                    : 'border-slate-200 dark:border-[#5a3a24] bg-white dark:bg-[#1a1009] text-slate-600 dark:text-slate-300'
                 }`}
               >
                 <div className="flex items-center justify-between mb-1">
@@ -140,7 +140,7 @@ export const PlansView: React.FC = () => {
                 className={`p-3 rounded-xl border text-left cursor-pointer transition-all ${
                   paymentMethod === 'cbe'
                     ? 'border-[#7b1480] bg-[#7b1480]/10 text-slate-900 dark:text-white ring-2 ring-[#7b1480]'
-                    : 'border-slate-200 dark:border-[#282d42] bg-white dark:bg-[#12141f] text-slate-600 dark:text-slate-300'
+                    : 'border-slate-200 dark:border-[#5a3a24] bg-white dark:bg-[#1a1009] text-slate-600 dark:text-slate-300'
                 }`}
               >
                 <div className="flex items-center justify-between mb-1">
@@ -156,7 +156,7 @@ export const PlansView: React.FC = () => {
                 className={`p-3 rounded-xl border text-left cursor-pointer transition-all ${
                   paymentMethod === 'chapa'
                     ? 'border-emerald-500 bg-emerald-500/10 text-slate-900 dark:text-white ring-2 ring-emerald-500'
-                    : 'border-slate-200 dark:border-[#282d42] bg-white dark:bg-[#12141f] text-slate-600 dark:text-slate-300'
+                    : 'border-slate-200 dark:border-[#5a3a24] bg-white dark:bg-[#1a1009] text-slate-600 dark:text-slate-300'
                 }`}
               >
                 <div className="flex items-center justify-between mb-1">
@@ -172,7 +172,7 @@ export const PlansView: React.FC = () => {
                 className={`p-3 rounded-xl border text-left cursor-pointer transition-all ${
                   paymentMethod === 'awash'
                     ? 'border-amber-600 bg-amber-600/10 text-slate-900 dark:text-white ring-2 ring-amber-600'
-                    : 'border-slate-200 dark:border-[#282d42] bg-white dark:bg-[#12141f] text-slate-600 dark:text-slate-300'
+                    : 'border-slate-200 dark:border-[#5a3a24] bg-white dark:bg-[#1a1009] text-slate-600 dark:text-slate-300'
                 }`}
               >
                 <div className="flex items-center justify-between mb-1">
@@ -192,7 +192,7 @@ export const PlansView: React.FC = () => {
               type="text"
               value={phoneNumber}
               onChange={(e) => setPhoneNumber(e.target.value)}
-              className="w-full sm:w-80 px-3.5 py-2 text-xs rounded-xl border border-slate-300 dark:border-[#32374e] bg-white dark:bg-[#10121d] text-slate-900 dark:text-white font-mono"
+              className="w-full sm:w-80 px-3.5 py-2 text-xs rounded-xl border border-slate-300 dark:border-[#5a3a24] bg-white dark:bg-[#1e130c] text-slate-900 dark:text-white font-mono"
             />
           </div>
 
@@ -201,7 +201,7 @@ export const PlansView: React.FC = () => {
               type="button"
               disabled={isProcessing}
               onClick={handleConfirmPayment}
-              className="flex-1 py-3 px-4 bg-[#1b5e20] hover:bg-[#25732b] dark:bg-[#c5a059] dark:hover:bg-[#d6b068] text-white dark:text-[#0c0d11] font-bold text-xs rounded-xl shadow-lg cursor-pointer transition-all flex items-center justify-center gap-2"
+              className="flex-1 py-3 px-4 bg-[#1b5e20] hover:bg-[#25732b] dark:bg-[#c5a059] dark:hover:bg-[#d6b068] text-white dark:text-[#1e130c] font-bold text-xs rounded-xl shadow-lg cursor-pointer transition-all flex items-center justify-center gap-2"
             >
               {isProcessing ? (
                 <span>Confirming Transaction...</span>
@@ -215,7 +215,7 @@ export const PlansView: React.FC = () => {
             <button
               type="button"
               onClick={() => setSelectedPlanForCheckout(null)}
-              className="py-3 px-4 bg-white dark:bg-[#181a26] text-slate-700 dark:text-slate-300 text-xs font-semibold rounded-xl border border-slate-300 dark:border-[#32364c] hover:bg-slate-50 cursor-pointer"
+              className="py-3 px-4 bg-white dark:bg-[#2d1c12] text-slate-700 dark:text-slate-300 text-xs font-semibold rounded-xl border border-slate-300 dark:border-[#5a3a24] hover:bg-slate-50 cursor-pointer"
             >
               Cancel
             </button>
@@ -242,10 +242,10 @@ export const PlansView: React.FC = () => {
               key={plan.id}
               className={`relative rounded-3xl p-6 sm:p-8 flex flex-col justify-between transition-all duration-300 ${
                 isPro
-                  ? 'bg-gradient-to-b from-[#1b1e2c] to-[#12141f] border-2 border-amber-400 text-white shadow-2xl shadow-amber-400/10'
+                  ? 'bg-gradient-to-b from-[#382214] to-[#1a1009] border-2 border-amber-400 text-white shadow-2xl shadow-amber-400/10'
                   : isStarter
-                  ? 'bg-white dark:bg-[#141624] border-2 border-[#1b5e20] dark:border-[#c5a059] shadow-xl'
-                  : 'bg-white dark:bg-[#12141e] border border-slate-200 dark:border-[#242738] text-slate-900 dark:text-white'
+                  ? 'bg-white dark:bg-[#2d1c12] border-2 border-[#1b5e20] dark:border-[#c5a059] shadow-xl'
+                  : 'bg-white dark:bg-[#251810] border border-slate-200 dark:border-[#473020] text-slate-900 dark:text-white'
               }`}
             >
               <div>
@@ -299,7 +299,7 @@ export const PlansView: React.FC = () => {
                 </div>
 
                 {/* Plan Highlights Box */}
-                <div className="p-3.5 rounded-2xl bg-slate-50 dark:bg-[#0c0d13] border border-slate-100 dark:border-[#1f2233] space-y-2 mb-6 text-xs font-mono">
+                <div className="p-3.5 rounded-2xl bg-slate-50 dark:bg-[#140c07] border border-slate-100 dark:border-[#473020] space-y-2 mb-6 text-xs font-mono">
                   <div className="flex justify-between">
                     <span className="text-slate-500">Active Listings:</span>
                     <strong className="text-slate-900 dark:text-white">
@@ -357,7 +357,7 @@ export const PlansView: React.FC = () => {
               {/* Action Button */}
               <div className="pt-2">
                 {isCurrent ? (
-                  <div className="w-full py-3 px-4 rounded-xl bg-slate-200 dark:bg-[#202336] text-slate-700 dark:text-slate-300 font-bold text-xs text-center flex items-center justify-center gap-1.5 cursor-default">
+                  <div className="w-full py-3 px-4 rounded-xl bg-slate-200 dark:bg-[#473020] text-slate-700 dark:text-slate-300 font-bold text-xs text-center flex items-center justify-center gap-1.5 cursor-default">
                     <Check className="w-4 h-4 text-emerald-500" />
                     <span>Your Current Active Plan</span>
                   </div>
@@ -369,8 +369,8 @@ export const PlansView: React.FC = () => {
                       isPro
                         ? 'bg-amber-400 hover:bg-amber-300 text-slate-950 font-black'
                         : isStarter
-                        ? 'bg-[#1b5e20] hover:bg-[#25732b] dark:bg-[#c5a059] dark:hover:bg-[#d6b068] text-white dark:text-[#0c0d11]'
-                        : 'bg-white dark:bg-[#1a1d29] hover:bg-slate-100 dark:hover:bg-[#222535] text-slate-800 dark:text-slate-200 border border-slate-300 dark:border-[#2f3348]'
+                        ? 'bg-[#1b5e20] hover:bg-[#25732b] dark:bg-[#c5a059] dark:hover:bg-[#d6b068] text-white dark:text-[#1e130c]'
+                        : 'bg-white dark:bg-[#251810] hover:bg-slate-100 dark:hover:bg-[#473020] text-slate-800 dark:text-slate-200 border border-slate-300 dark:border-[#5a3a24]'
                     }`}
                   >
                     {isPro ? (
@@ -395,7 +395,7 @@ export const PlansView: React.FC = () => {
       </div>
 
       {/* FAQs & Protection Guarantee */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-white dark:bg-[#131522] rounded-3xl p-6 sm:p-8 border border-slate-200 dark:border-[#242738]">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-white dark:bg-[#251810] rounded-3xl p-6 sm:p-8 border border-slate-200 dark:border-[#473020]">
         <div className="space-y-3">
           <div className="flex items-center gap-2">
             <HelpCircle className="w-5 h-5 text-[#1b5e20] dark:text-[#c5a059]" />
@@ -426,7 +426,7 @@ export const PlansView: React.FC = () => {
         </div>
 
         <div className="space-y-3 flex flex-col justify-between">
-          <div className="p-4 rounded-2xl bg-amber-50 dark:bg-[#171a2b] border border-amber-300 dark:border-[#2b304c] space-y-2 text-xs">
+          <div className="p-4 rounded-2xl bg-amber-50 dark:bg-[#382214] border border-amber-300 dark:border-[#473020] space-y-2 text-xs">
             <div className="flex items-center gap-2 font-bold text-slate-900 dark:text-white">
               <ShieldCheck className="w-4 h-4 text-emerald-600" />
               <span>Agoza Buyer & Seller Protection Guarantee</span>
@@ -439,13 +439,13 @@ export const PlansView: React.FC = () => {
           <div className="flex items-center gap-3">
             <button
               onClick={() => setIsListModalOpen(true)}
-              className="flex-1 py-3 px-4 bg-[#1b5e20] dark:bg-[#c5a059] text-white dark:text-[#0c0d11] font-bold text-xs rounded-xl shadow cursor-pointer text-center"
+              className="flex-1 py-3 px-4 bg-[#1b5e20] dark:bg-[#c5a059] text-white dark:text-[#1e130c] font-bold text-xs rounded-xl shadow cursor-pointer text-center"
             >
               + Post Classified Ad Now
             </button>
             <button
               onClick={() => setActiveView('marketplace')}
-              className="py-3 px-4 bg-slate-100 dark:bg-[#1a1d29] text-slate-700 dark:text-slate-300 font-semibold text-xs rounded-xl hover:bg-slate-200 dark:hover:bg-[#222535] cursor-pointer"
+              className="py-3 px-4 bg-slate-100 dark:bg-[#251810] text-slate-700 dark:text-slate-300 font-semibold text-xs rounded-xl hover:bg-slate-200 dark:hover:bg-[#473020] cursor-pointer"
             >
               Back to Marketplace
             </button>

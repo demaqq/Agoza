@@ -191,7 +191,7 @@ export const MarketInsightBadge: React.FC<MarketInsightBadgeProps> = ({
             </div>
             <div className="flex items-center justify-between text-slate-500 dark:text-slate-400">
               <span>Category Avg:</span>
-              <span className="font-mono font-medium text-slate-700 dark:text-[#cbd0dc]">
+              <span className="font-mono font-medium text-slate-700 dark:text-[#ede0d4]">
                 {formatPrice(insight.averageCategoryPriceETB)}
               </span>
             </div>

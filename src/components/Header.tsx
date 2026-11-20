@@ -23,6 +23,7 @@ import {
   Menu,
   Settings,
   ExternalLink,
+  Globe,
 } from 'lucide-react';
 
 const LANGUAGES: { code: Language; label: string; native: string }[] = [
@@ -68,6 +69,7 @@ export const Header: React.FC = () => {
   } = useMarketplace();
 
   const [cityMenuOpen, setCityMenuOpen] = useState(false);
+  const [langMenuOpen, setLangMenuOpen] = useState(false);
   const [settingsMenuOpen, setSettingsMenuOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showSeoModal, setShowSeoModal] = useState(false);
@@ -97,6 +99,7 @@ export const Header: React.FC = () => {
       if (!target.closest('[data-header-dropdown]')) {
         setCityMenuOpen(false);
         setSettingsMenuOpen(false);
+        setLangMenuOpen(false);
       }
     };
 
@@ -104,11 +107,12 @@ export const Header: React.FC = () => {
       if (e.key === 'Escape') {
         setCityMenuOpen(false);
         setSettingsMenuOpen(false);
+        setLangMenuOpen(false);
         setMobileMenuOpen(false);
       }
     };
 
-    if (cityMenuOpen || settingsMenuOpen) {
+    if (cityMenuOpen || settingsMenuOpen || langMenuOpen || mobileMenuOpen) {
       window.addEventListener('mousedown', handleClickOutside);
       window.addEventListener('keydown', handleKeyDown);
     }
@@ -117,18 +121,20 @@ export const Header: React.FC = () => {
       window.removeEventListener('mousedown', handleClickOutside);
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [cityMenuOpen, settingsMenuOpen]);
+  }, [cityMenuOpen, settingsMenuOpen, langMenuOpen, mobileMenuOpen]);
 
   const totalUnreadMessages = chatThreads.reduce((acc, thread) => acc + (thread.unreadCount || 0), 0);
 
   const handleCitySelect = (cityName: string) => {
-    setSelectedCity(cityName);
+    if (cityName !== 'All Ethiopia') setSelectedCity(cityName);
+    // Only drive `city`; also setting `location` produced a duplicate filter chip.
     setFilters((prev) => ({
       ...prev,
-      city: cityName,
-      location: cityName === 'All Ethiopia' ? 'all' : cityName,
+      city: cityName === 'All Ethiopia' ? 'all' : cityName,
+      location: 'all',
     }));
     setCityMenuOpen(false);
+    setMobileMenuOpen(false);
   };
 
   // Synchronize dynamic HTML meta tags for SEO
@@ -139,7 +145,7 @@ export const Header: React.FC = () => {
 
   const handleCopyLink = () => {
     if (!metaSnapshot) return;
-    navigator.clipboard.writeText(metaSnapshot.canonicalUrl);
+    navigator.clipboard?.writeText(metaSnapshot.canonicalUrl).catch(() => {});
     setCopiedLink(true);
     setTimeout(() => setCopiedLink(false), 2000);
   };
@@ -148,7 +154,7 @@ export const Header: React.FC = () => {
     <>
       {/* Sticky Top Navigation Bar following Strict Top Bar Contract */}
       <header className="sticky top-0 z-40 bg-[#fffdf7]/95 dark:bg-[#1e130c]/95 backdrop-blur-md border-b border-amber-200/60 dark:border-[#382214] transition-colors">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-18 flex items-center justify-between gap-4 lg:gap-8">
+        <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-16 sm:h-18 flex items-center justify-between gap-2 sm:gap-4 lg:gap-8">
           
           {/* Zone 1: Brand Wordmark & Official Logo */}
           <div className="flex items-center shrink-0">
@@ -157,14 +163,15 @@ export const Header: React.FC = () => {
                 setActiveView('marketplace');
                 setMobileMenuOpen(false);
               }}
-              className="text-left group cursor-pointer focus:outline-none flex items-center"
+              className="text-left group cursor-pointer rounded-xl focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1b5e20] dark:focus-visible:outline-[#d4a373] flex items-center"
+              aria-label="Agoza — home"
             >
               <Logo size="md" showText={true} />
             </button>
           </div>
 
           {/* Zone 2: Primary Navigation Links (Nike-style category nav) */}
-          <nav className="hidden lg:flex items-center gap-5 text-xs sm:text-sm font-semibold text-slate-700 dark:text-[#d5c3b1] whitespace-nowrap shrink-0">
+          <nav className="hidden xl:flex items-center gap-5 text-xs sm:text-sm font-semibold text-slate-700 dark:text-[#d5c3b1] whitespace-nowrap shrink-0">
             <button
               onClick={() => {
                 setActiveView('marketplace');
@@ -176,7 +183,7 @@ export const Header: React.FC = () => {
                   : 'border-transparent'
               }`}
             >
-              New & Featured
+              {t.nav.newFeatured}
             </button>
 
             <button
@@ -188,7 +195,7 @@ export const Header: React.FC = () => {
                 filters.category === 'phones-tablets' ? 'border-[#1b5e20] dark:border-[#d4a373] text-[#1b5e20] dark:text-[#d4a373] font-bold' : 'border-transparent'
               }`}
             >
-              Phones & Tech
+              {t.nav.phonesTech}
             </button>
 
             <button
@@ -200,7 +207,7 @@ export const Header: React.FC = () => {
                 filters.category === 'vehicles-cars' ? 'border-[#1b5e20] dark:border-[#d4a373] text-[#1b5e20] dark:text-[#d4a373] font-bold' : 'border-transparent'
               }`}
             >
-              Vehicles
+              {t.nav.vehicles}
             </button>
 
             <button
@@ -208,11 +215,11 @@ export const Header: React.FC = () => {
                 setActiveView('marketplace');
                 setFilters((f) => ({ ...f, category: 'fashion-clothes' }));
               }}
-              className={`hover:opacity-75 transition-opacity cursor-pointer py-5 border-b-2 whitespace-nowrap shrink-0 ${
+              className={`hidden 2xl:block hover:opacity-75 transition-opacity cursor-pointer py-5 border-b-2 whitespace-nowrap shrink-0 ${
                 filters.category === 'fashion-clothes' ? 'border-[#1b5e20] dark:border-[#d4a373] text-[#1b5e20] dark:text-[#d4a373] font-bold' : 'border-transparent'
               }`}
             >
-              Fashion
+              {t.nav.fashion}
             </button>
 
             <button
@@ -220,28 +227,28 @@ export const Header: React.FC = () => {
                 setActiveView('marketplace');
                 setFilters((f) => ({ ...f, category: 'home-furniture' }));
               }}
-              className={`hover:opacity-75 transition-opacity cursor-pointer py-5 border-b-2 whitespace-nowrap shrink-0 ${
+              className={`hidden 2xl:block hover:opacity-75 transition-opacity cursor-pointer py-5 border-b-2 whitespace-nowrap shrink-0 ${
                 filters.category === 'home-furniture' ? 'border-[#1b5e20] dark:border-[#d4a373] text-[#1b5e20] dark:text-[#d4a373] font-bold' : 'border-transparent'
               }`}
             >
-              Home & Decor
+              {t.nav.homeDecor}
             </button>
 
             <button
               onClick={() => {
                 setActiveView('marketplace');
-                setFilters((f) => ({ ...f, openToTradeOnly: true }));
+                setFilters((f) => ({ ...f, openToTradeOnly: !f.openToTradeOnly }));
               }}
               className={`hover:opacity-75 transition-opacity cursor-pointer py-5 border-b-2 flex items-center gap-1.5 whitespace-nowrap shrink-0 ${
                 filters.openToTradeOnly ? 'border-[#1b5e20] dark:border-[#d4a373] text-emerald-700 dark:text-emerald-400 font-bold' : 'border-transparent'
               }`}
             >
-              <span>Swaps & Barter</span>
+              <span>{t.nav.swapsBarter}</span>
             </button>
           </nav>
 
           {/* Zone 3: Compact Control Utilities & Primary Action CTA */}
-          <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+          <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
             {/* 1. Ethiopian City Selector Dropdown */}
             <div className="relative hidden sm:block" data-header-dropdown="city">
               <button
@@ -250,30 +257,32 @@ export const Header: React.FC = () => {
                   setSettingsMenuOpen(false);
                 }}
                 className="flex items-center gap-1.5 bg-amber-100/70 hover:bg-amber-100 dark:bg-[#251810] dark:hover:bg-[#342115] border border-amber-300/80 dark:border-[#473020] px-2.5 py-1.5 rounded-xl text-xs font-bold text-amber-950 dark:text-[#f3ddc9] cursor-pointer transition-colors min-h-[38px]"
-                title="Select Location in Ethiopia"
+                title={t.header.selectCity}
+                aria-haspopup="listbox"
+                aria-expanded={cityMenuOpen}
               >
                 <MapPin className="w-3.5 h-3.5 text-amber-700 dark:text-[#d4a373] shrink-0" />
-                <span className="truncate max-w-[90px] md:max-w-[120px]">{selectedCity || 'Addis Ababa'}</span>
+                <span className="truncate max-w-[90px] md:max-w-[120px]">{!filters.city || filters.city === 'all' ? t.filters.allCities : filters.city}</span>
                 <ChevronDown className="w-3 h-3 text-amber-700 dark:text-[#d4a373] opacity-80" />
               </button>
 
               {cityMenuOpen && (
                 <div className="absolute right-0 mt-2 w-56 max-h-72 overflow-y-auto bg-white dark:bg-[#251810] border border-amber-200 dark:border-[#473020] rounded-2xl shadow-xl py-1.5 z-50 animate-in fade-in slide-in-from-top-1">
                   <div className="px-3.5 py-1.5 text-[10px] text-amber-900 dark:text-[#d4a373] uppercase tracking-wider font-bold border-b border-amber-100 dark:border-[#382214] flex items-center justify-between">
-                    <span>Ethiopian Cities</span>
+                    <span>{t.header.ethiopianCities}</span>
                     <span className="font-serif">ኢትዮጵያ</span>
                   </div>
                   {ETHIOPIAN_CITIES.map((c) => (
                     <button
                       key={c.id}
-                      onClick={() => handleCitySelect(c.name)}
+                      onClick={() => handleCitySelect(c.id === 'all' ? 'All Ethiopia' : c.id)}
                       className={`w-full px-3.5 py-2 text-left text-xs flex items-center justify-between cursor-pointer transition-colors ${
-                        selectedCity === c.name || (c.id === 'all' && selectedCity === 'All Ethiopia')
+                        (filters.city || 'all') === c.id
                           ? 'bg-amber-100/80 dark:bg-[#382214] text-amber-950 dark:text-[#f8edd6] font-bold'
                           : 'text-slate-700 dark:text-[#c4b5a5] hover:bg-amber-50 dark:hover:bg-[#2d1c12] hover:text-slate-900 dark:hover:text-white'
                       }`}
                     >
-                      <span className="font-medium">{c.name}</span>
+                      <span className="font-medium">{c.id === 'all' ? t.filters.allCities : c.name}</span>
                       <span className="font-serif text-[11px] text-slate-400">{c.amharic}</span>
                     </button>
                   ))}
@@ -284,12 +293,13 @@ export const Header: React.FC = () => {
             {/* 2. Nike Pill Search Trigger */}
             <button
               onClick={() => setIsSearchModalOpen(true)}
-              className="hidden sm:flex items-center gap-2 bg-amber-100/70 dark:bg-[#251810] hover:bg-amber-200/60 dark:hover:bg-[#2d1c12] px-3.5 py-2 rounded-full text-xs text-slate-700 dark:text-[#d5c3b1] cursor-pointer transition-colors min-w-[140px] xl:min-w-[180px]"
-              title="Search items (⌘K)"
+              className="hidden sm:flex items-center gap-2 bg-amber-100/70 dark:bg-[#251810] hover:bg-amber-200/60 dark:hover:bg-[#2d1c12] px-3.5 py-2 rounded-full text-xs text-slate-700 dark:text-[#d5c3b1] cursor-pointer transition-colors min-w-[120px] 2xl:min-w-[180px]"
+              title={`${t.header.search} (⌘K)`}
+              aria-label={t.header.search}
             >
               <Search className="w-4 h-4 text-[#1b5e20] dark:text-[#d4a373] shrink-0" />
-              <span className="truncate max-w-[100px] xl:max-w-[140px] text-slate-500 dark:text-[#a8907f] font-medium">Search</span>
-              <kbd className="hidden xl:inline text-[9px] bg-white dark:bg-black/40 px-1.5 py-0.5 rounded border border-amber-300 dark:border-[#473020] font-mono ml-auto">⌘K</kbd>
+              <span className="truncate max-w-[80px] 2xl:max-w-[140px] text-slate-500 dark:text-[#a8907f] font-medium">{t.header.search}</span>
+              <kbd className="hidden 2xl:inline text-[9px] bg-white dark:bg-black/40 px-1.5 py-0.5 rounded border border-amber-300 dark:border-[#473020] font-mono ml-auto">⌘K</kbd>
             </button>
 
             {/* 3. Notifications & Chat Quick Buttons */}
@@ -297,7 +307,8 @@ export const Header: React.FC = () => {
               <button
                 onClick={() => setIsAlertsOpen(true)}
                 className="relative p-2 text-slate-700 dark:text-[#d5c3b1] hover:bg-amber-100/60 dark:hover:bg-[#2d1c12] rounded-xl transition-colors cursor-pointer min-w-[38px] min-h-[38px] flex items-center justify-center"
-                title="Alerts & Notifications"
+                title={t.header.alerts}
+                aria-label={t.header.alerts}
               >
                 <Bell className="w-4 h-4" />
                 {alertNotifications.length > 0 && (
@@ -310,7 +321,8 @@ export const Header: React.FC = () => {
               <button
                 onClick={() => setIsChatOpen(true)}
                 className="relative p-2 text-slate-700 dark:text-[#d5c3b1] hover:bg-amber-100/60 dark:hover:bg-[#2d1c12] rounded-xl transition-colors cursor-pointer hidden md:flex min-w-[38px] min-h-[38px] items-center justify-center"
-                title="Direct P2P Chat"
+                title={t.header.chat}
+                aria-label={t.header.chat}
               >
                 <MessageSquare className="w-4 h-4" />
                 {totalUnreadMessages > 0 && (
@@ -321,19 +333,65 @@ export const Header: React.FC = () => {
               </button>
             </div>
 
+            {/* Language quick switcher (always visible — key for a multilingual market) */}
+            <div className="relative hidden sm:block" data-header-dropdown="language">
+              <button
+                onClick={() => {
+                  setLangMenuOpen(!langMenuOpen);
+                  setCityMenuOpen(false);
+                  setSettingsMenuOpen(false);
+                }}
+                className="flex items-center gap-1 px-2 py-2 rounded-xl text-xs font-bold text-slate-700 dark:text-[#d5c3b1] hover:bg-amber-100/60 dark:hover:bg-[#2d1c12] transition-colors cursor-pointer min-w-[38px] min-h-[38px] justify-center"
+                title={t.header.language}
+                aria-label={t.header.language}
+                aria-haspopup="listbox"
+                aria-expanded={langMenuOpen}
+              >
+                <Globe className="w-4 h-4" />
+                <span className="hidden md:inline">{LANGUAGES.find((l) => l.code === language)?.label}</span>
+              </button>
+              {langMenuOpen && (
+                <div role="listbox" aria-label={t.header.language} className="absolute right-0 mt-2 w-44 bg-white dark:bg-[#251810] border border-amber-200 dark:border-[#473020] rounded-2xl shadow-xl py-1.5 z-50 animate-in fade-in slide-in-from-top-1">
+                  {LANGUAGES.map((lang) => (
+                    <button
+                      key={lang.code}
+                      role="option"
+                      aria-selected={language === lang.code}
+                      lang={lang.code}
+                      onClick={() => {
+                        setLanguage(lang.code);
+                        setLangMenuOpen(false);
+                      }}
+                      className={`w-full px-3.5 py-2 text-left text-sm flex items-center justify-between cursor-pointer transition-colors ${
+                        language === lang.code
+                          ? 'bg-amber-100/80 dark:bg-[#382214] text-amber-950 dark:text-[#f8edd6] font-bold'
+                          : 'text-slate-700 dark:text-[#c4b5a5] hover:bg-amber-50 dark:hover:bg-[#2d1c12]'
+                      }`}
+                    >
+                      <span>{lang.native}</span>
+                      {language === lang.code && <Check className="w-3.5 h-3.5" />}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+
             {/* 3. Settings Popover Menu (Groups Theme, Currency, Language, SEO Inspector, Admin) */}
             <div className="relative" data-header-dropdown="settings">
               <button
                 onClick={() => {
                   setSettingsMenuOpen(!settingsMenuOpen);
                   setCityMenuOpen(false);
+                  setLangMenuOpen(false);
                 }}
                 className={`p-2 rounded-xl border transition-colors cursor-pointer min-w-[38px] min-h-[38px] flex items-center justify-center ${
                   settingsMenuOpen
                     ? 'bg-[#1b5e20] text-white dark:bg-[#d4a373] dark:text-[#1e130c] border-transparent'
                     : 'bg-amber-100/60 dark:bg-[#251810] text-slate-700 dark:text-[#d5c3b1] border-amber-200/80 dark:border-[#473020] hover:bg-amber-200/60 dark:hover:bg-[#342115]'
                 }`}
-                title="Display, Language & Platform Settings"
+                title={t.header.settings}
+                aria-label={t.header.settings}
+                aria-expanded={settingsMenuOpen}
               >
                 <Settings className="w-4 h-4" />
               </button>
@@ -341,26 +399,25 @@ export const Header: React.FC = () => {
               {settingsMenuOpen && (
                 <div className="absolute right-0 mt-2 w-64 bg-white dark:bg-[#251810] border border-amber-200 dark:border-[#473020] rounded-2xl shadow-xl p-3 z-50 space-y-3 animate-in fade-in slide-in-from-top-1 text-xs">
                   <div className="text-[10px] uppercase font-bold tracking-wider text-amber-900 dark:text-[#d4a373] pb-1 border-b border-amber-100 dark:border-[#382214] flex items-center justify-between">
-                    <span>Preferences & Tools</span>
-                    <span className="font-mono text-[9px] text-slate-400">Settings</span>
+                    <span>{t.header.preferences}</span>
                   </div>
 
                   {/* Light / Dark Mode Row */}
                   <div className="flex items-center justify-between py-1">
-                    <span className="font-semibold text-slate-800 dark:text-[#f8edd6]">Theme Mode</span>
+                    <span className="font-semibold text-slate-800 dark:text-[#f8edd6]">{t.header.theme}</span>
                     <button
                       onClick={toggleTheme}
                       className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-50 dark:bg-[#1a1009] border border-amber-200 dark:border-[#422919] text-slate-800 dark:text-[#f3ddc9] font-medium cursor-pointer"
                     >
                       {theme === 'dark' ? (
                         <>
-                          <Sun className="w-3.5 h-3.5 text-amber-400" />
-                          <span>Dark Theme</span>
+                          <Moon className="w-3.5 h-3.5 text-amber-400" />
+                          <span>{t.header.dark}</span>
                         </>
                       ) : (
                         <>
-                          <Moon className="w-3.5 h-3.5 text-slate-700" />
-                          <span>Light Theme</span>
+                          <Sun className="w-3.5 h-3.5 text-amber-600" />
+                          <span>{t.header.light}</span>
                         </>
                       )}
                     </button>
@@ -368,7 +425,7 @@ export const Header: React.FC = () => {
 
                   {/* Currency Toggle Row */}
                   <div className="flex items-center justify-between py-1">
-                    <span className="font-semibold text-slate-800 dark:text-[#f8edd6]">Currency</span>
+                    <span className="font-semibold text-slate-800 dark:text-[#f8edd6]">{t.header.currency}</span>
                     <div className="flex items-center bg-amber-50 dark:bg-[#1a1009] border border-amber-200 dark:border-[#422919] rounded-xl p-0.5 font-mono">
                       <button
                         onClick={() => setCurrency('ETB')}
@@ -396,13 +453,14 @@ export const Header: React.FC = () => {
                   {/* Language Selector */}
                   <div className="py-1">
                     <span className="font-semibold text-slate-800 dark:text-[#f8edd6] block mb-1.5">
-                      Language
+                      {t.header.language}
                     </span>
                     <div className="grid grid-cols-3 gap-1">
                       {LANGUAGES.map((lang) => (
                         <button
                           key={lang.code}
                           onClick={() => setLanguage(lang.code)}
+                          lang={lang.code}
                           className={`py-1 px-1.5 rounded-lg border text-center transition-colors cursor-pointer ${
                             language === lang.code
                               ? 'bg-[#1b5e20] text-white dark:bg-[#d4a373] dark:text-[#1e130c] border-transparent font-bold'
@@ -416,6 +474,7 @@ export const Header: React.FC = () => {
                   </div>
 
                   {/* Quick System Tools */}
+                  {isAdmin && (
                   <div className="pt-2 border-t border-amber-100 dark:border-[#382214] space-y-1.5">
                     <button
                       onClick={() => {
@@ -426,12 +485,11 @@ export const Header: React.FC = () => {
                     >
                       <div className="flex items-center gap-2">
                         <Search className="w-3.5 h-3.5 text-[#1b5e20] dark:text-[#d4a373]" />
-                        <span>SEO Meta Inspector</span>
+                        <span>{t.header.seoInspector}</span>
                       </div>
                       <ExternalLink className="w-3 h-3 text-slate-400" />
                     </button>
 
-                    {isAdmin && (
                     <button
                       onClick={() => {
                         setActiveView('admin-dashboard');
@@ -441,12 +499,12 @@ export const Header: React.FC = () => {
                     >
                       <div className="flex items-center gap-2">
                         <ShieldAlert className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
-                        <span>Admin Moderation</span>
+                        <span>{t.header.adminModeration}</span>
                       </div>
                       <ChevronDown className="w-3 h-3 text-slate-400 -rotate-90" />
                     </button>
-                  )}
                   </div>
+                  )}
                 </div>
               )}
             </div>
@@ -466,11 +524,12 @@ export const Header: React.FC = () => {
                   ? 'bg-amber-100/60 dark:bg-[#251810] border-amber-200 dark:border-[#473020] text-slate-800 dark:text-[#f3ddc9]'
                   : 'bg-white dark:bg-[#251810] border-amber-300 dark:border-[#473020] text-[#1b5e20] dark:text-[#d4a373]'
               }`}
-              title={currentUser ? `User: ${currentUser.name}` : 'Sign In / Register'}
+              title={currentUser ? currentUser.name : t.header.signIn}
+              aria-label={currentUser ? `${t.nav.myAccount}: ${currentUser.name}` : t.header.signIn}
             >
               <User className="w-3.5 h-3.5 text-[#1b5e20] dark:text-[#d4a373]" />
-              <span className="hidden md:inline font-mono">
-                {currentUser ? currentUser.name.split(' ')[0] : 'Sign In'}
+              <span className="hidden md:inline xl:hidden 2xl:inline max-w-[90px] truncate">
+                {currentUser ? currentUser.name.split(' ')[0] : t.header.signIn}
               </span>
               {currentUser && (
                 <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
@@ -489,8 +548,9 @@ export const Header: React.FC = () => {
             {/* Mobile Hamburger Drawer Trigger */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden p-2 text-slate-800 dark:text-[#f8edd6] hover:bg-amber-100/80 dark:hover:bg-[#2d1c12] rounded-xl cursor-pointer min-w-[38px] min-h-[38px] flex items-center justify-center border border-amber-200/80 dark:border-[#473020]"
-              aria-label="Toggle Mobile Navigation"
+              className="xl:hidden p-2 text-slate-800 dark:text-[#f8edd6] hover:bg-amber-100/80 dark:hover:bg-[#2d1c12] rounded-xl cursor-pointer min-w-[38px] min-h-[38px] flex items-center justify-center border border-amber-200/80 dark:border-[#473020]"
+              aria-label={t.header.menu}
+              aria-expanded={mobileMenuOpen}
             >
               {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
@@ -499,7 +559,7 @@ export const Header: React.FC = () => {
 
         {/* Mobile Navigation Drawer Sheet */}
         {mobileMenuOpen && (
-          <div className="lg:hidden border-t border-amber-200/80 dark:border-[#382214] bg-[#fffdf7] dark:bg-[#1e130c] px-4 py-5 space-y-4 shadow-2xl animate-in fade-in slide-in-from-top-2">
+          <div className="xl:hidden border-t border-amber-200/80 dark:border-[#382214] bg-[#fffdf7] dark:bg-[#1e130c] px-4 py-5 space-y-4 shadow-2xl animate-in fade-in slide-in-from-top-2">
             {/* Primary Mobile Nav Links */}
             <div className="grid grid-cols-2 gap-2">
               <button
@@ -513,7 +573,7 @@ export const Header: React.FC = () => {
                     : 'bg-amber-50 dark:bg-[#251810] text-slate-800 dark:text-[#f3ddc9] border-amber-200 dark:border-[#473020]'
                 }`}
               >
-                Marketplace Feed
+                {t.nav.marketplaceFeed}
               </button>
 
               <button
@@ -527,26 +587,50 @@ export const Header: React.FC = () => {
                     : 'bg-amber-50 dark:bg-[#251810] text-slate-800 dark:text-[#f3ddc9] border-amber-200 dark:border-[#473020]'
                 }`}
               >
-                My Account
+                {t.nav.myAccount}
               </button>
             </div>
 
             {/* Mobile Location Selector */}
             <div className="pt-2 border-t border-amber-200/60 dark:border-[#382214]">
               <label className="text-[11px] font-bold text-amber-900 dark:text-[#d4a373] block mb-1.5 uppercase tracking-wider">
-                Select Ethiopian City:
+                {t.header.selectCity}
               </label>
               <select
-                value={selectedCity || 'Addis Ababa'}
+                value={!filters.city || filters.city === 'all' ? 'All Ethiopia' : filters.city}
                 onChange={(e) => handleCitySelect(e.target.value)}
                 className="w-full p-2.5 rounded-xl bg-amber-50 dark:bg-[#251810] border border-amber-300 dark:border-[#473020] text-slate-900 dark:text-[#f3ddc9] text-xs font-semibold focus:outline-none cursor-pointer"
               >
                 {ETHIOPIAN_CITIES.map((c) => (
-                  <option key={c.id} value={c.name}>
-                    {c.name} ({c.amharic})
+                  <option key={c.id} value={c.id === 'all' ? 'All Ethiopia' : c.id}>
+                    {c.id === 'all' ? t.filters.allCities : `${c.name} (${c.amharic})`}
                   </option>
                 ))}
               </select>
+            </div>
+
+            {/* Mobile language picker */}
+            <div className="pt-2 border-t border-amber-200/60 dark:border-[#382214]">
+              <span className="text-[11px] font-bold text-amber-900 dark:text-[#d4a373] block mb-1.5 uppercase tracking-wider">
+                {t.header.language}
+              </span>
+              <div className="grid grid-cols-3 gap-1.5">
+                {LANGUAGES.map((lang) => (
+                  <button
+                    key={lang.code}
+                    lang={lang.code}
+                    onClick={() => setLanguage(lang.code)}
+                    aria-pressed={language === lang.code}
+                    className={`py-2 px-1.5 rounded-xl border text-xs text-center cursor-pointer transition-colors min-h-[40px] ${
+                      language === lang.code
+                        ? 'bg-[#1b5e20] text-white dark:bg-[#d4a373] dark:text-[#1e130c] border-transparent font-bold'
+                        : 'bg-amber-50 dark:bg-[#251810] text-slate-700 dark:text-[#c4b5a5] border-amber-200 dark:border-[#473020]'
+                    }`}
+                  >
+                    {lang.native}
+                  </button>
+                ))}
+              </div>
             </div>
 
             {/* Mobile Post Ad Primary Action */}

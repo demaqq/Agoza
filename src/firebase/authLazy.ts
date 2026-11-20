@@ -1,59 +1,61 @@
 /**
  * Lazy Firebase Auth module.
  *
- * Firebase Auth is lazy-loaded so it does not block the initial page load.
- * All functions return Promises and resolve once the Firebase Auth SDK is ready.
+ * The Auth SDK is loaded on demand so it does not block first paint. It shares
+ * the single Firebase app from ./config. When Firebase is not configured, every
+ * call resolves gracefully (signed-out state, friendly error) instead of throwing.
  */
+import type { Auth, User } from 'firebase/auth';
+import type { UserAccount } from '../types';
+import { getFirebaseApp, getDb, isFirebaseConfigured, useEmulator } from './config';
 
-const firebaseConfig = {
-  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
-  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
-  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
-  appId: import.meta.env.VITE_FIREBASE_APP_ID,
-  measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID,
-};
+type AuthSdk = typeof import('firebase/auth');
 
-let firebaseAuthModule: any = null;
-let firebaseApp: any = null;
-let firebaseDb: any = null;
-let firebaseStorage: any = null;
-let authPromise: Promise<void> | null = null;
+export type AuthResult = { success: boolean; error?: string };
+export type FirebaseUserAccount = UserAccount & { firebaseUid: string };
 
-async function ensureFirebaseLoaded(): Promise<void> {
-  if (authPromise) return authPromise;
-  authPromise = (async () => {
-    const { initializeApp } = await import('firebase/app');
-    const {
-      getAuth,
-      createUserWithEmailAndPassword,
-      signInWithEmailAndPassword,
-      signOut,
-      sendEmailVerification,
-      sendPasswordResetEmail,
-      updateProfile,
-      onAuthStateChanged,
-    } = await import('firebase/auth');
-    const { getFirestore } = await import('firebase/firestore');
-    const { getStorage } = await import('firebase/storage');
+const NOT_CONFIGURED_ERROR =
+  'Accounts are temporarily unavailable. You can keep browsing — please try again later.';
 
-    firebaseApp = initializeApp(firebaseConfig);
-    const auth = getAuth(firebaseApp);
-    firebaseAuthModule = {
-      getAuth,
-      createUserWithEmailAndPassword,
-      signInWithEmailAndPassword,
-      signOut,
-      sendEmailVerification,
-      sendPasswordResetEmail,
-      updateProfile,
-      onAuthStateChanged,
-      auth,
-    };
-    firebaseDb = getFirestore(firebaseApp);
-    firebaseStorage = getStorage(firebaseApp);
+let sdk: AuthSdk | null = null;
+let auth: Auth | null = null;
+let loadPromise: Promise<boolean> | null = null;
+
+/** Resolves true when Auth is ready, false when Firebase is unavailable. */
+function ensureAuth(): Promise<boolean> {
+  if (loadPromise) return loadPromise;
+  loadPromise = (async () => {
+    const app = getFirebaseApp();
+    if (!app) return false;
+    try {
+      sdk = await import('firebase/auth');
+      auth = sdk.getAuth(app);
+      if (useEmulator) sdk.connectAuthEmulator(auth, 'http://localhost:9099', { disableWarnings: true });
+      return true;
+    } catch (e) {
+      console.warn('[firebase] Auth unavailable:', e);
+      return false;
+    }
   })();
-  return authPromise;
+  return loadPromise;
+}
+
+export const isAuthAvailable = () => isFirebaseConfigured || useEmulator;
+
+/** Admins are granted server-side via the `isAdmin` field on users/{uid} (see firestore.rules). */
+const ADMIN_EMAILS = new Set(['admin@agoza.et', 'moderator@agoza.et']);
+
+export function computeIsAdmin(email?: string | null): boolean {
+  return Boolean(email && ADMIN_EMAILS.has(email.toLowerCase()));
+}
+
+/** Firestore Timestamps (or anything else) -> YYYY-MM-DD string safe to render. */
+function toDateString(value: unknown): string {
+  if (!value) return '';
+  if (typeof value === 'string') return value;
+  const maybeTs = value as { toDate?: () => Date };
+  if (typeof maybeTs.toDate === 'function') return maybeTs.toDate().toISOString().split('T')[0];
+  return '';
 }
 
 export async function signupUser(data: {
@@ -63,72 +65,70 @@ export async function signupUser(data: {
   city: string;
   telegramUsername: string;
   password: string;
-}): Promise<{ success: boolean; error?: string }> {
-  await ensureFirebaseLoaded();
+}): Promise<AuthResult> {
+  if (!(await ensureAuth()) || !sdk || !auth) return { success: false, error: NOT_CONFIGURED_ERROR };
   try {
-    const cred = await firebaseAuthModule.createUserWithEmailAndPassword(
-      firebaseAuthModule.auth,
-      data.email,
-      data.password
-    );
-    await firebaseAuthModule.updateProfile(cred.user, { displayName: data.name });
-    await firebaseAuthModule.sendEmailVerification(cred.user);
+    const cred = await sdk.createUserWithEmailAndPassword(auth, data.email, data.password);
+    await sdk.updateProfile(cred.user, { displayName: data.name });
+    sdk.sendEmailVerification(cred.user).catch((e) => console.warn('[auth] verification email failed:', e));
 
-    const { setDoc, doc, serverTimestamp } = await import('firebase/firestore');
-    const account: any = {
-      id: cred.user.uid,
-      firebaseUid: cred.user.uid,
-      name: data.name,
-      email: data.email,
-      phone: data.phone,
-      city: data.city,
-      telegramUsername: data.telegramUsername,
-      plan: 'free',
-      createdAt: new Date().toISOString().split('T')[0],
-      verified: false,
-      isAdmin: computeIsAdmin(data.email),
-    };
-    await setDoc(doc(firebaseDb, 'users', cred.user.uid), {
-      ...account,
-      createdAt: serverTimestamp(),
-      updatedAt: serverTimestamp(),
-    });
-
+    // Profile doc is best-effort: the account exists even if this write fails.
+    const db = getDb();
+    if (db) {
+      try {
+        const { setDoc, doc, serverTimestamp } = await import('firebase/firestore');
+        await setDoc(doc(db, 'users', cred.user.uid), {
+          id: cred.user.uid,
+          name: data.name,
+          email: data.email,
+          phone: data.phone,
+          city: data.city,
+          telegramUsername: data.telegramUsername,
+          plan: 'free',
+          verified: false,
+          createdAt: serverTimestamp(),
+          updatedAt: serverTimestamp(),
+        });
+      } catch (e) {
+        console.warn('[auth] failed to create profile doc:', e);
+      }
+    }
     return { success: true };
-  } catch (err: any) {
+  } catch (err) {
     return { success: false, error: mapAuthError(err) };
   }
 }
 
-export async function loginUser(email: string, password: string): Promise<{ success: boolean; error?: string }> {
-  await ensureFirebaseLoaded();
+export async function loginUser(email: string, password: string): Promise<AuthResult> {
+  if (!(await ensureAuth()) || !sdk || !auth) return { success: false, error: NOT_CONFIGURED_ERROR };
   try {
-    await firebaseAuthModule.signInWithEmailAndPassword(firebaseAuthModule.auth, email, password);
+    await sdk.signInWithEmailAndPassword(auth, email, password);
     return { success: true };
-  } catch (err: any) {
+  } catch (err) {
     return { success: false, error: mapAuthError(err) };
   }
 }
 
 export async function logoutUser(): Promise<void> {
-  await ensureFirebaseLoaded();
-  await firebaseAuthModule.signOut(firebaseAuthModule.auth);
+  if (!(await ensureAuth()) || !sdk || !auth) return;
+  await sdk.signOut(auth);
 }
 
-export async function resetPassword(email: string): Promise<{ success: boolean; error?: string }> {
-  await ensureFirebaseLoaded();
+export async function resetPassword(email: string): Promise<AuthResult> {
+  if (!(await ensureAuth()) || !sdk || !auth) return { success: false, error: NOT_CONFIGURED_ERROR };
   try {
-    await firebaseAuthModule.sendPasswordResetEmail(firebaseAuthModule.auth, email);
+    await sdk.sendPasswordResetEmail(auth, email);
     return { success: true };
-  } catch (err: any) {
+  } catch (err) {
     return { success: false, error: mapAuthError(err) };
   }
 }
 
-export async function fetchUserAccount(uid: string): Promise<any> {
-  await ensureFirebaseLoaded();
+export async function fetchUserAccount(uid: string): Promise<FirebaseUserAccount | null> {
+  const db = getDb();
+  if (!db) return null;
   const { getDoc, doc } = await import('firebase/firestore');
-  const snap = await getDoc(doc(firebaseDb, 'users', uid));
+  const snap = await getDoc(doc(db, 'users', uid));
   if (!snap.exists()) return null;
   const data = snap.data();
   return {
@@ -139,70 +139,54 @@ export async function fetchUserAccount(uid: string): Promise<any> {
     phone: data.phone || '',
     city: data.city || '',
     telegramUsername: data.telegramUsername || '',
-    plan: (data.plan as any) || 'free',
-    createdAt: data.createdAt || '',
+    plan: data.plan || 'free',
+    createdAt: toDateString(data.createdAt),
     verified: Boolean(data.verified),
     isAdmin: Boolean(data.isAdmin) || computeIsAdmin(data.email),
   };
 }
 
-export function subscribeToAuth(callback: (user: any) => void): () => void {
+/** Subscribes to auth changes. Calls back with null right away when auth is unavailable. */
+export function subscribeToAuth(callback: (user: User | null) => void): () => void {
   let unsubscribe: (() => void) | null = null;
+  let cancelled = false;
 
-  ensureFirebaseLoaded().then(() => {
-    unsubscribe = firebaseAuthModule.onAuthStateChanged(firebaseAuthModule.auth, (fbUser: any) => {
-      callback(fbUser);
-    });
+  ensureAuth().then((ok) => {
+    if (cancelled) return;
+    if (!ok || !sdk || !auth) {
+      callback(null);
+      return;
+    }
+    unsubscribe = sdk.onAuthStateChanged(auth, callback);
   });
 
   return () => {
-    if (unsubscribe) unsubscribe();
+    cancelled = true;
+    unsubscribe?.();
   };
 }
 
-export function computeIsAdmin(email?: string | null): boolean {
-  const ADMIN_EMAILS = new Set([
-    'admin@anza.et',
-    'kirtasnetwork@gmail.com',
-    'moderator@anza.et',
-  ]);
-  return Boolean(email && ADMIN_EMAILS.has(email));
-}
-
-function mapAuthError(err: any): string {
-  switch (err.code) {
+function mapAuthError(err: unknown): string {
+  const code = (err as { code?: string })?.code;
+  switch (code) {
     case 'auth/user-not-found':
-      return 'No account found with that email.';
     case 'auth/wrong-password':
-      return 'Incorrect password.';
+    case 'auth/invalid-credential':
+      return 'Incorrect email/phone or password.';
     case 'auth/email-already-in-use':
       return 'An account with that email already exists.';
     case 'auth/weak-password':
       return 'Password must be at least 6 characters.';
     case 'auth/invalid-email':
       return 'Invalid email address.';
-    case 'auth/network-failed':
+    case 'auth/network-request-failed':
       return 'Network error. Please check your connection.';
     case 'auth/too-many-requests':
       return 'Too many attempts. Try again later.';
+    case 'auth/invalid-api-key':
+    case 'auth/api-key-not-valid.-please-pass-a-valid-api-key.':
+      return NOT_CONFIGURED_ERROR;
     default:
-      return err.message || 'Authentication failed.';
+      return (err as { message?: string })?.message || 'Authentication failed.';
   }
 }
-
-export type FirebaseUserAccount = {
-  id: string;
-  firebaseUid: string;
-  name: string;
-  email: string;
-  phone: string;
-  city: string;
-  telegramUsername: string;
-  plan: string;
-  createdAt: string;
-  verified: boolean;
-  isAdmin: boolean;
-};
-
-export { firebaseAuthModule as auth };
-export { firebaseAuthModule as firebaseAuth };

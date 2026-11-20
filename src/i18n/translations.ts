@@ -1,6 +1,9 @@
 import { Language } from '../types';
+import { UI_STRINGS, deepMerge, type UiStrings, type DeepPartial } from './ui';
 
-export interface Translations {
+export { fmt } from './ui';
+
+export interface BaseTranslations {
   appName: string;
   appTagline: string;
   navTreasures: string;
@@ -74,7 +77,9 @@ export interface Translations {
   };
 }
 
-export const TRANSLATIONS: Record<Language, Translations> = {
+export type Translations = BaseTranslations & UiStrings;
+
+const BASE: { en: BaseTranslations } & Record<Exclude<Language, 'en'>, DeepPartial<BaseTranslations>> = {
   en: {
     appName: 'Agoza',
     appTagline: 'Ethiopia\'s Trusted Peer-to-Peer Marketplace',
@@ -83,7 +88,7 @@ export const TRANSLATIONS: Record<Language, Translations> = {
     navActivity: 'Live Activity',
     navUserDashboard: 'My Dashboard',
     navAdminDashboard: 'Admin Panel',
-    listCollectible: '+ Post Ad Free',
+    listCollectible: 'Post Ad Free',
     heroHeadline: 'Buy, Sell & Swap Anything Across Ethiopia',
     heroSubtitle: 'Ethiopia\'s premier verified marketplace for smartphones, vehicles, electronics, apartments, fashion, and home goods. Transact safely with buyer protection and safe meetup lounges.',
     searchPlaceholder: 'What are you looking for? (e.g. iPhone 15, Toyota RAV4, 2-Bed Bole Apartment)...',
@@ -113,7 +118,7 @@ export const TRANSLATIONS: Record<Language, Translations> = {
     duplicateImageAllowedNote: 'Requirement: You cannot re-list the exact same item with identical photo. Please provide a new photo of your item to proceed.',
     prohibitedItemWarning: 'Safety Policy Violation: Drugs, narcotics, weapons, and harmful items are strictly prohibited on Agoza.',
     rarityFilter: 'Rarity',
-    historicalEra: 'Created',
+    historicalEra: 'Model Year',
     physicalCondition: 'Physical Condition',
     advancedFilters: 'Advanced Filters',
     instantSearch: 'Instant Search',
@@ -154,7 +159,7 @@ export const TRANSLATIONS: Record<Language, Translations> = {
     navActivity: 'የቀጥታ እንቅስቃሴ',
     navUserDashboard: 'የተጠቃሚ ዳሽቦርድ',
     navAdminDashboard: 'አስተዳዳሪ (Admin)',
-    listCollectible: '+ በነፃ ይለጥፉ',
+    listCollectible: 'በነፃ ይለጥፉ',
     heroHeadline: 'በመላው ኢትዮጵያ ማንኛውንም እቃ ይግዙ፣ ይሽጡ፣ ይለዋወጡ',
     heroSubtitle: 'ሞባይል ስልኮች፣ መኪኖች፣ ላፕቶፖች፣ የቤት እቃዎች፣ አልባሳት እና አፓርታማዎችን በደህነነት እና በተረጋገጠ የግብይት ዋስትና የሚገበያዩበት መድረክ።',
     searchPlaceholder: 'ምን መግዛት ይፈልጋሉ? (ለምሳሌ፦ አይፎን 15፣ ቶዮታ ራቭ4፣ ቦሌ አፓርታማ)...',
@@ -184,13 +189,13 @@ export const TRANSLATIONS: Record<Language, Translations> = {
     duplicateImageAllowedNote: 'ማሳሰቢያ፡ የተለየ አዲስ ፎቶ በማስገባት ማስታወቂያዎን መለጠፍ ይችላሉ።',
     prohibitedItemWarning: 'የህግ ጥሰት ተገኝቷል፡ አደንዛዥ እጾች፣ የጦር መሳሪያዎች እና አደገኛ እቃዎች በአጎዛ ላይ በጥብቅ የተከለከሉ ናቸው።',
     rarityFilter: 'የብርቅነት ደረጃ',
-    historicalEra: 'የተመረተበት / የተሰራበት',
-    physicalCondition: 'የዕቃው ይዘት',
+    historicalEra: 'የተመረተበት ዓመት',
+    physicalCondition: 'የዕቃው ሁኔታ',
     advancedFilters: 'ተጨማሪ ማጣሪያዎች',
     instantSearch: 'ፈጣን ፍለጋ',
     resetFilters: 'ሁሉንም አፅዳ',
     rarityLevels: {
-      all: 'ሁሉም ዝግጁነቶች',
+      all: 'ሁሉም ደረጃዎች',
       common: 'መደበኛ (Standard)',
       uncommon: 'ተፈላጊ (Selected)',
       rare: 'ከፍተኛ ተፈላጊ (High Demand)',
@@ -225,7 +230,7 @@ export const TRANSLATIONS: Record<Language, Translations> = {
     navActivity: 'ቀጥታዊ ምንቅስቓስ',
     navUserDashboard: 'ዳሽቦርድ ተጠቃሚ',
     navAdminDashboard: 'ኣመሓዳሪ (Admin)',
-    listCollectible: '+ ብነጻ መዝግቡ',
+    listCollectible: 'ብነጻ መዝግቡ',
     heroHeadline: 'ኣብ መላእ ኢትዮጵያ ዝኾነ ንብረት ይግዝኡ፣ ይሽጡን ይለዋወጡን',
     heroSubtitle: 'ሞባይል፣ መካይን፣ ላፕቶፕ፣ ናይ ገዛ ኣቑሑትን ኣፓርታማታትን ብውሑስ ናይ ዓዳጊ ውሕስነት ዝሽጠሉን ዝለዋወጥሉን መድረኽ።',
     searchPlaceholder: 'እንታይ ክትገዝኡ ትደልዩ? (ንኣብነት፡ ኣይፎን፣ ቶዮታ፣ ቦሌ ኣፓርታማ)...',
@@ -255,7 +260,7 @@ export const TRANSLATIONS: Record<Language, Translations> = {
     duplicateImageAllowedNote: 'መተሓሳሰቢ፡ ሓድሽ ፎቶ ብምእታው ምልክታኹም ክትልጥፉ ትኽእሉ ኢኹም።',
     prohibitedItemWarning: 'ክልኩል ነገር ተረኺቡ፡ ዕጸ-ፋርስ፣ ኣጽዋርን ጐዳእቲ ነገራትን ምሉእ ብምሉእ ዝተኸልከሉ እዮም።',
     rarityFilter: 'ደረጃ ሳሕቲ',
-    historicalEra: 'ታሪኻዊ ዘመን',
+    historicalEra: 'ዝተሰርሐሉ ዓመት',
     physicalCondition: 'ኩነታት ንብረት',
     advancedFilters: 'ተወሳኺ መጻረዪ',
     instantSearch: 'ቅልጡፍ ምድላይ',
@@ -269,12 +274,12 @@ export const TRANSLATIONS: Record<Language, Translations> = {
       unique: 'ፍሉይ / መዳርግቲ ዘይብሉ',
     },
     eraPeriods: {
-      all: 'ኩሎም ዘመናት',
-      ancient: 'ጥንታዊ (ቅድሚ 1900)',
-      imperial: 'ንጉሳዊ ዘመን (1900-1974)',
-      vintage: 'ቪንቴጅ (1975-1999)',
-      millennium: 'ሚሊኒየም (2000-2015)',
-      modern: 'ዘመናዊ (2016-ሕጂ)',
+      all: 'ኩሎም ሞዴላት',
+      ancient: 'ቅድሚ 2015',
+      imperial: '2015-2019',
+      vintage: '2020-2021',
+      millennium: '2022-2023',
+      modern: '2024-2025 (ሓድሽ)',
     },
     categories: {
       all: 'ኩሎም ዓይነታት',
@@ -296,9 +301,9 @@ export const TRANSLATIONS: Record<Language, Translations> = {
     navActivity: 'Sochii Kallattii',
     navUserDashboard: 'Daashboordii Fayyadamaa',
     navAdminDashboard: 'Koreen Bulchiinsaa',
-    listCollectible: '+ Bilisaan Galmeessi',
+    listCollectible: 'Bilisaan Galmeessi',
     heroHeadline: 'Itoophiyaa Guutuutti Wanta Barbaaddan Bitaa, Gurguraa, Jijjiirraa',
-    heroSubtitle: 'Biliqaa bilbilaa, konkolaataa, elektirooniksii, uffata fi manneen eegumsa amansiisaa Agoza tiin bitaa gurguraa.',
+    heroSubtitle: 'Bilbila, konkolaataa, elektirooniksii, uffata fi manneen eegumsa amansiisaa Agoza waliin bitaa, gurguraa.',
     searchPlaceholder: 'Maal barbaaddu? (fakkeenyaaf: iPhone 15, Toyota RAV4, Manneen Boolee)...',
     allRegions: 'Itoophiyaa Guutuu',
     escrowProtectedBadge: '100% Eegumsa Mirkanaa\'aa',
@@ -326,7 +331,7 @@ export const TRANSLATIONS: Record<Language, Translations> = {
     duplicateImageAllowedNote: 'Hubachiisa: Suuraa haaraa kaasuun beeksisa keessan baasuu dandeessu.',
     prohibitedItemWarning: 'Dhowwaa Seeraa: Qorichi sammuu adoochu, meeshaan waraanaa fi wantoonni miidhaa geessisan Agoza irratti dhorkaadha.',
     rarityFilter: 'Sadarkaa Qaalii',
-    historicalEra: 'Bara Seenaa',
+    historicalEra: 'Bara Hojjetame',
     physicalCondition: 'Haala Qabatamaa',
     advancedFilters: 'Filtara Dabalataa',
     instantSearch: 'Barbaacha Ariifachiisaa',
@@ -340,12 +345,12 @@ export const TRANSLATIONS: Record<Language, Translations> = {
       unique: 'Addaa / Qophaa',
     },
     eraPeriods: {
-      all: 'Bara Hunda',
-      ancient: 'Bara Durii (1900 Dura)',
-      imperial: 'Bara Mootii (1900-1974)',
-      vintage: 'Viinteejii (1975-1999)',
-      millennium: 'Miliyeeniyemii (2000-2015)',
-      modern: 'Ammayyaa (2016-Amma)',
+      all: 'Moodeela Hunda',
+      ancient: '2015 Dura',
+      imperial: '2015-2019',
+      vintage: '2020-2021',
+      millennium: '2022-2023',
+      modern: '2024-2025 (Haaraa)',
     },
     categories: {
       all: 'Gosa Hunda',
@@ -367,7 +372,7 @@ export const TRANSLATIONS: Record<Language, Translations> = {
     navActivity: 'Dhaqdhaqaaqa Tooska ah',
     navUserDashboard: 'Dashboardka Isticmaalaha',
     navAdminDashboard: 'Maamulka (Admin)',
-    listCollectible: '+ Dhig Xayeysiis Bilaash',
+    listCollectible: 'Dhig Xayeysiis Bilaash',
     heroHeadline: 'Wax kasta ka Iibso, Iibi, oo ku Isdhaafso Guud ahaan Itoobiya',
     heroSubtitle: 'Taleefannada casriga ah, baabuurta, elektaroonigga, dharka, iyo guryaha adoo adeegsanaya ilaalinta la aamminsan yahay ee Agoza.',
     searchPlaceholder: 'Maxaad raadinaysaa? (tusaale: iPhone 15, Toyota RAV4, Guri Bole)...',
@@ -397,7 +402,7 @@ export const TRANSLATIONS: Record<Language, Translations> = {
     duplicateImageAllowedNote: 'Xusuusin: Waxaad dhejin kartaa sawir cusub si aad u sii waddo.',
     prohibitedItemWarning: 'Digniin Nabadgelyo: Daroogada, hubka, iyo alaabta halista ah si adag ayaa looga mamnuucay Agoza.',
     rarityFilter: 'Heerka Dhif-ahaanshaha',
-    historicalEra: 'Xilliga Taariikhda',
+    historicalEra: 'Sanadka la sameeyey',
     physicalCondition: 'Xaaladda Shayga',
     advancedFilters: 'Shaandheyn Sare',
     instantSearch: 'Raadinta Degdegga ah',
@@ -411,12 +416,12 @@ export const TRANSLATIONS: Record<Language, Translations> = {
       unique: 'Kaliya / Aan Nooc Kale Lahayn',
     },
     eraPeriods: {
-      all: 'Dhammaan Xilliyada',
-      ancient: 'Qadiimi (Kahor 1900)',
-      imperial: 'Boqortooyadii (1900-1974)',
-      vintage: 'Vintage (1975-1999)',
-      millennium: 'Milenium (2000-2015)',
-      modern: 'Casri (2016-Hadda)',
+      all: 'Dhammaan Moodeelada',
+      ancient: 'Kahor 2015',
+      imperial: '2015-2019',
+      vintage: '2020-2021',
+      millennium: '2022-2023',
+      modern: '2024-2025 (Cusub)',
     },
     categories: {
       all: 'Dhammaan Noocyada',
@@ -430,4 +435,28 @@ export const TRANSLATIONS: Record<Language, Translations> = {
       jobs: 'Shaqooyinka & Adeegyada',
     },
   },
+};
+
+const cache = new Map<Language, Translations>();
+
+/** Full translation table for `lang`, with English filling any missing keys. */
+export function getTranslations(lang: Language): Translations {
+  const hit = cache.get(lang);
+  if (hit) return hit;
+  const enFull: Translations = { ...BASE.en, ...UI_STRINGS.en };
+  const result =
+    lang === 'en'
+      ? enFull
+      : deepMerge(enFull, { ...(BASE[lang] as DeepPartial<BaseTranslations>), ...(UI_STRINGS[lang] as DeepPartial<UiStrings>) } as DeepPartial<Translations>);
+  cache.set(lang, result);
+  return result;
+}
+
+/** BCP-47 tags for <html lang> and Intl formatting. */
+export const LANGUAGE_LOCALES: Record<Language, string> = {
+  en: 'en-ET',
+  am: 'am-ET',
+  ti: 'ti-ET',
+  om: 'om-ET',
+  so: 'so-ET',
 };

@@ -76,7 +76,7 @@ export const TradeOfferModal: React.FC = () => {
           {!isSubmitted ? (
             <form onSubmit={handleSubmit} className="space-y-4">
               {/* Item Preview */}
-              <div className="flex items-center gap-3 p-3 bg-[#151722] border border-[#232637] rounded-xl">
+              <div className="flex items-center gap-3 p-3 bg-[#251810] border border-[#382214] rounded-xl">
                 <div className="relative w-14 h-14 rounded-lg overflow-hidden shrink-0 border border-amber-400/40">
                   <img
                     src={selectedCollectible.imageUrl}
@@ -91,7 +91,7 @@ export const TradeOfferModal: React.FC = () => {
                   <h4 className="text-xs font-semibold text-[#f5f6f8] truncate">
                     {selectedCollectible.title}
                   </h4>
-                  <div className="text-xs text-[#8c92a6] mt-0.5">
+                  <div className="text-xs text-[#a8907f] mt-0.5">
                     Original Asking Price:{' '}
                     <span className="font-mono text-[#f5f6f8] font-bold">
                       {formatPrice(selectedCollectible.priceETB)}
@@ -144,7 +144,7 @@ export const TradeOfferModal: React.FC = () => {
               <h4 className="font-cinzel text-lg font-bold text-[#f5f6f8]">
                 Offer Submitted Successfully!
               </h4>
-              <p className="text-xs text-[#8c92a6] max-w-xs mx-auto">
+              <p className="text-xs text-[#a8907f] max-w-xs mx-auto">
                 Sent to {selectedCollectible.seller.name}. You will see this thread in your Direct Chat and Vault.
               </p>
             </div>

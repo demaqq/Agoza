@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useRef } from 'react';
+import React, { useState, useMemo, useRef, useEffect } from 'react';
 import { useMarketplace } from '../context/MarketplaceContext';
 import { CollectibleCategory, ItemCondition, ItemRarity, HistoricalEraPeriod } from '../types';
 import { SAFE_HUBS } from '../data/mockData';
@@ -93,12 +93,12 @@ export const ListCollectibleModal: React.FC = () => {
   const [category, setCategory] = useState<CollectibleCategory>('phones-tablets');
   const [subcategory, setSubcategory] = useState<string>('iphones');
   const [city, setCity] = useState<string>(currentUser?.city || selectedCity || 'Addis Ababa');
-  const [priceETB, setPriceETB] = useState<number>(45000);
+  const [priceETB, setPriceETB] = useState<number>(0);
   const [condition, setCondition] = useState<ItemCondition>('Like New');
   const [rarity, setRarity] = useState<ItemRarity>('Common');
   const [eraPeriod, setEraPeriod] = useState<HistoricalEraPeriod>('modern');
-  const [era, setEra] = useState('2024 Model (Full Specs)');
-  const [origin, setOrigin] = useState('Bole Medhanialem');
+  const [era, setEra] = useState('');
+  const [origin, setOrigin] = useState('');
 
   // Authentic Photo Upload
   const [uploadedPhotos, setUploadedPhotos] = useState<string[]>([]);
@@ -110,7 +110,7 @@ export const ListCollectibleModal: React.FC = () => {
   const [description, setDescription] = useState('');
   const [provenance, setProvenance] = useState('');
   const [openToTrade, setOpenToTrade] = useState(true);
-  const [tradeInterests, setTradeInterests] = useState('Open to phone or laptop swaps with cash balance');
+  const [tradeInterests, setTradeInterests] = useState('');
   const [safeMeetupSpot, setSafeMeetupSpot] = useState(SAFE_HUBS[1].name);
   const [isSuccess, setIsSuccess] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -119,6 +119,29 @@ export const ListCollectibleModal: React.FC = () => {
   const [marketReport, setMarketReport] = useState<MarketIntelligenceReport | null>(null);
   const [createdItemId, setCreatedItemId] = useState<string | null>(null);
   const [priceUpdatedTo, setPriceUpdatedTo] = useState<number | null>(null);
+
+  // Start every opening of the modal with a clean form (previously the success
+  // screen and last draft persisted because the component stays mounted).
+  useEffect(() => {
+    if (!isListModalOpen) return;
+    setTitle('');
+    setPriceETB(0);
+    setEra('');
+    setOrigin('');
+    setDescription('');
+    setProvenance('');
+    setTradeInterests('');
+    setUploadedPhotos([]);
+    setCustomUrl('');
+    setRepetitionResult(null);
+    setIsSuccess(false);
+    setErrorMessage(null);
+    setMarketReport(null);
+    setCreatedItemId(null);
+    setPriceUpdatedTo(null);
+    setCity(currentUser?.city || selectedCity || 'Addis Ababa');
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isListModalOpen]);
 
   // Active primary photo
   const activePhoto = uploadedPhotos.length > 0 ? uploadedPhotos[0] : customUrl;
@@ -241,6 +264,12 @@ export const ListCollectibleModal: React.FC = () => {
       return;
     }
 
+    // 1b. Price sanity check
+    if (!Number.isFinite(priceETB) || priceETB <= 0) {
+      setErrorMessage('Please enter a valid price in Birr.');
+      return;
+    }
+
     // 2. Safety Filter Check
     if (!safetyCheck.isSafe) {
       setErrorMessage(safetyCheck.violationReason || t.prohibitedItemWarning);
@@ -284,19 +313,20 @@ export const ListCollectibleModal: React.FC = () => {
         .map((s) => s.trim())
         .filter(Boolean),
       safeMeetupSpot,
-      authenticityGuaranteed: true,
+      authenticityGuaranteed: false,
       seller: {
         id: currentUser ? currentUser.id : 'usr-me',
         name: currentUser ? currentUser.name : 'You (Trader)',
         avatar: currentUser?.avatar || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80',
         location: `${origin}, ${city}`,
         city: city || 'Addis Ababa',
-        phone: currentUser ? currentUser.phone : '+251 91 199 8877',
-        telegramHandle: currentUser?.telegramUsername || '@trader_ethiopia',
-        verifiedKyc: true,
-        memberSince: '2024',
-        rating: 5.0,
-        totalTrades: 16,
+        phone: currentUser?.phone || '',
+        telegramHandle: currentUser?.telegramUsername || '',
+        // Never self-assert trust signals: only verified accounts get the KYC badge.
+        verifiedKyc: Boolean(currentUser?.verified),
+        memberSince: (currentUser?.createdAt || new Date().toISOString()).slice(0, 4),
+        rating: 0,
+        totalTrades: 0,
         badge: 'Verified Trader',
         responseRate: 'Under 10 mins',
       },
@@ -335,9 +365,9 @@ export const ListCollectibleModal: React.FC = () => {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/85 backdrop-blur-xs overflow-y-auto">
-      <div className="relative w-full max-w-2xl bg-white dark:bg-[#11131c] border border-slate-200 dark:border-[#262939] rounded-3xl shadow-2xl overflow-hidden my-auto max-h-[92vh] flex flex-col transition-colors">
+      <div className="relative w-full max-w-2xl bg-white dark:bg-[#1a1009] border border-slate-200 dark:border-[#473020] rounded-3xl shadow-2xl overflow-hidden my-auto max-h-[92vh] flex flex-col transition-colors">
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100 dark:border-[#212433] bg-slate-50 dark:bg-[#0e1017]">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100 dark:border-[#473020] bg-slate-50 dark:bg-[#1a1009]">
           <div className="flex items-center gap-2">
             <Plus className="w-5 h-5 text-[#1b5e20] dark:text-[#c5a059]" />
             <h3 className="font-cinzel text-base font-bold text-slate-900 dark:text-[#f5f6f8]">
@@ -346,7 +376,7 @@ export const ListCollectibleModal: React.FC = () => {
           </div>
           <button
             onClick={() => setIsListModalOpen(false)}
-            className="p-1.5 rounded-xl bg-white dark:bg-[#181a24] text-slate-600 dark:text-[#8e94a6] hover:text-slate-900 dark:hover:text-white border border-slate-200 dark:border-[#2a2d3e] transition-colors cursor-pointer"
+            className="p-1.5 rounded-xl bg-white dark:bg-[#251810] text-slate-600 dark:text-[#a8907f] hover:text-slate-900 dark:hover:text-white border border-slate-200 dark:border-[#5a3a24] transition-colors cursor-pointer"
           >
             <X className="w-4 h-4" />
           </button>
@@ -402,7 +432,7 @@ export const ListCollectibleModal: React.FC = () => {
 
               {/* Title */}
               <div>
-                <label className="block text-xs font-bold text-slate-700 dark:text-[#8b91a4] uppercase tracking-wider mb-1.5">
+                <label className="block text-xs font-bold text-slate-700 dark:text-[#a8907f] uppercase tracking-wider mb-1.5">
                   Listing Title *
                 </label>
                 <input
@@ -410,7 +440,7 @@ export const ListCollectibleModal: React.FC = () => {
                   placeholder="e.g. Toyota RAV4 2022 Hybrid AWD or iPhone 15 Pro 256GB"
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
-                  className="w-full bg-slate-50 dark:bg-[#171924] border border-slate-200 dark:border-[#282b3c] rounded-xl px-4 py-2.5 text-xs text-slate-900 dark:text-[#f2f3f6] focus:outline-none focus:border-[#1b5e20] dark:focus:border-[#c5a059]"
+                  className="w-full bg-slate-50 dark:bg-[#2d1c12] border border-slate-200 dark:border-[#473020] rounded-xl px-4 py-2.5 text-xs text-slate-900 dark:text-[#f2f3f6] focus:outline-none focus:border-[#1b5e20] dark:focus:border-[#c5a059]"
                   required
                 />
               </div>
@@ -425,7 +455,7 @@ export const ListCollectibleModal: React.FC = () => {
               />
 
               {/* Condition, City, Rarity & Era Grid */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <CustomDropdown
                   label="Condition (ሁኔታ) *"
                   value={condition}
@@ -459,26 +489,28 @@ export const ListCollectibleModal: React.FC = () => {
               {/* Price & Specs / Subcity */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 dark:text-[#8b91a4] uppercase tracking-wider mb-1.5">
+                  <label className="block text-xs font-bold text-slate-700 dark:text-[#a8907f] uppercase tracking-wider mb-1.5">
                     Price in ETB (Birr) *
                   </label>
                   <div className="relative">
                     <input
                       type="number"
-                      min={100}
-                      value={priceETB}
-                      onChange={(e) => setPriceETB(Number(e.target.value))}
-                      className="w-full bg-slate-50 dark:bg-[#171924] border border-slate-200 dark:border-[#282b3c] rounded-xl px-4 py-2.5 text-sm font-mono font-bold text-slate-900 dark:text-[#f5f6f8] focus:outline-none focus:border-[#1b5e20] dark:focus:border-[#c5a059]"
+                      min={1}
+                      inputMode="numeric"
+                      placeholder="e.g. 45000"
+                      value={priceETB || ''}
+                      onChange={(e) => setPriceETB(Math.max(0, Number(e.target.value) || 0))}
+                      className="w-full bg-slate-50 dark:bg-[#2d1c12] border border-slate-200 dark:border-[#473020] rounded-xl px-4 py-2.5 text-sm font-mono font-bold text-slate-900 dark:text-[#f5f6f8] focus:outline-none focus:border-[#1b5e20] dark:focus:border-[#c5a059]"
                       required
                     />
                     <div className="absolute right-3 top-2.5 text-xs text-slate-400 font-mono">
-                      ≈ {formatPrice(priceETB)}
+                      {priceETB > 0 ? `≈ ${formatPrice(priceETB)}` : ''}
                     </div>
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 dark:text-[#8b91a4] uppercase tracking-wider mb-1.5">
+                  <label className="block text-xs font-bold text-slate-700 dark:text-[#a8907f] uppercase tracking-wider mb-1.5">
                     Subcity / Area / Specs *
                   </label>
                   <input
@@ -486,7 +518,7 @@ export const ListCollectibleModal: React.FC = () => {
                     placeholder="e.g. Bole Medhanialem or Piazza Churchill"
                     value={origin}
                     onChange={(e) => setOrigin(e.target.value)}
-                    className="w-full bg-slate-50 dark:bg-[#171924] border border-slate-200 dark:border-[#282b3c] rounded-xl px-4 py-2.5 text-xs text-slate-900 dark:text-[#f2f3f6] focus:outline-none focus:border-[#1b5e20] dark:focus:border-[#c5a059]"
+                    className="w-full bg-slate-50 dark:bg-[#2d1c12] border border-slate-200 dark:border-[#473020] rounded-xl px-4 py-2.5 text-xs text-slate-900 dark:text-[#f2f3f6] focus:outline-none focus:border-[#1b5e20] dark:focus:border-[#c5a059]"
                     required
                   />
                 </div>
@@ -495,7 +527,7 @@ export const ListCollectibleModal: React.FC = () => {
               {/* ========================================================= */}
               {/* PHOTO UPLOAD & WATERMARK & REPETITION DETECTION SECTION */}
               {/* ========================================================= */}
-              <div className="p-4 rounded-2xl bg-slate-50 dark:bg-[#151722] border border-slate-200 dark:border-[#272b3c] space-y-3">
+              <div className="p-4 rounded-2xl bg-slate-50 dark:bg-[#251810] border border-slate-200 dark:border-[#473020] space-y-3">
                 <div className="flex flex-wrap items-center justify-between gap-2">
                   <div>
                     <label className="block text-xs font-bold text-slate-800 dark:text-white uppercase tracking-wider">
@@ -508,7 +540,7 @@ export const ListCollectibleModal: React.FC = () => {
                 </div>
 
                 {/* Plan Photo Quota Bar */}
-                <div className="flex flex-wrap items-center justify-between gap-2 p-2.5 rounded-xl bg-slate-100 dark:bg-[#151725] border border-slate-200 dark:border-[#272b3f] text-xs">
+                <div className="flex flex-wrap items-center justify-between gap-2 p-2.5 rounded-xl bg-slate-100 dark:bg-[#2d1c12] border border-slate-200 dark:border-[#5a3a24] text-xs">
                   <div className="flex items-center gap-2">
                     <span className="font-semibold text-slate-700 dark:text-slate-300">
                       Active Plan: <strong className="text-slate-900 dark:text-white font-mono">{activePlanDetails.name}</strong>
@@ -662,7 +694,7 @@ export const ListCollectibleModal: React.FC = () => {
 
               {/* Description */}
               <div>
-                <label className="block text-xs font-bold text-slate-700 dark:text-[#8b91a4] uppercase tracking-wider mb-1.5">
+                <label className="block text-xs font-bold text-slate-700 dark:text-[#a8907f] uppercase tracking-wider mb-1.5">
                   Item Details & Features *
                 </label>
                 <textarea
@@ -670,13 +702,13 @@ export const ListCollectibleModal: React.FC = () => {
                   placeholder="Detail condition, included accessories, warranty, battery health, customs duty status..."
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
-                  className="w-full bg-slate-50 dark:bg-[#171924] border border-slate-200 dark:border-[#282b3c] rounded-xl p-3 text-xs text-slate-900 dark:text-[#f2f3f6] focus:outline-none focus:border-[#1b5e20] dark:focus:border-[#c5a059] resize-none"
+                  className="w-full bg-slate-50 dark:bg-[#2d1c12] border border-slate-200 dark:border-[#473020] rounded-xl p-3 text-xs text-slate-900 dark:text-[#f2f3f6] focus:outline-none focus:border-[#1b5e20] dark:focus:border-[#c5a059] resize-none"
                   required
                 />
               </div>
 
               {/* Barter Toggle */}
-              <div className="p-3.5 rounded-2xl bg-slate-50 dark:bg-[#161926] border border-slate-200 dark:border-[#272b3d] space-y-2">
+              <div className="p-3.5 rounded-2xl bg-slate-50 dark:bg-[#2d1c12] border border-slate-200 dark:border-[#473020] space-y-2">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <input
@@ -695,13 +727,13 @@ export const ListCollectibleModal: React.FC = () => {
 
               {/* Designated Safe Hub */}
               <div>
-                <label className="block text-xs font-bold text-slate-700 dark:text-[#8b91a4] uppercase tracking-wider mb-1.5">
+                <label className="block text-xs font-bold text-slate-700 dark:text-[#a8907f] uppercase tracking-wider mb-1.5">
                   Designated Safe Meetup Hub *
                 </label>
                 <select
                   value={safeMeetupSpot}
                   onChange={(e) => setSafeMeetupSpot(e.target.value)}
-                  className="w-full bg-slate-50 dark:bg-[#171924] border border-slate-200 dark:border-[#282b3c] rounded-xl px-3 py-2.5 text-xs text-slate-900 dark:text-[#f2f3f6] focus:outline-none focus:border-[#1b5e20] dark:focus:border-[#c5a059]"
+                  className="w-full bg-slate-50 dark:bg-[#2d1c12] border border-slate-200 dark:border-[#473020] rounded-xl px-3 py-2.5 text-xs text-slate-900 dark:text-[#f2f3f6] focus:outline-none focus:border-[#1b5e20] dark:focus:border-[#c5a059]"
                 >
                   {SAFE_HUBS.map((hub) => (
                     <option key={hub.id} value={hub.name}>
@@ -744,8 +776,8 @@ export const ListCollectibleModal: React.FC = () => {
                     repetitionResult?.isDuplicate ||
                     !safetyCheck.isSafe ||
                     isProcessingImage
-                      ? 'bg-slate-300 dark:bg-[#292c3a] text-slate-500 cursor-not-allowed'
-                      : 'bg-[#1b5e20] hover:bg-[#25732b] dark:bg-[#c5a059] dark:hover:bg-[#d6b068] text-white dark:text-[#0c0d11] cursor-pointer active:scale-98'
+                      ? 'bg-slate-300 dark:bg-[#473020] text-slate-500 cursor-not-allowed'
+                      : 'bg-[#1b5e20] hover:bg-[#25732b] dark:bg-[#c5a059] dark:hover:bg-[#d6b068] text-white dark:text-[#1e130c] cursor-pointer active:scale-98'
                   }`}
                 >
                   <Plus className="w-4 h-4 stroke-[2.5]" />
@@ -822,7 +854,7 @@ export const ListCollectibleModal: React.FC = () => {
               </div>
 
               {/* Price Suggestion & Transparency Banner */}
-              <div className="p-4 rounded-2xl bg-amber-50 dark:bg-[#161826] border border-amber-300 dark:border-[#2f334a] space-y-3">
+              <div className="p-4 rounded-2xl bg-amber-50 dark:bg-[#2d1c12] border border-amber-300 dark:border-[#5a3a24] space-y-3">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <Scale className="w-5 h-5 text-amber-600 dark:text-amber-400" />
@@ -840,7 +872,7 @@ export const ListCollectibleModal: React.FC = () => {
                 </p>
 
                 {/* Market Benchmark Range */}
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 p-3 bg-white dark:bg-[#0f111a] rounded-xl border border-slate-200 dark:border-[#262a3d] text-xs font-mono">
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 p-3 bg-white dark:bg-[#1e130c] rounded-xl border border-slate-200 dark:border-[#473020] text-xs font-mono">
                   <div>
                     <span className="text-[10px] text-slate-400 block">Your Listing</span>
                     <span className="font-bold text-slate-900 dark:text-white">
@@ -876,7 +908,7 @@ export const ListCollectibleModal: React.FC = () => {
                   {marketReport.suggestions.map((sugg) => (
                     <div
                       key={sugg.item.id}
-                      className="p-3 rounded-xl bg-white dark:bg-[#12141e] border border-slate-200 dark:border-[#26293c] text-xs space-y-2"
+                      className="p-3 rounded-xl bg-white dark:bg-[#251810] border border-slate-200 dark:border-[#473020] text-xs space-y-2"
                     >
                       <div className="flex items-start gap-3">
                         <div className="relative w-12 h-12 rounded-lg overflow-hidden shrink-0 border border-amber-400/50 bg-black">
@@ -915,7 +947,7 @@ export const ListCollectibleModal: React.FC = () => {
                       </div>
 
                       {/* Material Quality Explanation */}
-                      <div className="p-2 rounded-lg bg-slate-50 dark:bg-[#181b28] border border-slate-100 dark:border-[#272b3c] text-[11px]">
+                      <div className="p-2 rounded-lg bg-slate-50 dark:bg-[#2d1c12] border border-slate-100 dark:border-[#473020] text-[11px]">
                         <span className="font-semibold text-amber-700 dark:text-amber-400 block mb-0.5">
                           {sugg.qualityAnalysis.hasQualityDifference
                             ? '⚖️ Material & Quality Note (Price Justification):'
@@ -952,7 +984,7 @@ export const ListCollectibleModal: React.FC = () => {
                             updateCollectiblePrice(createdItemId, marketReport.recommendedCompetitivePrice);
                             setPriceUpdatedTo(marketReport.recommendedCompetitivePrice);
                           }}
-                          className="py-2 px-3 bg-[#1b5e20] hover:bg-[#25732b] dark:bg-[#c5a059] dark:hover:bg-[#d6b068] text-white dark:text-[#0c0d11] font-bold text-xs rounded-xl shadow cursor-pointer transition-all"
+                          className="py-2 px-3 bg-[#1b5e20] hover:bg-[#25732b] dark:bg-[#c5a059] dark:hover:bg-[#d6b068] text-white dark:text-[#1e130c] font-bold text-xs rounded-xl shadow cursor-pointer transition-all"
                         >
                           Update to Competitive Price ({formatPrice(marketReport.recommendedCompetitivePrice)})
                         </button>
@@ -960,7 +992,7 @@ export const ListCollectibleModal: React.FC = () => {
                       <button
                         type="button"
                         onClick={() => setIsListModalOpen(false)}
-                        className="py-2 px-3 bg-white dark:bg-[#1a1d29] text-slate-700 dark:text-slate-300 font-semibold text-xs rounded-xl border border-slate-300 dark:border-[#2f3346] hover:bg-slate-50 cursor-pointer"
+                        className="py-2 px-3 bg-white dark:bg-[#251810] text-slate-700 dark:text-slate-300 font-semibold text-xs rounded-xl border border-slate-300 dark:border-[#5a3a24] hover:bg-slate-50 cursor-pointer"
                       >
                         Keep My Asking Price ({formatPrice(priceETB)})
                       </button>
@@ -973,7 +1005,7 @@ export const ListCollectibleModal: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setIsListModalOpen(false)}
-                className="w-full py-3 bg-slate-900 hover:bg-black dark:bg-[#c5a059] dark:hover:bg-[#d6b068] text-white dark:text-[#0c0d11] font-bold text-xs rounded-xl shadow cursor-pointer transition-colors"
+                className="w-full py-3 bg-slate-900 hover:bg-black dark:bg-[#c5a059] dark:hover:bg-[#d6b068] text-white dark:text-[#1e130c] font-bold text-xs rounded-xl shadow cursor-pointer transition-colors"
               >
                 Done & View in Marketplace
               </button>
@@ -993,7 +1025,7 @@ export const ListCollectibleModal: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setIsListModalOpen(false)}
-                className="mt-2 py-2 px-6 bg-[#1b5e20] dark:bg-[#c5a059] text-white dark:text-[#0c0d11] font-bold text-xs rounded-xl cursor-pointer"
+                className="mt-2 py-2 px-6 bg-[#1b5e20] dark:bg-[#c5a059] text-white dark:text-[#1e130c] font-bold text-xs rounded-xl cursor-pointer"
               >
                 Done
               </button>

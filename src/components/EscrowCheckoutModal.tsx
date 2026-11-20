@@ -54,9 +54,9 @@ export const EscrowCheckoutModal: React.FC = () => {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/85 backdrop-blur-xs overflow-y-auto">
-      <div className="relative w-full max-w-2xl bg-white dark:bg-[#11131c] border border-slate-200 dark:border-[#262939] rounded-2xl shadow-2xl overflow-hidden my-auto transition-colors">
+      <div className="relative w-full max-w-2xl bg-white dark:bg-[#1a1009] border border-slate-200 dark:border-[#473020] rounded-2xl shadow-2xl overflow-hidden my-auto transition-colors">
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100 dark:border-[#212433] bg-slate-50 dark:bg-[#0e1017]">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100 dark:border-[#473020] bg-slate-50 dark:bg-[#1a1009]">
           <div className="flex items-center gap-2">
             <ShieldCheck className="w-5 h-5 text-[#1b5e20] dark:text-[#c5a059]" />
             <h3 className="font-cinzel text-lg font-bold text-slate-900 dark:text-[#f5f6f8]">
@@ -65,7 +65,7 @@ export const EscrowCheckoutModal: React.FC = () => {
           </div>
           <button
             onClick={handleClose}
-            className="p-1.5 rounded-lg bg-slate-200 dark:bg-[#181a24] text-slate-600 dark:text-[#8e94a6] hover:text-slate-900 dark:hover:text-white border border-slate-300 dark:border-[#2a2d3e] transition-colors cursor-pointer"
+            className="p-1.5 rounded-lg bg-slate-200 dark:bg-[#251810] text-slate-600 dark:text-[#a8907f] hover:text-slate-900 dark:hover:text-white border border-slate-300 dark:border-[#5a3a24] transition-colors cursor-pointer"
           >
             <X className="w-4 h-4" />
           </button>
@@ -76,7 +76,7 @@ export const EscrowCheckoutModal: React.FC = () => {
           {!confirmedOrderId ? (
             <div className="space-y-6">
               {/* Item Summary */}
-              <div className="flex items-center gap-4 p-3 bg-slate-50 dark:bg-[#151722] border border-slate-200 dark:border-[#232637] rounded-xl">
+              <div className="flex items-center gap-4 p-3 bg-slate-50 dark:bg-[#251810] border border-slate-200 dark:border-[#382214] rounded-xl">
                 <div className="relative w-16 h-16 rounded-lg overflow-hidden shrink-0 border border-amber-400/40">
                   <img
                     src={selectedCollectible.imageUrl}
@@ -91,7 +91,7 @@ export const EscrowCheckoutModal: React.FC = () => {
                   <h4 className="text-sm font-semibold text-slate-900 dark:text-[#f5f6f8] truncate">
                     {selectedCollectible.title}
                   </h4>
-                  <div className="flex items-center gap-2 text-xs text-slate-500 dark:text-[#81879c] mt-0.5">
+                  <div className="flex items-center gap-2 text-xs text-slate-500 dark:text-[#a8907f] mt-0.5">
                     <span>Seller: {selectedCollectible.seller.name}</span>
                     <span aria-hidden="true">·</span>
                     <span className="text-[#1b5e20] dark:text-[#c5a059] font-mono font-bold">
@@ -102,30 +102,30 @@ export const EscrowCheckoutModal: React.FC = () => {
               </div>
 
               {/* 3-Step Guarantee Visual */}
-              <div className="bg-slate-50 dark:bg-[#161926] border border-slate-200 dark:border-[#272b3d] rounded-xl p-4">
+              <div className="bg-slate-50 dark:bg-[#2d1c12] border border-slate-200 dark:border-[#473020] rounded-xl p-4">
                 <h5 className="text-xs font-semibold uppercase tracking-wider text-[#1b5e20] dark:text-[#c5a059] mb-3 flex items-center gap-1.5">
                   <Lock className="w-3.5 h-3.5" />
                   <span>How Agoza Buyer Safeguard Protects You</span>
                 </h5>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
-                  <div className="p-2.5 rounded-lg bg-white dark:bg-[#1a1d2c] border border-slate-200 dark:border-[#2b2f42]">
+                  <div className="p-2.5 rounded-lg bg-white dark:bg-[#251810] border border-slate-200 dark:border-[#473020]">
                     <span className="font-mono text-xs font-bold text-[#1b5e20] dark:text-[#c5a059] block mb-1">01. Safe Hold</span>
-                    <p className="text-[11px] text-slate-600 dark:text-[#8a91a4]">Funds are held securely by Agoza Trust; seller is not paid upfront.</p>
+                    <p className="text-[11px] text-slate-600 dark:text-[#a8907f]">Funds are held securely by Agoza Trust; seller is not paid upfront.</p>
                   </div>
-                  <div className="p-2.5 rounded-lg bg-white dark:bg-[#1a1d2c] border border-slate-200 dark:border-[#2b2f42]">
+                  <div className="p-2.5 rounded-lg bg-white dark:bg-[#251810] border border-slate-200 dark:border-[#473020]">
                     <span className="font-mono text-xs font-bold text-[#1b5e20] dark:text-[#c5a059] block mb-1">02. Physical Inspection</span>
-                    <p className="text-[11px] text-slate-600 dark:text-[#8a91a4]">Inspect item at verified safe hub or upon courier arrival with your private code.</p>
+                    <p className="text-[11px] text-slate-600 dark:text-[#a8907f]">Inspect item at verified safe hub or upon courier arrival with your private code.</p>
                   </div>
-                  <div className="p-2.5 rounded-lg bg-white dark:bg-[#1a1d2c] border border-slate-200 dark:border-[#2b2f42]">
+                  <div className="p-2.5 rounded-lg bg-white dark:bg-[#251810] border border-slate-200 dark:border-[#473020]">
                     <span className="font-mono text-xs font-bold text-emerald-600 dark:text-[#48bb78] block mb-1">03. Approval</span>
-                    <p className="text-[11px] text-slate-600 dark:text-[#8a91a4]">Funds only released when you confirm physical authenticity and complete satisfaction.</p>
+                    <p className="text-[11px] text-slate-600 dark:text-[#a8907f]">Funds only released when you confirm physical authenticity and complete satisfaction.</p>
                   </div>
                 </div>
               </div>
 
               {/* Handoff Method Selection */}
               <div>
-                <label className="block text-xs font-semibold text-slate-700 dark:text-[#8b91a4] uppercase tracking-wider mb-2">
+                <label className="block text-xs font-semibold text-slate-700 dark:text-[#a8907f] uppercase tracking-wider mb-2">
                   Select Safe Handoff Method
                 </label>
                 <div className="grid grid-cols-2 gap-3">
@@ -134,15 +134,15 @@ export const EscrowCheckoutModal: React.FC = () => {
                     onClick={() => setHandoffMethod('safe-hub-meetup')}
                     className={`p-3 rounded-xl border text-left cursor-pointer transition-all ${
                       handoffMethod === 'safe-hub-meetup'
-                        ? 'bg-amber-50/60 dark:bg-[#1b1e2d] border-[#1b5e20] dark:border-[#c5a059] text-slate-900 dark:text-white shadow-xs'
-                        : 'bg-white dark:bg-[#141620] border-slate-200 dark:border-[#252837] text-slate-600 dark:text-[#8b91a4]'
+                        ? 'bg-amber-50/60 dark:bg-[#382214] border-[#1b5e20] dark:border-[#c5a059] text-slate-900 dark:text-white shadow-xs'
+                        : 'bg-white dark:bg-[#251810] border-slate-200 dark:border-[#473020] text-slate-600 dark:text-[#a8907f]'
                     }`}
                   >
                     <div className="flex items-center gap-2 font-semibold text-xs text-slate-900 dark:text-[#f1f2f6] mb-1">
                       <Building2 className="w-4 h-4 text-[#1b5e20] dark:text-[#c5a059]" />
                       <span>Safe Hub Meetup</span>
                     </div>
-                    <p className="text-[11px] text-slate-500 dark:text-[#767d91]">Meet at verified bank tower or partner business hub.</p>
+                    <p className="text-[11px] text-slate-500 dark:text-[#a8907f]">Meet at verified bank tower or partner business hub.</p>
                   </button>
 
                   <button
@@ -150,15 +150,15 @@ export const EscrowCheckoutModal: React.FC = () => {
                     onClick={() => setHandoffMethod('secure-escrow-courier')}
                     className={`p-3 rounded-xl border text-left cursor-pointer transition-all ${
                       handoffMethod === 'secure-escrow-courier'
-                        ? 'bg-amber-50/60 dark:bg-[#1b1e2d] border-[#1b5e20] dark:border-[#c5a059] text-slate-900 dark:text-white shadow-xs'
-                        : 'bg-white dark:bg-[#141620] border-slate-200 dark:border-[#252837] text-slate-600 dark:text-[#8b91a4]'
+                        ? 'bg-amber-50/60 dark:bg-[#382214] border-[#1b5e20] dark:border-[#c5a059] text-slate-900 dark:text-white shadow-xs'
+                        : 'bg-white dark:bg-[#251810] border-slate-200 dark:border-[#473020] text-slate-600 dark:text-[#a8907f]'
                     }`}
                   >
                     <div className="flex items-center gap-2 font-semibold text-xs text-slate-900 dark:text-[#f1f2f6] mb-1">
                       <Truck className="w-4 h-4 text-[#1b5e20] dark:text-[#c5a059]" />
                       <span>Verified Courier Delivery</span>
                     </div>
-                    <p className="text-[11px] text-slate-500 dark:text-[#767d91]">Secure doorstep courier with inspection window.</p>
+                    <p className="text-[11px] text-slate-500 dark:text-[#a8907f]">Secure doorstep courier with inspection window.</p>
                   </button>
                 </div>
               </div>
@@ -166,16 +166,16 @@ export const EscrowCheckoutModal: React.FC = () => {
               {/* Hub Selection if Meetup */}
               {handoffMethod === 'safe-hub-meetup' && (
                 <div>
-                  <label className="block text-xs font-semibold text-slate-700 dark:text-[#8b91a4] uppercase tracking-wider mb-2">
+                  <label className="block text-xs font-semibold text-slate-700 dark:text-[#a8907f] uppercase tracking-wider mb-2">
                     Verified Safe Hub Location
                   </label>
                   <select
                     value={selectedHub}
                     onChange={(e) => setSelectedHub(e.target.value)}
-                    className="w-full bg-slate-50 dark:bg-[#171924] border border-slate-200 dark:border-[#282b3c] rounded-xl px-3.5 py-2.5 text-xs text-slate-900 dark:text-[#f2f3f6] focus:outline-none focus:border-[#1b5e20] dark:focus:border-[#c5a059]"
+                    className="w-full bg-slate-50 dark:bg-[#2d1c12] border border-slate-200 dark:border-[#473020] rounded-xl px-3.5 py-2.5 text-xs text-slate-900 dark:text-[#f2f3f6] focus:outline-none focus:border-[#1b5e20] dark:focus:border-[#c5a059]"
                   >
                     {SAFE_HUBS.map((hub) => (
-                      <option key={hub.id} value={hub.name} className="bg-white dark:bg-[#171924] text-slate-900 dark:text-white">
+                      <option key={hub.id} value={hub.name} className="bg-white dark:bg-[#2d1c12] text-slate-900 dark:text-white">
                         {hub.name} ({hub.city} - {hub.area})
                       </option>
                     ))}
@@ -185,7 +185,7 @@ export const EscrowCheckoutModal: React.FC = () => {
 
               {/* Payment Methods */}
               <div>
-                <label className="block text-xs font-semibold text-slate-700 dark:text-[#8b91a4] uppercase tracking-wider mb-2">
+                <label className="block text-xs font-semibold text-slate-700 dark:text-[#a8907f] uppercase tracking-wider mb-2">
                   Deposit Protected Funds via
                 </label>
                 <div className="grid grid-cols-4 gap-2 text-xs">
@@ -202,27 +202,27 @@ export const EscrowCheckoutModal: React.FC = () => {
                       className={`p-2.5 rounded-lg border text-center cursor-pointer transition-colors ${
                         paymentMethod === p.id
                           ? 'bg-[#1b5e20]/15 dark:bg-[#c5a059]/20 border-[#1b5e20] dark:border-[#c5a059] text-slate-900 dark:text-[#f5f6f8] font-bold'
-                          : 'bg-slate-50 dark:bg-[#151722] border-slate-200 dark:border-[#262939] text-slate-600 dark:text-[#83899d] hover:text-slate-900 dark:hover:text-white'
+                          : 'bg-slate-50 dark:bg-[#251810] border-slate-200 dark:border-[#473020] text-slate-600 dark:text-[#a8907f] hover:text-slate-900 dark:hover:text-white'
                       }`}
                     >
                       <span className="block font-medium truncate">{p.name}</span>
-                      <span className="text-[10px] text-slate-400 dark:text-[#6d7386]">{p.sub}</span>
+                      <span className="text-[10px] text-slate-400 dark:text-[#a8907f]">{p.sub}</span>
                     </button>
                   ))}
                 </div>
               </div>
 
               {/* Pricing breakdown */}
-              <div className="bg-slate-50 dark:bg-[#141620] border border-slate-200 dark:border-[#212433] rounded-xl p-3 text-xs space-y-1.5 font-mono">
-                <div className="flex justify-between text-slate-600 dark:text-[#8b91a4]">
+              <div className="bg-slate-50 dark:bg-[#251810] border border-slate-200 dark:border-[#473020] rounded-xl p-3 text-xs space-y-1.5 font-mono">
+                <div className="flex justify-between text-slate-600 dark:text-[#a8907f]">
                   <span>Item Subtotal:</span>
                   <span>{formatPrice(selectedCollectible.priceETB)}</span>
                 </div>
-                <div className="flex justify-between text-slate-600 dark:text-[#8b91a4]">
+                <div className="flex justify-between text-slate-600 dark:text-[#a8907f]">
                   <span>Buyer Safeguard Fee (1.5%):</span>
                   <span className="text-emerald-600 dark:text-emerald-400 font-semibold">Covered by Promotion (0 Br)</span>
                 </div>
-                <div className="flex justify-between text-slate-900 dark:text-[#f5f6f8] font-bold pt-2 border-t border-slate-200 dark:border-[#202332] text-sm">
+                <div className="flex justify-between text-slate-900 dark:text-[#f5f6f8] font-bold pt-2 border-t border-slate-200 dark:border-[#473020] text-sm">
                   <span>Total Protected Deposit:</span>
                   <span className="text-[#1b5e20] dark:text-[#c5a059]">{formatPrice(selectedCollectible.priceETB)}</span>
                 </div>
@@ -233,7 +233,7 @@ export const EscrowCheckoutModal: React.FC = () => {
                 type="button"
                 onClick={handleConfirmEscrow}
                 disabled={isProcessing}
-                className="w-full py-3 px-4 bg-[#1b5e20] hover:bg-[#25732b] dark:bg-[#c5a059] dark:hover:bg-[#d6b068] active:bg-[#1b5e20] text-white dark:text-[#0c0d11] font-bold text-sm rounded-xl transition-all shadow-md cursor-pointer flex items-center justify-center gap-2"
+                className="w-full py-3 px-4 bg-[#1b5e20] hover:bg-[#25732b] dark:bg-[#c5a059] dark:hover:bg-[#d6b068] active:bg-[#1b5e20] text-white dark:text-[#1e130c] font-bold text-sm rounded-xl transition-all shadow-md cursor-pointer flex items-center justify-center gap-2"
               >
                 {isProcessing ? (
                   <span>Securing Protected Funds...</span>
@@ -256,23 +256,23 @@ export const EscrowCheckoutModal: React.FC = () => {
                 <h4 className="font-cinzel text-xl font-bold text-slate-900 dark:text-[#f5f6f8] mb-1">
                   Payment Successfully Secured & Protected
                 </h4>
-                <p className="text-xs text-slate-600 dark:text-[#8c92a6] max-w-md mx-auto">
+                <p className="text-xs text-slate-600 dark:text-[#a8907f] max-w-md mx-auto">
                   The funds are locked safely in the Agoza vault. The seller ({selectedCollectible.seller.name}) has been notified to meet at your chosen safe hub.
                 </p>
               </div>
 
               {/* Inspection Token Card */}
-              <div className="bg-slate-50 dark:bg-[#181b29] border border-slate-200 dark:border-[#2f344a] rounded-xl p-5 max-w-md mx-auto text-left">
-                <div className="flex items-center justify-between text-xs text-slate-600 dark:text-[#8c92a6] mb-2">
+              <div className="bg-slate-50 dark:bg-[#382214] border border-slate-200 dark:border-[#5a3a24] rounded-xl p-5 max-w-md mx-auto text-left">
+                <div className="flex items-center justify-between text-xs text-slate-600 dark:text-[#a8907f] mb-2">
                   <span className="flex items-center gap-1.5 text-[#1b5e20] dark:text-[#c5a059] font-bold">
                     <Key className="w-3.5 h-3.5" /> Private Inspection Code
                   </span>
                   <span className="font-mono text-[10px] text-amber-600 dark:text-amber-400 font-bold">DO NOT SHARE BEFORE INSPECTION</span>
                 </div>
-                <div className="font-mono text-xl font-bold text-center py-2.5 bg-white dark:bg-[#0e1017] rounded-lg border border-slate-200 dark:border-[#2b2f42] text-emerald-600 dark:text-emerald-400 tracking-wider">
+                <div className="font-mono text-xl font-bold text-center py-2.5 bg-white dark:bg-[#1a1009] rounded-lg border border-slate-200 dark:border-[#473020] text-emerald-600 dark:text-emerald-400 tracking-wider">
                   {inspectionCode}
                 </div>
-                <p className="text-[11px] text-slate-500 dark:text-[#787f94] mt-3">
+                <p className="text-[11px] text-slate-500 dark:text-[#a8907f] mt-3">
                   Only provide this code to the seller once you have physically held, appraised, and verified the item at the safe meetup hub.
                 </p>
               </div>
@@ -281,7 +281,7 @@ export const EscrowCheckoutModal: React.FC = () => {
                 <button
                   type="button"
                   onClick={handleClose}
-                  className="px-6 py-2.5 bg-[#1b5e20] hover:bg-[#25732b] dark:bg-[#c5a059] dark:hover:bg-[#d6b068] text-white dark:text-[#0c0d11] font-bold text-xs rounded-xl shadow cursor-pointer transition-colors"
+                  className="px-6 py-2.5 bg-[#1b5e20] hover:bg-[#25732b] dark:bg-[#c5a059] dark:hover:bg-[#d6b068] text-white dark:text-[#1e130c] font-bold text-xs rounded-xl shadow cursor-pointer transition-colors"
                 >
                   Done & View Order
                 </button>

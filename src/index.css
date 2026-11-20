@@ -2,10 +2,19 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+/* Noto Sans Ethiopic is appended to every stack so Amharic/Tigrinya (Ge'ez script)
+   renders consistently instead of falling back to whatever the OS has. */
+@theme {
+  --font-sans: 'Plus Jakarta Sans', 'Noto Sans Ethiopic', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-serif: 'Noto Sans Ethiopic', Georgia, serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, 'Noto Sans Ethiopic', monospace;
+}
+
 @layer base {
   body {
-    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-family: var(--font-sans);
     overflow-x: hidden;
+    -webkit-tap-highlight-color: transparent;
   }
 
   /* Medium Roasted Coffee Dark Theme */
@@ -18,10 +27,37 @@
     background-color: #fdfbf7; /* Warm natural linen light */
     color: #1e130c;
   }
+
+  /* Ge'ez script needs a little more line height and no letter-spacing/uppercase tricks. */
+  html:lang(am) body,
+  html:lang(ti) body {
+    line-height: 1.6;
+  }
+  html:lang(am) .uppercase,
+  html:lang(ti) .uppercase {
+    letter-spacing: 0;
+  }
+
+  /* Keyboard focus ring everywhere (many buttons removed the default outline). */
+  :focus-visible {
+    outline: 2px solid #d4a373;
+    outline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
 }
 
 .font-cinzel {
-  font-family: 'Cinzel', Georgia, serif;
+  font-family: 'Cinzel', 'Noto Sans Ethiopic', Georgia, serif;
 }
 
 /* Custom scrollbar in roasted coffee accents */

@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { useMarketplace } from '../context/MarketplaceContext';
 import { ImageWatermark } from './ImageWatermark';
 import { VerifiedBadge } from './VerifiedBadge';
@@ -52,6 +52,27 @@ export const CollectibleDetailModal: React.FC = () => {
   const [commentInput, setCommentInput] = useState('');
   const [reviewSubmitted, setReviewSubmitted] = useState(false);
 
+  // Reset per-item UI state when a different listing is opened (previously the
+  // photo index and the revealed phone number leaked into the next item).
+  const selectedId = selectedCollectible?.id;
+  useEffect(() => {
+    setActivePhotoIndex(0);
+    setShowDirectContact(false);
+    setShowReviews(false);
+    setShowReviewForm(false);
+    setCopiedLink(false);
+  }, [selectedId]);
+
+  // Close on Escape
+  useEffect(() => {
+    if (!selectedId) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setSelectedCollectible(null);
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [selectedId, setSelectedCollectible]);
+
   // Similar items market price comparison
   const marketIntel = useMemo(() => {
     if (!selectedCollectible) return null;
@@ -89,8 +110,18 @@ export const CollectibleDetailModal: React.FC = () => {
     setTimeout(() => setReviewSubmitted(false), 3000);
   };
 
-  const handleShare = () => {
-    navigator.clipboard?.writeText(window.location.href);
+  const handleShare = async () => {
+    const url = window.location.href;
+    // Native share sheet on phones (Telegram, WhatsApp…), clipboard elsewhere.
+    if (navigator.share) {
+      try {
+        await navigator.share({ title: selectedCollectible.title, text: formatPrice(selectedCollectible.priceETB), url });
+        return;
+      } catch {
+        /* user cancelled — fall through to copy */
+      }
+    }
+    navigator.clipboard?.writeText(url).catch(() => {});
     setCopiedLink(true);
     setTimeout(() => setCopiedLink(false), 2000);
   };
@@ -100,18 +131,28 @@ export const CollectibleDetailModal: React.FC = () => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-6 bg-black/80 backdrop-blur-xs overflow-y-auto">
-      <div className="relative w-full max-w-4xl bg-white dark:bg-[#11131c] border border-slate-200 dark:border-[#262939] rounded-3xl shadow-2xl overflow-hidden my-auto max-h-[92vh] flex flex-col transition-colors">
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-6 bg-black/80 backdrop-blur-xs overflow-y-auto"
+      onClick={handleClose}
+    >
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-label={selectedCollectible.title}
+        onClick={(e) => e.stopPropagation()}
+        className="relative w-full max-w-4xl bg-white dark:bg-[#1a1009] border border-slate-200 dark:border-[#473020] rounded-3xl shadow-2xl overflow-hidden my-auto max-h-[92vh] flex flex-col transition-colors">
         {/* Top Modal Header */}
-        <div className="flex items-center justify-between px-5 py-3.5 border-b border-slate-100 dark:border-[#212433] bg-slate-50 dark:bg-[#0e1017]">
-          <div className="flex items-center gap-2 text-xs text-slate-500 dark:text-[#8c92a6]">
+        <div className="flex items-center justify-between px-5 py-3.5 border-b border-slate-100 dark:border-[#473020] bg-slate-50 dark:bg-[#1a1009]">
+          <div className="flex items-center gap-2 text-xs text-slate-500 dark:text-[#a8907f]">
             <span className="font-bold text-[#1b5e20] dark:text-[#c5a059] uppercase tracking-wider text-[11px]">
-              {selectedCollectible.category.replace('-', ' ')}
+              {t.categoryNames[selectedCollectible.category] || selectedCollectible.category}
             </span>
             <span aria-hidden="true">·</span>
             <span>ID: {selectedCollectible.id}</span>
             <span aria-hidden="true">·</span>
-            <VerifiedBadge variant="listing" size="xs" label="Verified Authenticated" />
+            {selectedCollectible.authenticityGuaranteed && (
+              <VerifiedBadge variant="listing" size="xs" label={t.card.verifiedListing} />
+            )}
           </div>
 
           <div className="flex items-center gap-2">
@@ -119,22 +160,25 @@ export const CollectibleDetailModal: React.FC = () => {
               onClick={() => toggleWatchlist(selectedCollectible.id)}
               className={`p-2 rounded-xl border transition-colors cursor-pointer min-h-[40px] min-w-[40px] flex items-center justify-center ${
                 isSaved
-                  ? 'bg-[#1b5e20] text-white dark:bg-[#c5a059] dark:text-[#0c0d11] border-transparent'
-                  : 'bg-white dark:bg-[#181a24] text-slate-600 dark:text-[#8e94a6] hover:text-slate-900 dark:hover:text-white border-slate-200 dark:border-[#2a2d3e]'
+                  ? 'bg-[#1b5e20] text-white dark:bg-[#c5a059] dark:text-[#1e130c] border-transparent'
+                  : 'bg-white dark:bg-[#251810] text-slate-600 dark:text-[#a8907f] hover:text-slate-900 dark:hover:text-white border-slate-200 dark:border-[#5a3a24]'
               }`}
-              title={isSaved ? 'Remove from saved' : 'Save ad'}
+              title={isSaved ? t.card.removeSaved : t.card.save}
+              aria-label={isSaved ? t.card.removeSaved : t.card.save}
+              aria-pressed={isSaved}
             >
               <Bookmark className={`w-4 h-4 ${isSaved ? 'fill-current' : ''}`} />
             </button>
 
             <button
               onClick={handleShare}
-              className="p-2 rounded-xl bg-white dark:bg-[#181a24] text-slate-600 dark:text-[#8e94a6] hover:text-slate-900 dark:hover:text-white border border-slate-200 dark:border-[#2a2d3e] transition-colors cursor-pointer relative min-h-[40px] min-w-[40px] flex items-center justify-center"
-              title="Share ad"
+              className="p-2 rounded-xl bg-white dark:bg-[#251810] text-slate-600 dark:text-[#a8907f] hover:text-slate-900 dark:hover:text-white border border-slate-200 dark:border-[#5a3a24] transition-colors cursor-pointer relative min-h-[40px] min-w-[40px] flex items-center justify-center"
+              title="Share"
+              aria-label="Share"
             >
               <Share2 className="w-4 h-4" />
               {copiedLink && (
-                <span className="absolute -bottom-8 right-0 bg-[#1b5e20] dark:bg-[#c5a059] text-white dark:text-[#0c0d11] text-[10px] font-bold px-2 py-0.5 rounded shadow whitespace-nowrap">
+                <span className="absolute -bottom-8 right-0 bg-[#1b5e20] dark:bg-[#c5a059] text-white dark:text-[#1e130c] text-[10px] font-bold px-2 py-0.5 rounded shadow whitespace-nowrap">
                   Link copied!
                 </span>
               )}
@@ -142,7 +186,7 @@ export const CollectibleDetailModal: React.FC = () => {
 
             <button
               onClick={handleClose}
-              className="p-2 rounded-xl bg-white dark:bg-[#181a24] text-slate-600 dark:text-[#8e94a6] hover:text-slate-900 dark:hover:text-white border border-slate-200 dark:border-[#2a2d3e] transition-colors cursor-pointer min-h-[40px] min-w-[40px] flex items-center justify-center"
+              className="p-2 rounded-xl bg-white dark:bg-[#251810] text-slate-600 dark:text-[#a8907f] hover:text-slate-900 dark:hover:text-white border border-slate-200 dark:border-[#5a3a24] transition-colors cursor-pointer min-h-[40px] min-w-[40px] flex items-center justify-center"
             >
               <X className="w-4 h-4" />
             </button>
@@ -154,7 +198,7 @@ export const CollectibleDetailModal: React.FC = () => {
           {/* Left Column: Image & Details */}
           <div className="lg:col-span-7 flex flex-col gap-5">
             {/* Clean Photo Container with Agoza Marketplace Label */}
-            <div className="relative rounded-2xl overflow-hidden bg-slate-100 dark:bg-[#0c0d13] border border-slate-200 dark:border-[#212433] shadow-sm">
+            <div className="relative rounded-2xl overflow-hidden bg-slate-100 dark:bg-[#140c07] border border-slate-200 dark:border-[#473020] shadow-sm">
               <ImageWatermark
                 src={currentPhoto}
                 alt={selectedCollectible.title}
@@ -164,7 +208,7 @@ export const CollectibleDetailModal: React.FC = () => {
                 itemTitle={selectedCollectible.title}
                 sellerName={selectedCollectible.seller.name}
               />
-              <div className="absolute top-3 left-3 pointer-events-none bg-white/95 dark:bg-[#0c0d11]/90 backdrop-blur-md px-3 py-1.5 rounded-xl border border-slate-200 dark:border-[#2a2d3e] text-xs font-semibold text-slate-800 dark:text-[#d6d9e4] shadow-xs flex items-center gap-1.5 z-10">
+              <div className="absolute top-3 left-3 pointer-events-none bg-white/95 dark:bg-[#1e130c]/90 backdrop-blur-md px-3 py-1.5 rounded-xl border border-slate-200 dark:border-[#5a3a24] text-xs font-semibold text-slate-800 dark:text-[#ede0d4] shadow-xs flex items-center gap-1.5 z-10">
                 <MapPin className="w-3.5 h-3.5 text-amber-500 shrink-0" />
                 <span>{selectedCollectible.seller.city || selectedCollectible.seller.location}</span>
               </div>
@@ -181,7 +225,7 @@ export const CollectibleDetailModal: React.FC = () => {
                       className={`w-12 h-12 rounded-xl overflow-hidden border-2 cursor-pointer transition-all ${
                         activePhotoIndex === idx
                           ? 'border-[#1b5e20] dark:border-[#c5a059] scale-105 shadow-sm'
-                          : 'border-slate-200 dark:border-[#2b2e40] opacity-70 hover:opacity-100'
+                          : 'border-slate-200 dark:border-[#5a3a24] opacity-70 hover:opacity-100'
                       }`}
                     >
                       <img src={photo} alt="" className="w-full h-full object-cover" />
@@ -199,20 +243,20 @@ export const CollectibleDetailModal: React.FC = () => {
             {/* Description & Warranty / Specs */}
             <div className="space-y-4">
               <div>
-                <h4 className="text-xs uppercase font-bold text-slate-500 dark:text-[#8b91a4] tracking-wider mb-2">
+                <h4 className="text-xs uppercase font-bold text-slate-500 dark:text-[#a8907f] tracking-wider mb-2">
                   Item Description & Specifications
                 </h4>
-                <p className="text-xs sm:text-sm text-slate-700 dark:text-[#cbd0de] leading-relaxed">
+                <p className="text-xs sm:text-sm text-slate-700 dark:text-[#ede0d4] leading-relaxed">
                   {selectedCollectible.description}
                 </p>
               </div>
 
-              <div className="bg-slate-50 dark:bg-[#161824] border border-slate-200 dark:border-[#252837] rounded-2xl p-4">
+              <div className="bg-slate-50 dark:bg-[#251810] border border-slate-200 dark:border-[#473020] rounded-2xl p-4">
                 <div className="flex items-center gap-2 text-xs font-bold text-slate-800 dark:text-[#e2c17c] mb-1.5">
                   <Award className="w-4 h-4 text-[#1b5e20] dark:text-[#c5a059]" />
                   <span>Warranty, Verification & Documents</span>
                 </div>
-                <p className="text-xs text-slate-600 dark:text-[#9ea5b8] leading-relaxed">
+                <p className="text-xs text-slate-600 dark:text-[#c4b19f] leading-relaxed">
                   {selectedCollectible.provenance}
                 </p>
               </div>
@@ -243,7 +287,7 @@ export const CollectibleDetailModal: React.FC = () => {
           <div className="lg:col-span-5 flex flex-col justify-between space-y-5">
             <div className="space-y-5">
               <div>
-                <div className="flex items-center gap-2 text-xs text-slate-500 dark:text-[#7d8498] mb-1.5">
+                <div className="flex items-center gap-2 text-xs text-slate-500 dark:text-[#a8907f] mb-1.5">
                   <MapPin className="w-3.5 h-3.5 text-amber-500" />
                   <span>{selectedCollectible.origin}</span>
                   <span aria-hidden="true">·</span>
@@ -255,9 +299,9 @@ export const CollectibleDetailModal: React.FC = () => {
               </div>
 
               {/* Price Box */}
-              <div className="bg-slate-50 dark:bg-[#171924] border border-slate-200 dark:border-[#272a3b] rounded-2xl p-4">
+              <div className="bg-slate-50 dark:bg-[#2d1c12] border border-slate-200 dark:border-[#473020] rounded-2xl p-4">
                 <div className="flex items-baseline justify-between mb-2">
-                  <span className="text-xs text-slate-500 dark:text-[#82889c] uppercase tracking-wider font-bold">
+                  <span className="text-xs text-slate-500 dark:text-[#a8907f] uppercase tracking-wider font-bold">
                     Asking Price
                   </span>
                   <span className="font-mono text-2xl font-bold text-[#1b5e20] dark:text-[#c5a059] tabular-nums">
@@ -265,20 +309,20 @@ export const CollectibleDetailModal: React.FC = () => {
                   </span>
                 </div>
 
-                <div className="space-y-2 text-xs pt-3 border-t border-slate-200 dark:border-[#232635] text-slate-600 dark:text-[#9da3b7]">
+                <div className="space-y-2 text-xs pt-3 border-t border-slate-200 dark:border-[#473020] text-slate-600 dark:text-[#c4b19f]">
                   <div className="flex items-center justify-between">
                     <span>Physical Condition:</span>
-                    <span className="font-bold text-slate-800 dark:text-[#e1e4ec]">{selectedCollectible.condition}</span>
+                    <span className="font-bold text-slate-800 dark:text-[#ede0d4]">{selectedCollectible.condition}</span>
                   </div>
                   {selectedCollectible.brand && (
                     <div className="flex items-center justify-between">
                       <span>Brand / Manufacturer:</span>
-                      <span className="font-bold text-slate-800 dark:text-[#e1e4ec]">{selectedCollectible.brand}</span>
+                      <span className="font-bold text-slate-800 dark:text-[#ede0d4]">{selectedCollectible.brand}</span>
                     </div>
                   )}
                   <div className="flex items-center justify-between">
                     <span>Created / Model:</span>
-                    <span className="font-mono text-slate-800 dark:text-[#e1e4ec] text-[11px]">{selectedCollectible.era}</span>
+                    <span className="font-mono text-slate-800 dark:text-[#ede0d4] text-[11px]">{selectedCollectible.era}</span>
                   </div>
                   <div className="flex items-center justify-between">
                     <span>P2P Inspection:</span>
@@ -289,7 +333,7 @@ export const CollectibleDetailModal: React.FC = () => {
 
               {/* Fair Market Price Intelligence & Similar Item Deals (Anti-Cheating & Competitiveness) */}
               {marketIntel && marketIntel.similarCount > 0 && (
-                <div className="bg-amber-50/80 dark:bg-[#161825] border border-amber-300 dark:border-[#2f3348] rounded-2xl p-3.5 space-y-3 shadow-xs">
+                <div className="bg-amber-50/80 dark:bg-[#2d1c12] border border-amber-300 dark:border-[#5a3a24] rounded-2xl p-3.5 space-y-3 shadow-xs">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-1.5">
                       <Scale className="w-4 h-4 text-amber-600 dark:text-amber-400" />
@@ -307,7 +351,7 @@ export const CollectibleDetailModal: React.FC = () => {
                   </p>
 
                   {/* Market Benchmark Range */}
-                  <div className="flex items-center justify-between text-[10px] p-2 bg-white dark:bg-[#0f111a] rounded-xl border border-slate-200 dark:border-[#252839] font-mono">
+                  <div className="flex items-center justify-between text-[10px] p-2 bg-white dark:bg-[#1e130c] rounded-xl border border-slate-200 dark:border-[#382214] font-mono">
                     <div>
                       <span className="text-slate-400 block">Lowest on Agoza</span>
                       <span className="font-bold text-emerald-600 dark:text-emerald-400">{formatPrice(marketIntel.lowestPrice)}</span>
@@ -332,7 +376,7 @@ export const CollectibleDetailModal: React.FC = () => {
                     {marketIntel.suggestions.slice(0, 2).map((sugg) => (
                       <div
                         key={sugg.item.id}
-                        className="p-2.5 rounded-xl bg-white dark:bg-[#12141e] border border-slate-200 dark:border-[#26293c] text-xs space-y-1.5"
+                        className="p-2.5 rounded-xl bg-white dark:bg-[#251810] border border-slate-200 dark:border-[#473020] text-xs space-y-1.5"
                       >
                         <div className="flex items-start gap-2.5">
                           {/* Comparative Item Image with Watermark */}
@@ -372,7 +416,7 @@ export const CollectibleDetailModal: React.FC = () => {
                         </div>
 
                         {/* Quality & Material Difference Analysis */}
-                        <div className="text-[10.5px] p-1.5 rounded-lg bg-slate-50 dark:bg-[#191c29] border border-slate-100 dark:border-[#2a2d3e] text-slate-700 dark:text-slate-300">
+                        <div className="text-[10.5px] p-1.5 rounded-lg bg-slate-50 dark:bg-[#382214] border border-slate-100 dark:border-[#5a3a24] text-slate-700 dark:text-slate-300">
                           <span className="font-semibold text-amber-700 dark:text-amber-400 block mb-0.5">
                             {sugg.qualityAnalysis.hasQualityDifference ? '⚖️ Material & Quality Note:' : '⚖️ Condition Match:'}
                           </span>
@@ -400,7 +444,7 @@ export const CollectibleDetailModal: React.FC = () => {
               <div className="space-y-2.5">
                 <button
                   onClick={() => setIsEscrowModalOpen(true)}
-                  className="w-full py-3 px-4 bg-[#1b5e20] hover:bg-[#25732b] dark:bg-[#c5a059] dark:hover:bg-[#d6b068] text-white dark:text-[#0c0d11] font-bold text-sm rounded-xl shadow transition-colors cursor-pointer flex items-center justify-center gap-2 min-h-[44px]"
+                  className="w-full py-3 px-4 bg-[#1b5e20] hover:bg-[#25732b] dark:bg-[#c5a059] dark:hover:bg-[#d6b068] text-white dark:text-[#1e130c] font-bold text-sm rounded-xl shadow transition-colors cursor-pointer flex items-center justify-center gap-2 min-h-[44px]"
                 >
                   <Lock className="w-4 h-4 stroke-[2.5]" />
                   <span>{t.buyWithEscrow}</span>
@@ -409,7 +453,7 @@ export const CollectibleDetailModal: React.FC = () => {
                 <div className="grid grid-cols-2 gap-2">
                   <button
                     onClick={() => setIsOfferModalOpen(true)}
-                    className="py-2.5 px-3 bg-slate-100 hover:bg-slate-200 dark:bg-[#1e2130] dark:hover:bg-[#282c3f] text-slate-800 dark:text-[#e8ebf4] font-bold text-xs rounded-xl border border-slate-200 dark:border-[#2f3348] transition-colors cursor-pointer text-center min-h-[44px]"
+                    className="py-2.5 px-3 bg-slate-100 hover:bg-slate-200 dark:bg-[#473020] dark:hover:bg-[#5a3a24] text-slate-800 dark:text-[#ede0d4] font-bold text-xs rounded-xl border border-slate-200 dark:border-[#5a3a24] transition-colors cursor-pointer text-center min-h-[44px]"
                   >
                     {t.makeOffer}
                   </button>
@@ -425,7 +469,7 @@ export const CollectibleDetailModal: React.FC = () => {
                   ) : (
                     <button
                       disabled
-                      className="py-2.5 px-3 bg-slate-100 dark:bg-[#15161f] text-slate-400 text-xs rounded-xl border border-slate-200 dark:border-[#222432] text-center cursor-not-allowed min-h-[44px]"
+                      className="py-2.5 px-3 bg-slate-100 dark:bg-[#251810] text-slate-400 text-xs rounded-xl border border-slate-200 dark:border-[#473020] text-center cursor-not-allowed min-h-[44px]"
                     >
                       Swaps Closed
                     </button>
@@ -434,12 +478,12 @@ export const CollectibleDetailModal: React.FC = () => {
               </div>
 
               {/* Seller Card (Jiji Ethiopia Style with Direct Call & Chat) */}
-              <div className="bg-slate-50 dark:bg-[#151722] border border-slate-200 dark:border-[#242738] rounded-2xl p-4">
+              <div className="bg-slate-50 dark:bg-[#251810] border border-slate-200 dark:border-[#473020] rounded-2xl p-4">
                 <div className="flex items-center gap-3 mb-3">
                   <img
                     src={selectedCollectible.seller.avatar}
                     alt={selectedCollectible.seller.name}
-                    className="w-12 h-12 rounded-full object-cover border border-slate-300 dark:border-[#393d54]"
+                    className="w-12 h-12 rounded-full object-cover border border-slate-300 dark:border-[#5a3a24]"
                   />
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-1.5 flex-wrap">
@@ -455,7 +499,7 @@ export const CollectibleDetailModal: React.FC = () => {
 
                   <button
                     onClick={() => openChatForCollectible(selectedCollectible)}
-                    className="p-3 bg-[#1b5e20] dark:bg-[#232738] hover:bg-[#25732b] text-white rounded-xl transition-colors cursor-pointer min-h-[44px] min-w-[44px] flex items-center justify-center"
+                    className="p-3 bg-[#1b5e20] dark:bg-[#473020] hover:bg-[#25732b] text-white rounded-xl transition-colors cursor-pointer min-h-[44px] min-w-[44px] flex items-center justify-center"
                     title="Direct Message Seller"
                   >
                     <MessageSquare className="w-4 h-4" />
@@ -463,7 +507,7 @@ export const CollectibleDetailModal: React.FC = () => {
                 </div>
 
                 {/* Seller Trust Score & Ratings Box */}
-                <div className="mt-3 p-3 bg-white dark:bg-[#12141f] rounded-xl border border-slate-200 dark:border-[#272b3c] space-y-2.5">
+                <div className="mt-3 p-3 bg-white dark:bg-[#1a1009] rounded-xl border border-slate-200 dark:border-[#473020] space-y-2.5">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-1.5">
                       <Shield className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
@@ -503,7 +547,7 @@ export const CollectibleDetailModal: React.FC = () => {
                   </div>
 
                   {/* Trust Breakdown Metrics */}
-                  <div className="grid grid-cols-2 gap-2 pt-2 border-t border-slate-100 dark:border-[#212433] text-[10px]">
+                  <div className="grid grid-cols-2 gap-2 pt-2 border-t border-slate-100 dark:border-[#473020] text-[10px]">
                     <div className="flex items-center justify-between text-slate-600 dark:text-slate-400">
                       <span>Item Authenticity:</span>
                       <span className="font-bold text-emerald-600 dark:text-emerald-400">100%</span>
@@ -526,7 +570,7 @@ export const CollectibleDetailModal: React.FC = () => {
 
                   {/* Expandable Reviews List & Submit Form */}
                   {showReviews && (
-                    <div className="pt-2 border-t border-slate-100 dark:border-[#212433] space-y-3">
+                    <div className="pt-2 border-t border-slate-100 dark:border-[#473020] space-y-3">
                       <div className="flex items-center justify-between">
                         <span className="text-[11px] font-bold text-slate-700 dark:text-slate-300">
                           Buyer Reviews ({sellerReviews.length})
@@ -549,7 +593,7 @@ export const CollectibleDetailModal: React.FC = () => {
 
                       {/* Write Review Form */}
                       {showReviewForm && (
-                        <form onSubmit={handleReviewSubmit} className="p-2.5 rounded-xl bg-slate-50 dark:bg-[#191c28] border border-slate-200 dark:border-[#2c3042] space-y-2">
+                        <form onSubmit={handleReviewSubmit} className="p-2.5 rounded-xl bg-slate-50 dark:bg-[#2d1c12] border border-slate-200 dark:border-[#5a3a24] space-y-2">
                           <div className="flex items-center justify-between">
                             <span className="text-[10px] font-bold text-slate-700 dark:text-slate-300">
                               Your Rating:
@@ -579,13 +623,13 @@ export const CollectibleDetailModal: React.FC = () => {
                             placeholder="Share your experience with this seller (item condition, safe meetup, accuracy)..."
                             value={commentInput}
                             onChange={(e) => setCommentInput(e.target.value)}
-                            className="w-full bg-white dark:bg-[#12141d] border border-slate-200 dark:border-[#2c3042] rounded-lg p-2 text-xs text-slate-900 dark:text-white resize-none focus:outline-none focus:border-[#1b5e20]"
+                            className="w-full bg-white dark:bg-[#1e130c] border border-slate-200 dark:border-[#5a3a24] rounded-lg p-2 text-xs text-slate-900 dark:text-white resize-none focus:outline-none focus:border-[#1b5e20]"
                             required
                           />
 
                           <button
                             type="submit"
-                            className="w-full py-1.5 bg-[#1b5e20] dark:bg-[#c5a059] text-white dark:text-[#0c0d11] font-bold text-xs rounded-lg shadow cursor-pointer hover:opacity-95"
+                            className="w-full py-1.5 bg-[#1b5e20] dark:bg-[#c5a059] text-white dark:text-[#1e130c] font-bold text-xs rounded-lg shadow cursor-pointer hover:opacity-95"
                           >
                             Submit Trust Rating
                           </button>
@@ -602,7 +646,7 @@ export const CollectibleDetailModal: React.FC = () => {
                           sellerReviews.map((rev) => (
                             <div
                               key={rev.id}
-                              className="p-2 rounded-lg bg-slate-50 dark:bg-[#171a26] border border-slate-100 dark:border-[#242738] text-[11px] space-y-1"
+                              className="p-2 rounded-lg bg-slate-50 dark:bg-[#2d1c12] border border-slate-100 dark:border-[#473020] text-[11px] space-y-1"
                             >
                               <div className="flex items-center justify-between">
                                 <span className="font-bold text-slate-800 dark:text-slate-200">
@@ -635,7 +679,7 @@ export const CollectibleDetailModal: React.FC = () => {
                       <span>{t.showContact}</span>
                     </button>
                   ) : (
-                    <div className="p-3 bg-white dark:bg-[#1b1e2c] rounded-xl border border-slate-200 dark:border-[#2b2f42] text-xs space-y-1.5">
+                    <div className="p-3 bg-white dark:bg-[#382214] rounded-xl border border-slate-200 dark:border-[#473020] text-xs space-y-1.5">
                       <div className="flex items-center justify-between">
                         <span className="text-slate-500">Phone:</span>
                         <a
@@ -659,17 +703,17 @@ export const CollectibleDetailModal: React.FC = () => {
               </div>
 
               {/* Safe Meetup Spot info */}
-              <div className="flex items-start gap-2.5 p-3 rounded-xl bg-slate-50 dark:bg-[#141620] border border-slate-200 dark:border-[#222535] text-xs">
+              <div className="flex items-start gap-2.5 p-3 rounded-xl bg-slate-50 dark:bg-[#251810] border border-slate-200 dark:border-[#473020] text-xs">
                 <MapPin className="w-4 h-4 text-amber-500 shrink-0 mt-0.5" />
                 <div>
                   <span className="font-bold text-slate-800 dark:text-[#f0f1f5] block">Designated Safe Trade Hub:</span>
-                  <span className="text-slate-600 dark:text-[#969cb0]">{selectedCollectible.safeMeetupSpot}</span>
+                  <span className="text-slate-600 dark:text-[#c4b19f]">{selectedCollectible.safeMeetupSpot}</span>
                 </div>
               </div>
             </div>
 
             {/* Buyer Protection Guarantee */}
-            <div className="pt-3 border-t border-slate-100 dark:border-[#1e212f] text-[11px] text-slate-500 flex items-center gap-2">
+            <div className="pt-3 border-t border-slate-100 dark:border-[#382214] text-[11px] text-slate-500 flex items-center gap-2">
               <ShieldCheck className="w-4 h-4 text-emerald-600 dark:text-[#48bb78] shrink-0" />
               <span>
                 Protected by Agoza Buyer Safeguard. Funds are safely held until in-person inspection at designated safe hubs.

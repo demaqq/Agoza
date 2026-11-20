@@ -257,7 +257,7 @@ export const QuickBuyModal: React.FC = () => {
                     </option>
                   ))}
                 </select>
-                <p className="text-[10px] text-slate-500 dark:text-[#9ea4b8]">
+                <p className="text-[10px] text-slate-500 dark:text-[#a8907f]">
                   Funds stay safely in escrow until you physically test and approve the item at the hub.
                 </p>
               </div>
