@@ -28,17 +28,19 @@ export const CollectibleCard: React.FC<CollectibleCardProps> = ({ collectible })
   return (
     <div
       onClick={handleCardClick}
-      className="group bg-white dark:bg-[#181a24] border border-neutral-200/80 dark:border-[#2a2e42] hover:border-neutral-900 dark:hover:border-white rounded-2xl overflow-hidden flex flex-col transition-all duration-300 hover:-translate-y-1 hover:shadow-xl cursor-pointer"
+      className="group bg-white dark:bg-[#251810] border border-neutral-200/80 dark:border-[#473020] hover:border-neutral-900 dark:hover:border-white rounded-2xl overflow-hidden flex flex-col transition-all duration-300 hover:-translate-y-1 hover:shadow-xl cursor-pointer"
     >
       {/* Nike Visual Slot - Neutral Image Canvas with Subtle Hover Zoom */}
       <div
         onClick={() => setSelectedCollectible(collectible)}
-        className="relative aspect-[4/3] bg-[#f6f6f6] dark:bg-[#11131c] overflow-hidden cursor-pointer"
+        className="relative aspect-[4/3] bg-[#f6f6f6] dark:bg-[#1a1009] overflow-hidden cursor-pointer"
         title="Click to view image and listing details"
       >
         <img
           src={collectible.imageUrl}
           alt={collectible.title}
+          loading="lazy"
+          decoding="async"
           referrerPolicy="no-referrer"
           className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-300 ease-out"
           onError={(e) => {
@@ -53,7 +55,7 @@ export const CollectibleCard: React.FC<CollectibleCardProps> = ({ collectible })
         {/* Fallback Container */}
         <div
           style={{ display: 'none' }}
-          className="w-full h-full flex flex-col items-center justify-center bg-neutral-200 dark:bg-[#1a1d29] p-6 text-center"
+          className="w-full h-full flex flex-col items-center justify-center bg-neutral-200 dark:bg-[#251810] p-6 text-center"
         >
           <div className="w-12 h-12 rounded-full bg-neutral-900/10 dark:bg-white/10 flex items-center justify-center text-neutral-900 dark:text-white mb-2 font-bold text-lg">
             AG
@@ -93,7 +95,9 @@ export const CollectibleCard: React.FC<CollectibleCardProps> = ({ collectible })
               ? 'bg-neutral-900 text-white dark:bg-white dark:text-black'
               : 'bg-white/90 dark:bg-black/75 text-neutral-800 dark:text-neutral-200 hover:text-black dark:hover:text-white shadow-xs'
           }`}
-          title={isSaved ? 'Remove from saved' : 'Save ad'}
+          title={isSaved ? t.card.removeSaved : t.card.save}
+          aria-label={isSaved ? t.card.removeSaved : t.card.save}
+          aria-pressed={isSaved}
         >
           <Bookmark className={`w-4 h-4 ${isSaved ? 'fill-current' : ''}`} />
         </button>
@@ -104,11 +108,11 @@ export const CollectibleCard: React.FC<CollectibleCardProps> = ({ collectible })
         <div>
           {/* Clean Unboxed Metadata: Category · City · Condition */}
           <div className="flex items-center gap-1 text-[11px] font-bold tracking-wider text-neutral-500 dark:text-neutral-400 uppercase mb-1">
-            <span>{collectible.category.replace('-', ' ')}</span>
+            <span>{t.categoryNames[collectible.category] || collectible.category}</span>
             <span aria-hidden="true">·</span>
             <span>{collectible.seller.city || collectible.seller.location.split(',')[0]}</span>
             <span aria-hidden="true">·</span>
-            <span className="text-emerald-700 dark:text-emerald-400 font-bold">{collectible.condition}</span>
+            <span className="text-emerald-700 dark:text-emerald-400 font-bold">{t.conditions[collectible.condition] || collectible.condition}</span>
           </div>
 
           {/* Title */}
@@ -126,7 +130,7 @@ export const CollectibleCard: React.FC<CollectibleCardProps> = ({ collectible })
         </div>
 
         {/* Pricing & Buy CTA */}
-        <div className="pt-2 border-t border-neutral-100 dark:border-[#25293c] flex items-center justify-between gap-2">
+        <div className="pt-2 border-t border-neutral-100 dark:border-[#382214] flex items-center justify-between gap-2">
           <div>
             <span className="text-[10px] uppercase font-bold tracking-wider text-neutral-400 block">
               {t.listingPrice}
@@ -144,7 +148,7 @@ export const CollectibleCard: React.FC<CollectibleCardProps> = ({ collectible })
             }}
             className="py-2 px-4 bg-neutral-900 hover:bg-black dark:bg-white dark:hover:bg-neutral-200 text-white dark:text-black text-xs font-extrabold tracking-wider uppercase rounded-full transition-all cursor-pointer whitespace-nowrap min-h-[38px] flex items-center gap-1.5 shadow-xs active:scale-95"
           >
-            <span>Buy</span>
+            <span>{t.card.view}</span>
             <ArrowRight className="w-3.5 h-3.5" />
           </button>
         </div>

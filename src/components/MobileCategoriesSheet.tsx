@@ -110,7 +110,7 @@ export const MobileCategoriesSheet: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setSelectedCatId(null)}
-                className="p-1.5 rounded-xl bg-slate-100 dark:bg-[#1a1d2c] text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white flex items-center gap-1 text-xs font-semibold"
+                className="p-1.5 rounded-xl bg-slate-100 dark:bg-[#251810] text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white flex items-center gap-1 text-xs font-semibold"
               >
                 <ChevronLeft className="w-4 h-4" />
                 <span>All Categories</span>
@@ -149,7 +149,7 @@ export const MobileCategoriesSheet: React.FC = () => {
               placeholder="Search all categories & subcategories..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-white dark:bg-[#161824] text-slate-900 dark:text-white text-xs pl-8.5 pr-8 py-2 rounded-xl border border-slate-200 dark:border-[#272a3c] focus:outline-none focus:border-[#1b5e20] dark:focus:border-[#c5a059]"
+              className="w-full bg-white dark:bg-[#251810] text-slate-900 dark:text-white text-xs pl-8.5 pr-8 py-2 rounded-xl border border-slate-200 dark:border-[#272a3c] focus:outline-none focus:border-[#1b5e20] dark:focus:border-[#c5a059]"
             />
             {searchQuery && (
               <button
@@ -181,7 +181,7 @@ export const MobileCategoriesSheet: React.FC = () => {
                     key={`${cat.id}_${sub.id}`}
                     type="button"
                     onClick={() => handleSelect(cat.id, sub.id)}
-                    className="w-full p-2.5 rounded-xl border border-slate-200 dark:border-[#252839] bg-slate-50 dark:bg-[#161825] text-left flex items-center justify-between gap-2"
+                    className="w-full p-2.5 rounded-xl border border-slate-200 dark:border-[#382214] bg-slate-50 dark:bg-[#161825] text-left flex items-center justify-between gap-2"
                   >
                     <div>
                       <span className="text-[10px] font-bold text-amber-700 dark:text-amber-400 uppercase tracking-wider block">
@@ -234,7 +234,7 @@ export const MobileCategoriesSheet: React.FC = () => {
                       className={`p-3 rounded-2xl border text-left flex items-center justify-between gap-3 transition-all ${
                         isSelectedSub
                           ? 'bg-emerald-50 dark:bg-emerald-950/40 border-[#1b5e20] dark:border-[#c5a059] shadow-xs'
-                          : 'bg-slate-50 dark:bg-[#161825] border-slate-200 dark:border-[#252839]'
+                          : 'bg-slate-50 dark:bg-[#161825] border-slate-200 dark:border-[#382214]'
                       }`}
                     >
                       <div className="min-w-0">
@@ -270,7 +270,7 @@ export const MobileCategoriesSheet: React.FC = () => {
                 className={`p-3 rounded-2xl border text-left flex items-center gap-3 ${
                   filters.category === 'all'
                     ? 'border-[#1b5e20] dark:border-[#c5a059] bg-emerald-50 dark:bg-emerald-950/40'
-                    : 'border-slate-200 dark:border-[#252839] bg-slate-50 dark:bg-[#151724]'
+                    : 'border-slate-200 dark:border-[#382214] bg-slate-50 dark:bg-[#151724]'
                 }`}
               >
                 <div className="w-10 h-10 rounded-xl bg-amber-100 dark:bg-amber-950/60 border border-amber-300 dark:border-amber-800 text-amber-700 dark:text-amber-400 flex items-center justify-center shrink-0">
@@ -299,7 +299,7 @@ export const MobileCategoriesSheet: React.FC = () => {
                     className={`p-3 rounded-2xl border text-left flex items-center justify-between gap-2.5 transition-all ${
                       isSelected
                         ? 'border-[#1b5e20] dark:border-[#c5a059] bg-emerald-50/70 dark:bg-emerald-950/30 ring-1 ring-[#1b5e20]/20'
-                        : 'border-slate-200 dark:border-[#252839] bg-slate-50 dark:bg-[#151724] hover:bg-slate-100 dark:hover:bg-[#1a1d2c]'
+                        : 'border-slate-200 dark:border-[#382214] bg-slate-50 dark:bg-[#151724] hover:bg-slate-100 dark:hover:bg-[#251810]'
                     }`}
                   >
                     <div className="flex items-center gap-2.5 min-w-0">

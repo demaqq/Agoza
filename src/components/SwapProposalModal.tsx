@@ -47,7 +47,7 @@ export const SwapProposalModal: React.FC = () => {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/85 backdrop-blur-sm overflow-y-auto">
-      <div className="relative w-full max-w-xl bg-[#11131c] border border-[#262939] rounded-2xl shadow-2xl overflow-hidden my-auto">
+      <div className="relative w-full max-w-xl bg-[#1a1009] border border-[#262939] rounded-2xl shadow-2xl overflow-hidden my-auto">
         <div className="flex items-center justify-between px-6 py-4 border-b border-[#212433] bg-[#0e1017]">
           <div className="flex items-center gap-2">
             <ArrowLeftRight className="w-4 h-4 text-emerald-400" />
@@ -57,7 +57,7 @@ export const SwapProposalModal: React.FC = () => {
           </div>
           <button
             onClick={() => setIsSwapModalOpen(false)}
-            className="p-1.5 rounded-lg bg-[#181a24] text-[#8e94a6] hover:text-white border border-[#2a2d3e] transition-colors cursor-pointer"
+            className="p-1.5 rounded-lg bg-[#251810] text-[#8e94a6] hover:text-white border border-[#2a2d3e] transition-colors cursor-pointer"
           >
             <X className="w-4 h-4" />
           </button>
@@ -67,7 +67,7 @@ export const SwapProposalModal: React.FC = () => {
           {!isSubmitted ? (
             <form onSubmit={handleSubmit} className="space-y-5">
               {/* Target Collectible */}
-              <div className="flex items-center justify-between p-3 bg-[#151722] border border-[#232637] rounded-xl text-xs">
+              <div className="flex items-center justify-between p-3 bg-[#151722] border border-[#382214] rounded-xl text-xs">
                 <div className="flex items-center gap-3">
                   <img
                     src={selectedCollectible.imageUrl}
@@ -127,7 +127,7 @@ export const SwapProposalModal: React.FC = () => {
                     className={`py-2 px-1 text-xs rounded-lg border text-center cursor-pointer transition-colors ${
                       cashDirection === 'even'
                         ? 'bg-emerald-950/40 border-emerald-500 text-emerald-300 font-semibold'
-                        : 'bg-[#161824] border-[#26293a] text-[#858b9f]'
+                        : 'bg-[#251810] border-[#26293a] text-[#858b9f]'
                     }`}
                   >
                     Even Swap (0 Br)
@@ -138,7 +138,7 @@ export const SwapProposalModal: React.FC = () => {
                     className={`py-2 px-1 text-xs rounded-lg border text-center cursor-pointer transition-colors ${
                       cashDirection === 'i-pay'
                         ? 'bg-[#c5a059]/20 border-[#c5a059] text-[#f5f6f8] font-semibold'
-                        : 'bg-[#161824] border-[#26293a] text-[#858b9f]'
+                        : 'bg-[#251810] border-[#26293a] text-[#858b9f]'
                     }`}
                   >
                     + I Pay Difference
@@ -149,7 +149,7 @@ export const SwapProposalModal: React.FC = () => {
                     className={`py-2 px-1 text-xs rounded-lg border text-center cursor-pointer transition-colors ${
                       cashDirection === 'seller-pays'
                         ? 'bg-[#c5a059]/20 border-[#c5a059] text-[#f5f6f8] font-semibold'
-                        : 'bg-[#161824] border-[#26293a] text-[#858b9f]'
+                        : 'bg-[#251810] border-[#26293a] text-[#858b9f]'
                     }`}
                   >
                     - Seller Pays Difference

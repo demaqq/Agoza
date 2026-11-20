@@ -43,7 +43,7 @@ export const ActivityFeedDrawer: React.FC = () => {
       onClick={() => setIsActivityFeedOpen(false)}
     >
       <div
-        className="w-full max-w-md bg-white dark:bg-[#11131c] border-l border-slate-200 dark:border-[#262939] h-full flex flex-col shadow-2xl transition-colors"
+        className="w-full max-w-md bg-white dark:bg-[#1a1009] border-l border-slate-200 dark:border-[#262939] h-full flex flex-col shadow-2xl transition-colors"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
@@ -56,14 +56,14 @@ export const ActivityFeedDrawer: React.FC = () => {
           </div>
           <button
             onClick={() => setIsActivityFeedOpen(false)}
-            className="p-1.5 rounded-xl bg-slate-200 hover:bg-slate-300 dark:bg-[#181a24] text-slate-600 dark:text-[#8e94a6] hover:text-slate-900 dark:hover:text-white border border-slate-300 dark:border-[#2a2d3e] transition-colors cursor-pointer"
+            className="p-1.5 rounded-xl bg-slate-200 hover:bg-slate-300 dark:bg-[#251810] text-slate-600 dark:text-[#8e94a6] hover:text-slate-900 dark:hover:text-white border border-slate-300 dark:border-[#2a2d3e] transition-colors cursor-pointer"
           >
             <X className="w-4 h-4" />
           </button>
         </div>
 
         {/* Filter bar */}
-        <div className="px-3 py-2 bg-slate-100 dark:bg-[#141622] border-b border-slate-200 dark:border-[#202332] flex gap-1.5 overflow-x-auto scrollbar-none text-xs">
+        <div className="px-3 py-2 bg-slate-100 dark:bg-[#1a1009] border-b border-slate-200 dark:border-[#202332] flex gap-1.5 overflow-x-auto scrollbar-none text-xs">
           {[
             { id: 'all', label: 'All' },
             { id: 'escrow', label: '🛡️ Protected' },
@@ -76,8 +76,8 @@ export const ActivityFeedDrawer: React.FC = () => {
               onClick={() => setFilterType(tab.id as any)}
               className={`px-3 py-1 rounded-lg whitespace-nowrap cursor-pointer transition-colors ${
                 filterType === tab.id
-                  ? 'bg-[#1b5e20] dark:bg-[#c5a059] text-white dark:text-[#0c0d11] font-bold shadow-xs'
-                  : 'bg-white dark:bg-[#181a24] text-slate-600 dark:text-[#838a9d] hover:text-slate-900 dark:hover:text-white border border-slate-200 dark:border-transparent'
+                  ? 'bg-[#1b5e20] dark:bg-[#c5a059] text-white dark:text-[#1e130c] font-bold shadow-xs'
+                  : 'bg-white dark:bg-[#251810] text-slate-600 dark:text-[#838a9d] hover:text-slate-900 dark:hover:text-white border border-slate-200 dark:border-transparent'
               }`}
             >
               {tab.label}
@@ -119,7 +119,7 @@ export const ActivityFeedDrawer: React.FC = () => {
 
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center justify-between gap-1 mb-0.5">
-                      <span className="text-xs font-bold text-slate-900 dark:text-[#f4f5f8] truncate">
+                      <span className="text-xs font-bold text-slate-900 dark:text-[#fbf5ef] truncate">
                         {item.actorName}
                       </span>
                       <span className="text-[10px] text-slate-400 font-mono shrink-0 flex items-center gap-1">

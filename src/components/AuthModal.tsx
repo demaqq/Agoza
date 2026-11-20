@@ -137,7 +137,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
       onClick={onClose}
     >
       <div
-        className="relative w-full max-w-lg bg-white dark:bg-[#11131c] border border-slate-200 dark:border-[#262939] rounded-3xl shadow-2xl overflow-hidden my-auto max-h-[94vh] flex flex-col transition-colors"
+        className="relative w-full max-w-lg bg-white dark:bg-[#1a1009] border border-slate-200 dark:border-[#262939] rounded-3xl shadow-2xl overflow-hidden my-auto max-h-[94vh] flex flex-col transition-colors"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Top Header */}
@@ -167,7 +167,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
         </div>
 
         {/* Tab Switcher */}
-        <div className="grid grid-cols-2 p-1.5 bg-slate-100 dark:bg-[#141622] border-b border-slate-200 dark:border-[#202332] text-xs font-semibold">
+        <div className="grid grid-cols-2 p-1.5 bg-slate-100 dark:bg-[#1a1009] border-b border-slate-200 dark:border-[#202332] text-xs font-semibold">
           <button
             type="button"
             onClick={() => {
@@ -229,7 +229,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                     placeholder="e.g. Abebe Bikila"
                     value={fullName}
                     onChange={(e) => setFullName(e.target.value)}
-                    className="w-full bg-slate-50 dark:bg-[#161824] text-slate-900 dark:text-white text-xs pl-10 pr-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-[#26293a] focus:outline-none focus:border-[#1b5e20] dark:focus:border-[#c5a059]"
+                    className="w-full bg-slate-50 dark:bg-[#251810] text-slate-900 dark:text-white text-xs pl-10 pr-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-[#26293a] focus:outline-none focus:border-[#1b5e20] dark:focus:border-[#c5a059]"
                   />
                 </div>
               </div>
@@ -245,10 +245,10 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                   <select
                     value={city}
                     onChange={(e) => setCity(e.target.value)}
-                    className="w-full bg-slate-50 dark:bg-[#161824] text-slate-900 dark:text-white text-xs pl-10 pr-8 py-2.5 rounded-xl border border-slate-200 dark:border-[#26293a] focus:outline-none focus:border-[#1b5e20] dark:focus:border-[#c5a059] appearance-none cursor-pointer font-medium"
+                    className="w-full bg-slate-50 dark:bg-[#251810] text-slate-900 dark:text-white text-xs pl-10 pr-8 py-2.5 rounded-xl border border-slate-200 dark:border-[#26293a] focus:outline-none focus:border-[#1b5e20] dark:focus:border-[#c5a059] appearance-none cursor-pointer font-medium"
                   >
                     {ETHIOPIAN_CITIES.filter((c) => c.id !== 'all').map((c) => (
-                      <option key={c.id} value={c.name} className="bg-white dark:bg-[#161824] text-slate-900 dark:text-white py-1">
+                      <option key={c.id} value={c.name} className="bg-white dark:bg-[#251810] text-slate-900 dark:text-white py-1">
                         {c.name} ({c.amharic}) — {c.region}
                       </option>
                     ))}
@@ -271,7 +271,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                     placeholder="@your_telegram_username"
                     value={telegramUsername}
                     onChange={(e) => setTelegramUsername(e.target.value)}
-                    className="w-full bg-slate-50 dark:bg-[#161824] text-slate-900 dark:text-white text-xs pl-10 pr-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-[#26293a] focus:outline-none focus:border-[#1b5e20] dark:focus:border-[#c5a059]"
+                    className="w-full bg-slate-50 dark:bg-[#251810] text-slate-900 dark:text-white text-xs pl-10 pr-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-[#26293a] focus:outline-none focus:border-[#1b5e20] dark:focus:border-[#c5a059]"
                   />
                 </div>
                 <span className="text-[10px] text-slate-500 dark:text-slate-400 mt-1 block">
@@ -292,7 +292,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                     placeholder="+251 91 123 4567"
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
-                    className="w-full bg-slate-50 dark:bg-[#161824] text-slate-900 dark:text-white text-xs pl-10 pr-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-[#26293a] focus:outline-none focus:border-[#1b5e20] dark:focus:border-[#c5a059]"
+                    className="w-full bg-slate-50 dark:bg-[#251810] text-slate-900 dark:text-white text-xs pl-10 pr-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-[#26293a] focus:outline-none focus:border-[#1b5e20] dark:focus:border-[#c5a059]"
                   />
                 </div>
               </div>
@@ -312,7 +312,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                 placeholder="trader@example.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full bg-slate-50 dark:bg-[#161824] text-slate-900 dark:text-white text-xs pl-10 pr-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-[#26293a] focus:outline-none focus:border-[#1b5e20] dark:focus:border-[#c5a059]"
+                className="w-full bg-slate-50 dark:bg-[#251810] text-slate-900 dark:text-white text-xs pl-10 pr-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-[#26293a] focus:outline-none focus:border-[#1b5e20] dark:focus:border-[#c5a059]"
               />
             </div>
           </div>
@@ -330,7 +330,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                 placeholder="••••••••••••"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full bg-slate-50 dark:bg-[#161824] text-slate-900 dark:text-white text-xs pl-10 pr-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-[#26293a] focus:outline-none focus:border-[#1b5e20] dark:focus:border-[#c5a059]"
+                className="w-full bg-slate-50 dark:bg-[#251810] text-slate-900 dark:text-white text-xs pl-10 pr-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-[#26293a] focus:outline-none focus:border-[#1b5e20] dark:focus:border-[#c5a059]"
               />
             </div>
           </div>
@@ -351,7 +351,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full py-3 px-4 rounded-xl bg-[#1b5e20] hover:bg-[#25732b] dark:bg-[#c5a059] dark:hover:bg-[#d6b068] text-white dark:text-[#0c0d11] font-bold text-xs tracking-wider uppercase flex items-center justify-center gap-2 shadow-md hover:shadow-lg transition-all cursor-pointer disabled:opacity-50"
+            className="w-full py-3 px-4 rounded-xl bg-[#1b5e20] hover:bg-[#25732b] dark:bg-[#c5a059] dark:hover:bg-[#d6b068] text-white dark:text-[#1e130c] font-bold text-xs tracking-wider uppercase flex items-center justify-center gap-2 shadow-md hover:shadow-lg transition-all cursor-pointer disabled:opacity-50"
           >
             {isSubmitting ? (
               <span>Processing...</span>
@@ -407,7 +407,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                     return;
                   }
                   setIsSubmitting(true);
-                  const { resetPassword } = await import('../firebase/auth');
+                  const { resetPassword } = await import('../firebase/authLazy');
                   const res = await resetPassword(email.trim());
                   if (res.success) {
                     setSuccessMsg('Password reset link sent to your email.');

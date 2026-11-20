@@ -64,11 +64,11 @@ export const UserDashboardView: React.FC = () => {
       )}
 
       {/* User Header Profile Card */}
-      <div className="bg-white dark:bg-[#131520] border border-slate-200 dark:border-[#232637] rounded-2xl p-6 sm:p-8 mb-8 shadow-sm">
+      <div className="bg-white dark:bg-[#131520] border border-slate-200 dark:border-[#382214] rounded-2xl p-6 sm:p-8 mb-8 shadow-sm">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
           <div className="flex items-center gap-4">
             <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#1b5e20] to-[#2e7d32] dark:from-[#c5a059] dark:to-[#8c6b2b] p-0.5 shadow-md">
-              <div className="w-full h-full bg-white dark:bg-[#11131c] rounded-2xl flex items-center justify-center font-cinzel text-xl font-bold text-[#1b5e20] dark:text-[#c5a059]">
+              <div className="w-full h-full bg-white dark:bg-[#1a1009] rounded-2xl flex items-center justify-center font-cinzel text-xl font-bold text-[#1b5e20] dark:text-[#c5a059]">
                 {currentUser ? currentUser.name.slice(0, 2).toUpperCase() : 'AG'}
               </div>
             </div>
@@ -110,7 +110,7 @@ export const UserDashboardView: React.FC = () => {
 
             <button
               onClick={() => setIsListModalOpen(true)}
-              className="flex-1 sm:flex-initial flex items-center justify-center gap-2 px-4 py-2.5 bg-[#1b5e20] hover:bg-[#25732b] dark:bg-[#c5a059] dark:hover:bg-[#d6b068] text-white dark:text-[#0c0d11] font-bold text-xs rounded-xl shadow transition-colors cursor-pointer"
+              className="flex-1 sm:flex-initial flex items-center justify-center gap-2 px-4 py-2.5 bg-[#1b5e20] hover:bg-[#25732b] dark:bg-[#c5a059] dark:hover:bg-[#d6b068] text-white dark:text-[#1e130c] font-bold text-xs rounded-xl shadow transition-colors cursor-pointer"
             >
               <Plus className="w-4 h-4 stroke-[2.5]" />
               <span>+ Post New Classified Ad</span>
@@ -149,8 +149,8 @@ export const UserDashboardView: React.FC = () => {
             onClick={() => setActiveTab('ads')}
             className={`px-4 py-2 rounded-lg text-xs font-semibold whitespace-nowrap cursor-pointer transition-colors flex items-center gap-1.5 ${
               activeTab === 'ads'
-                ? 'bg-slate-900 text-white dark:bg-[#c5a059] dark:text-[#0c0d11]'
-                : 'bg-slate-100 dark:bg-[#181a24] text-slate-600 dark:text-[#8c92a6] hover:text-slate-900 dark:hover:text-white'
+                ? 'bg-slate-900 text-white dark:bg-[#c5a059] dark:text-[#1e130c]'
+                : 'bg-slate-100 dark:bg-[#251810] text-slate-600 dark:text-[#8c92a6] hover:text-slate-900 dark:hover:text-white'
             }`}
           >
             <Package className="w-3.5 h-3.5" />
@@ -161,8 +161,8 @@ export const UserDashboardView: React.FC = () => {
             onClick={() => setActiveTab('offers')}
             className={`px-4 py-2 rounded-lg text-xs font-semibold whitespace-nowrap cursor-pointer transition-colors flex items-center gap-1.5 ${
               activeTab === 'offers'
-                ? 'bg-slate-900 text-white dark:bg-[#c5a059] dark:text-[#0c0d11]'
-                : 'bg-slate-100 dark:bg-[#181a24] text-slate-600 dark:text-[#8c92a6] hover:text-slate-900 dark:hover:text-white'
+                ? 'bg-slate-900 text-white dark:bg-[#c5a059] dark:text-[#1e130c]'
+                : 'bg-slate-100 dark:bg-[#251810] text-slate-600 dark:text-[#8c92a6] hover:text-slate-900 dark:hover:text-white'
             }`}
           >
             <Tag className="w-3.5 h-3.5" />
@@ -173,8 +173,8 @@ export const UserDashboardView: React.FC = () => {
             onClick={() => setActiveTab('escrow')}
             className={`px-4 py-2 rounded-lg text-xs font-semibold whitespace-nowrap cursor-pointer transition-colors flex items-center gap-1.5 ${
               activeTab === 'escrow'
-                ? 'bg-slate-900 text-white dark:bg-[#c5a059] dark:text-[#0c0d11]'
-                : 'bg-slate-100 dark:bg-[#181a24] text-slate-600 dark:text-[#8c92a6] hover:text-slate-900 dark:hover:text-white'
+                ? 'bg-slate-900 text-white dark:bg-[#c5a059] dark:text-[#1e130c]'
+                : 'bg-slate-100 dark:bg-[#251810] text-slate-600 dark:text-[#8c92a6] hover:text-slate-900 dark:hover:text-white'
             }`}
           >
             <ShieldCheck className="w-3.5 h-3.5" />
@@ -185,8 +185,8 @@ export const UserDashboardView: React.FC = () => {
             onClick={() => setActiveTab('profile')}
             className={`px-4 py-2 rounded-lg text-xs font-semibold whitespace-nowrap cursor-pointer transition-colors flex items-center gap-1.5 ${
               activeTab === 'profile'
-                ? 'bg-slate-900 text-white dark:bg-[#c5a059] dark:text-[#0c0d11]'
-                : 'bg-slate-100 dark:bg-[#181a24] text-slate-600 dark:text-[#8c92a6] hover:text-slate-900 dark:hover:text-white'
+                ? 'bg-slate-900 text-white dark:bg-[#c5a059] dark:text-[#1e130c]'
+                : 'bg-slate-100 dark:bg-[#251810] text-slate-600 dark:text-[#8c92a6] hover:text-slate-900 dark:hover:text-white'
             }`}
           >
             <User className="w-3.5 h-3.5" />
@@ -197,8 +197,8 @@ export const UserDashboardView: React.FC = () => {
             onClick={() => setActiveTab('plans')}
             className={`px-4 py-2 rounded-lg text-xs font-semibold whitespace-nowrap cursor-pointer transition-colors flex items-center gap-1.5 ${
               activeTab === 'plans'
-                ? 'bg-slate-900 text-white dark:bg-[#c5a059] dark:text-[#0c0d11]'
-                : 'bg-slate-100 dark:bg-[#181a24] text-slate-600 dark:text-[#8c92a6] hover:text-slate-900 dark:hover:text-white'
+                ? 'bg-slate-900 text-white dark:bg-[#c5a059] dark:text-[#1e130c]'
+                : 'bg-slate-100 dark:bg-[#251810] text-slate-600 dark:text-[#8c92a6] hover:text-slate-900 dark:hover:text-white'
             }`}
           >
             <Crown className="w-3.5 h-3.5 text-amber-500 fill-amber-500" />
@@ -233,7 +233,7 @@ export const UserDashboardView: React.FC = () => {
               </p>
               <button
                 onClick={() => setIsListModalOpen(true)}
-                className="py-2.5 px-4 bg-[#1b5e20] dark:bg-[#c5a059] text-white dark:text-[#0c0d11] font-bold text-xs rounded-xl shadow"
+                className="py-2.5 px-4 bg-[#1b5e20] dark:bg-[#c5a059] text-white dark:text-[#1e130c] font-bold text-xs rounded-xl shadow"
               >
                 + Post Your First Ad Free
               </button>
@@ -243,7 +243,7 @@ export const UserDashboardView: React.FC = () => {
               {userListings.map((ad) => (
                 <div
                   key={ad.id}
-                  className="bg-white dark:bg-[#141622] border border-slate-200 dark:border-[#262939] rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-sm"
+                  className="bg-white dark:bg-[#1a1009] border border-slate-200 dark:border-[#262939] rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-sm"
                 >
                   <div className="flex items-start gap-4">
                     <img
@@ -340,7 +340,7 @@ export const UserDashboardView: React.FC = () => {
                 return (
                   <div
                     key={offer.id}
-                    className="bg-white dark:bg-[#141622] border border-slate-200 dark:border-[#262939] rounded-2xl p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-sm"
+                    className="bg-white dark:bg-[#1a1009] border border-slate-200 dark:border-[#262939] rounded-2xl p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-sm"
                   >
                     <div className="flex items-start gap-4">
                       <img
@@ -420,7 +420,7 @@ export const UserDashboardView: React.FC = () => {
               return (
                 <div
                   key={order.id}
-                  className="bg-white dark:bg-[#141622] border border-slate-200 dark:border-[#262939] rounded-2xl p-5 flex flex-col justify-between shadow-sm"
+                  className="bg-white dark:bg-[#1a1009] border border-slate-200 dark:border-[#262939] rounded-2xl p-5 flex flex-col justify-between shadow-sm"
                 >
                   <div>
                     <div className="flex items-center justify-between text-xs text-slate-500 mb-3 pb-3 border-b border-slate-100 dark:border-[#212434]">
@@ -488,7 +488,7 @@ export const UserDashboardView: React.FC = () => {
 
       {/* Tab 4: Profile & KYC */}
       {activeTab === 'profile' && (
-        <div className="max-w-xl bg-white dark:bg-[#141622] border border-slate-200 dark:border-[#262939] rounded-2xl p-6 shadow-sm">
+        <div className="max-w-xl bg-white dark:bg-[#1a1009] border border-slate-200 dark:border-[#262939] rounded-2xl p-6 shadow-sm">
           <div className="flex items-center justify-between mb-4">
             <h3 className="font-bold text-base text-slate-900 dark:text-white">
               Trader Identity & Profile
@@ -574,7 +574,7 @@ export const UserDashboardView: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setIsPlansModalOpen(true)}
-                className="px-4 py-2.5 bg-[#1b5e20] hover:bg-[#25732b] dark:bg-[#c5a059] dark:hover:bg-[#d6b068] text-white dark:text-[#0c0d11] font-bold text-xs rounded-xl shadow cursor-pointer transition-all self-start sm:self-auto"
+                className="px-4 py-2.5 bg-[#1b5e20] hover:bg-[#25732b] dark:bg-[#c5a059] dark:hover:bg-[#d6b068] text-white dark:text-[#1e130c] font-bold text-xs rounded-xl shadow cursor-pointer transition-all self-start sm:self-auto"
               >
                 {userPlan === 'free' ? 'Upgrade to Starter or Pro' : 'Change Subscription Plan'}
               </button>

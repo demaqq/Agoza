@@ -101,7 +101,7 @@ export const CollectibleDetailModal: React.FC = () => {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-6 bg-black/80 backdrop-blur-xs overflow-y-auto">
-      <div className="relative w-full max-w-4xl bg-white dark:bg-[#11131c] border border-slate-200 dark:border-[#262939] rounded-3xl shadow-2xl overflow-hidden my-auto max-h-[92vh] flex flex-col transition-colors">
+      <div className="relative w-full max-w-4xl bg-white dark:bg-[#1a1009] border border-slate-200 dark:border-[#262939] rounded-3xl shadow-2xl overflow-hidden my-auto max-h-[92vh] flex flex-col transition-colors">
         {/* Top Modal Header */}
         <div className="flex items-center justify-between px-5 py-3.5 border-b border-slate-100 dark:border-[#212433] bg-slate-50 dark:bg-[#0e1017]">
           <div className="flex items-center gap-2 text-xs text-slate-500 dark:text-[#8c92a6]">
@@ -119,8 +119,8 @@ export const CollectibleDetailModal: React.FC = () => {
               onClick={() => toggleWatchlist(selectedCollectible.id)}
               className={`p-2 rounded-xl border transition-colors cursor-pointer min-h-[40px] min-w-[40px] flex items-center justify-center ${
                 isSaved
-                  ? 'bg-[#1b5e20] text-white dark:bg-[#c5a059] dark:text-[#0c0d11] border-transparent'
-                  : 'bg-white dark:bg-[#181a24] text-slate-600 dark:text-[#8e94a6] hover:text-slate-900 dark:hover:text-white border-slate-200 dark:border-[#2a2d3e]'
+                  ? 'bg-[#1b5e20] text-white dark:bg-[#c5a059] dark:text-[#1e130c] border-transparent'
+                  : 'bg-white dark:bg-[#251810] text-slate-600 dark:text-[#8e94a6] hover:text-slate-900 dark:hover:text-white border-slate-200 dark:border-[#2a2d3e]'
               }`}
               title={isSaved ? 'Remove from saved' : 'Save ad'}
             >
@@ -129,12 +129,12 @@ export const CollectibleDetailModal: React.FC = () => {
 
             <button
               onClick={handleShare}
-              className="p-2 rounded-xl bg-white dark:bg-[#181a24] text-slate-600 dark:text-[#8e94a6] hover:text-slate-900 dark:hover:text-white border border-slate-200 dark:border-[#2a2d3e] transition-colors cursor-pointer relative min-h-[40px] min-w-[40px] flex items-center justify-center"
+              className="p-2 rounded-xl bg-white dark:bg-[#251810] text-slate-600 dark:text-[#8e94a6] hover:text-slate-900 dark:hover:text-white border border-slate-200 dark:border-[#2a2d3e] transition-colors cursor-pointer relative min-h-[40px] min-w-[40px] flex items-center justify-center"
               title="Share ad"
             >
               <Share2 className="w-4 h-4" />
               {copiedLink && (
-                <span className="absolute -bottom-8 right-0 bg-[#1b5e20] dark:bg-[#c5a059] text-white dark:text-[#0c0d11] text-[10px] font-bold px-2 py-0.5 rounded shadow whitespace-nowrap">
+                <span className="absolute -bottom-8 right-0 bg-[#1b5e20] dark:bg-[#c5a059] text-white dark:text-[#1e130c] text-[10px] font-bold px-2 py-0.5 rounded shadow whitespace-nowrap">
                   Link copied!
                 </span>
               )}
@@ -142,7 +142,7 @@ export const CollectibleDetailModal: React.FC = () => {
 
             <button
               onClick={handleClose}
-              className="p-2 rounded-xl bg-white dark:bg-[#181a24] text-slate-600 dark:text-[#8e94a6] hover:text-slate-900 dark:hover:text-white border border-slate-200 dark:border-[#2a2d3e] transition-colors cursor-pointer min-h-[40px] min-w-[40px] flex items-center justify-center"
+              className="p-2 rounded-xl bg-white dark:bg-[#251810] text-slate-600 dark:text-[#8e94a6] hover:text-slate-900 dark:hover:text-white border border-slate-200 dark:border-[#2a2d3e] transition-colors cursor-pointer min-h-[40px] min-w-[40px] flex items-center justify-center"
             >
               <X className="w-4 h-4" />
             </button>
@@ -164,7 +164,7 @@ export const CollectibleDetailModal: React.FC = () => {
                 itemTitle={selectedCollectible.title}
                 sellerName={selectedCollectible.seller.name}
               />
-              <div className="absolute top-3 left-3 pointer-events-none bg-white/95 dark:bg-[#0c0d11]/90 backdrop-blur-md px-3 py-1.5 rounded-xl border border-slate-200 dark:border-[#2a2d3e] text-xs font-semibold text-slate-800 dark:text-[#d6d9e4] shadow-xs flex items-center gap-1.5 z-10">
+              <div className="absolute top-3 left-3 pointer-events-none bg-white/95 dark:bg-[#1e130c]/90 backdrop-blur-md px-3 py-1.5 rounded-xl border border-slate-200 dark:border-[#2a2d3e] text-xs font-semibold text-slate-800 dark:text-[#d6d9e4] shadow-xs flex items-center gap-1.5 z-10">
                 <MapPin className="w-3.5 h-3.5 text-amber-500 shrink-0" />
                 <span>{selectedCollectible.seller.city || selectedCollectible.seller.location}</span>
               </div>
@@ -207,7 +207,7 @@ export const CollectibleDetailModal: React.FC = () => {
                 </p>
               </div>
 
-              <div className="bg-slate-50 dark:bg-[#161824] border border-slate-200 dark:border-[#252837] rounded-2xl p-4">
+              <div className="bg-slate-50 dark:bg-[#251810] border border-slate-200 dark:border-[#252837] rounded-2xl p-4">
                 <div className="flex items-center gap-2 text-xs font-bold text-slate-800 dark:text-[#e2c17c] mb-1.5">
                   <Award className="w-4 h-4 text-[#1b5e20] dark:text-[#c5a059]" />
                   <span>Warranty, Verification & Documents</span>
@@ -307,7 +307,7 @@ export const CollectibleDetailModal: React.FC = () => {
                   </p>
 
                   {/* Market Benchmark Range */}
-                  <div className="flex items-center justify-between text-[10px] p-2 bg-white dark:bg-[#0f111a] rounded-xl border border-slate-200 dark:border-[#252839] font-mono">
+                  <div className="flex items-center justify-between text-[10px] p-2 bg-white dark:bg-[#0f111a] rounded-xl border border-slate-200 dark:border-[#382214] font-mono">
                     <div>
                       <span className="text-slate-400 block">Lowest on Agoza</span>
                       <span className="font-bold text-emerald-600 dark:text-emerald-400">{formatPrice(marketIntel.lowestPrice)}</span>
@@ -400,7 +400,7 @@ export const CollectibleDetailModal: React.FC = () => {
               <div className="space-y-2.5">
                 <button
                   onClick={() => setIsEscrowModalOpen(true)}
-                  className="w-full py-3 px-4 bg-[#1b5e20] hover:bg-[#25732b] dark:bg-[#c5a059] dark:hover:bg-[#d6b068] text-white dark:text-[#0c0d11] font-bold text-sm rounded-xl shadow transition-colors cursor-pointer flex items-center justify-center gap-2 min-h-[44px]"
+                  className="w-full py-3 px-4 bg-[#1b5e20] hover:bg-[#25732b] dark:bg-[#c5a059] dark:hover:bg-[#d6b068] text-white dark:text-[#1e130c] font-bold text-sm rounded-xl shadow transition-colors cursor-pointer flex items-center justify-center gap-2 min-h-[44px]"
                 >
                   <Lock className="w-4 h-4 stroke-[2.5]" />
                   <span>{t.buyWithEscrow}</span>
@@ -463,7 +463,7 @@ export const CollectibleDetailModal: React.FC = () => {
                 </div>
 
                 {/* Seller Trust Score & Ratings Box */}
-                <div className="mt-3 p-3 bg-white dark:bg-[#12141f] rounded-xl border border-slate-200 dark:border-[#272b3c] space-y-2.5">
+                <div className="mt-3 p-3 bg-white dark:bg-[#1a1009] rounded-xl border border-slate-200 dark:border-[#272b3c] space-y-2.5">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-1.5">
                       <Shield className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
@@ -585,7 +585,7 @@ export const CollectibleDetailModal: React.FC = () => {
 
                           <button
                             type="submit"
-                            className="w-full py-1.5 bg-[#1b5e20] dark:bg-[#c5a059] text-white dark:text-[#0c0d11] font-bold text-xs rounded-lg shadow cursor-pointer hover:opacity-95"
+                            className="w-full py-1.5 bg-[#1b5e20] dark:bg-[#c5a059] text-white dark:text-[#1e130c] font-bold text-xs rounded-lg shadow cursor-pointer hover:opacity-95"
                           >
                             Submit Trust Rating
                           </button>
@@ -635,7 +635,7 @@ export const CollectibleDetailModal: React.FC = () => {
                       <span>{t.showContact}</span>
                     </button>
                   ) : (
-                    <div className="p-3 bg-white dark:bg-[#1b1e2c] rounded-xl border border-slate-200 dark:border-[#2b2f42] text-xs space-y-1.5">
+                    <div className="p-3 bg-white dark:bg-[#1b1e2c] rounded-xl border border-slate-200 dark:border-[#473020] text-xs space-y-1.5">
                       <div className="flex items-center justify-between">
                         <span className="text-slate-500">Phone:</span>
                         <a

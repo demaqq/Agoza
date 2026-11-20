@@ -335,7 +335,7 @@ export const ListCollectibleModal: React.FC = () => {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/85 backdrop-blur-xs overflow-y-auto">
-      <div className="relative w-full max-w-2xl bg-white dark:bg-[#11131c] border border-slate-200 dark:border-[#262939] rounded-3xl shadow-2xl overflow-hidden my-auto max-h-[92vh] flex flex-col transition-colors">
+      <div className="relative w-full max-w-2xl bg-white dark:bg-[#1a1009] border border-slate-200 dark:border-[#262939] rounded-3xl shadow-2xl overflow-hidden my-auto max-h-[92vh] flex flex-col transition-colors">
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100 dark:border-[#212433] bg-slate-50 dark:bg-[#0e1017]">
           <div className="flex items-center gap-2">
@@ -346,7 +346,7 @@ export const ListCollectibleModal: React.FC = () => {
           </div>
           <button
             onClick={() => setIsListModalOpen(false)}
-            className="p-1.5 rounded-xl bg-white dark:bg-[#181a24] text-slate-600 dark:text-[#8e94a6] hover:text-slate-900 dark:hover:text-white border border-slate-200 dark:border-[#2a2d3e] transition-colors cursor-pointer"
+            className="p-1.5 rounded-xl bg-white dark:bg-[#251810] text-slate-600 dark:text-[#8e94a6] hover:text-slate-900 dark:hover:text-white border border-slate-200 dark:border-[#2a2d3e] transition-colors cursor-pointer"
           >
             <X className="w-4 h-4" />
           </button>
@@ -745,7 +745,7 @@ export const ListCollectibleModal: React.FC = () => {
                     !safetyCheck.isSafe ||
                     isProcessingImage
                       ? 'bg-slate-300 dark:bg-[#292c3a] text-slate-500 cursor-not-allowed'
-                      : 'bg-[#1b5e20] hover:bg-[#25732b] dark:bg-[#c5a059] dark:hover:bg-[#d6b068] text-white dark:text-[#0c0d11] cursor-pointer active:scale-98'
+                      : 'bg-[#1b5e20] hover:bg-[#25732b] dark:bg-[#c5a059] dark:hover:bg-[#d6b068] text-white dark:text-[#1e130c] cursor-pointer active:scale-98'
                   }`}
                 >
                   <Plus className="w-4 h-4 stroke-[2.5]" />
@@ -952,7 +952,7 @@ export const ListCollectibleModal: React.FC = () => {
                             updateCollectiblePrice(createdItemId, marketReport.recommendedCompetitivePrice);
                             setPriceUpdatedTo(marketReport.recommendedCompetitivePrice);
                           }}
-                          className="py-2 px-3 bg-[#1b5e20] hover:bg-[#25732b] dark:bg-[#c5a059] dark:hover:bg-[#d6b068] text-white dark:text-[#0c0d11] font-bold text-xs rounded-xl shadow cursor-pointer transition-all"
+                          className="py-2 px-3 bg-[#1b5e20] hover:bg-[#25732b] dark:bg-[#c5a059] dark:hover:bg-[#d6b068] text-white dark:text-[#1e130c] font-bold text-xs rounded-xl shadow cursor-pointer transition-all"
                         >
                           Update to Competitive Price ({formatPrice(marketReport.recommendedCompetitivePrice)})
                         </button>
@@ -960,7 +960,7 @@ export const ListCollectibleModal: React.FC = () => {
                       <button
                         type="button"
                         onClick={() => setIsListModalOpen(false)}
-                        className="py-2 px-3 bg-white dark:bg-[#1a1d29] text-slate-700 dark:text-slate-300 font-semibold text-xs rounded-xl border border-slate-300 dark:border-[#2f3346] hover:bg-slate-50 cursor-pointer"
+                        className="py-2 px-3 bg-white dark:bg-[#251810] text-slate-700 dark:text-slate-300 font-semibold text-xs rounded-xl border border-slate-300 dark:border-[#2f3346] hover:bg-slate-50 cursor-pointer"
                       >
                         Keep My Asking Price ({formatPrice(priceETB)})
                       </button>
@@ -973,7 +973,7 @@ export const ListCollectibleModal: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setIsListModalOpen(false)}
-                className="w-full py-3 bg-slate-900 hover:bg-black dark:bg-[#c5a059] dark:hover:bg-[#d6b068] text-white dark:text-[#0c0d11] font-bold text-xs rounded-xl shadow cursor-pointer transition-colors"
+                className="w-full py-3 bg-slate-900 hover:bg-black dark:bg-[#c5a059] dark:hover:bg-[#d6b068] text-white dark:text-[#1e130c] font-bold text-xs rounded-xl shadow cursor-pointer transition-colors"
               >
                 Done & View in Marketplace
               </button>
@@ -993,7 +993,7 @@ export const ListCollectibleModal: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setIsListModalOpen(false)}
-                className="mt-2 py-2 px-6 bg-[#1b5e20] dark:bg-[#c5a059] text-white dark:text-[#0c0d11] font-bold text-xs rounded-xl cursor-pointer"
+                className="mt-2 py-2 px-6 bg-[#1b5e20] dark:bg-[#c5a059] text-white dark:text-[#1e130c] font-bold text-xs rounded-xl cursor-pointer"
               >
                 Done
               </button>

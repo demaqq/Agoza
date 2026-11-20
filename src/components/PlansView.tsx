@@ -124,7 +124,7 @@ export const PlansView: React.FC = () => {
                 className={`p-3 rounded-xl border text-left cursor-pointer transition-all ${
                   paymentMethod === 'telebirr'
                     ? 'border-[#0072ce] bg-[#0072ce]/10 text-slate-900 dark:text-white ring-2 ring-[#0072ce]'
-                    : 'border-slate-200 dark:border-[#282d42] bg-white dark:bg-[#12141f] text-slate-600 dark:text-slate-300'
+                    : 'border-slate-200 dark:border-[#282d42] bg-white dark:bg-[#1a1009] text-slate-600 dark:text-slate-300'
                 }`}
               >
                 <div className="flex items-center justify-between mb-1">
@@ -140,7 +140,7 @@ export const PlansView: React.FC = () => {
                 className={`p-3 rounded-xl border text-left cursor-pointer transition-all ${
                   paymentMethod === 'cbe'
                     ? 'border-[#7b1480] bg-[#7b1480]/10 text-slate-900 dark:text-white ring-2 ring-[#7b1480]'
-                    : 'border-slate-200 dark:border-[#282d42] bg-white dark:bg-[#12141f] text-slate-600 dark:text-slate-300'
+                    : 'border-slate-200 dark:border-[#282d42] bg-white dark:bg-[#1a1009] text-slate-600 dark:text-slate-300'
                 }`}
               >
                 <div className="flex items-center justify-between mb-1">
@@ -156,7 +156,7 @@ export const PlansView: React.FC = () => {
                 className={`p-3 rounded-xl border text-left cursor-pointer transition-all ${
                   paymentMethod === 'chapa'
                     ? 'border-emerald-500 bg-emerald-500/10 text-slate-900 dark:text-white ring-2 ring-emerald-500'
-                    : 'border-slate-200 dark:border-[#282d42] bg-white dark:bg-[#12141f] text-slate-600 dark:text-slate-300'
+                    : 'border-slate-200 dark:border-[#282d42] bg-white dark:bg-[#1a1009] text-slate-600 dark:text-slate-300'
                 }`}
               >
                 <div className="flex items-center justify-between mb-1">
@@ -172,7 +172,7 @@ export const PlansView: React.FC = () => {
                 className={`p-3 rounded-xl border text-left cursor-pointer transition-all ${
                   paymentMethod === 'awash'
                     ? 'border-amber-600 bg-amber-600/10 text-slate-900 dark:text-white ring-2 ring-amber-600'
-                    : 'border-slate-200 dark:border-[#282d42] bg-white dark:bg-[#12141f] text-slate-600 dark:text-slate-300'
+                    : 'border-slate-200 dark:border-[#282d42] bg-white dark:bg-[#1a1009] text-slate-600 dark:text-slate-300'
                 }`}
               >
                 <div className="flex items-center justify-between mb-1">
@@ -201,7 +201,7 @@ export const PlansView: React.FC = () => {
               type="button"
               disabled={isProcessing}
               onClick={handleConfirmPayment}
-              className="flex-1 py-3 px-4 bg-[#1b5e20] hover:bg-[#25732b] dark:bg-[#c5a059] dark:hover:bg-[#d6b068] text-white dark:text-[#0c0d11] font-bold text-xs rounded-xl shadow-lg cursor-pointer transition-all flex items-center justify-center gap-2"
+              className="flex-1 py-3 px-4 bg-[#1b5e20] hover:bg-[#25732b] dark:bg-[#c5a059] dark:hover:bg-[#d6b068] text-white dark:text-[#1e130c] font-bold text-xs rounded-xl shadow-lg cursor-pointer transition-all flex items-center justify-center gap-2"
             >
               {isProcessing ? (
                 <span>Confirming Transaction...</span>
@@ -242,7 +242,7 @@ export const PlansView: React.FC = () => {
               key={plan.id}
               className={`relative rounded-3xl p-6 sm:p-8 flex flex-col justify-between transition-all duration-300 ${
                 isPro
-                  ? 'bg-gradient-to-b from-[#1b1e2c] to-[#12141f] border-2 border-amber-400 text-white shadow-2xl shadow-amber-400/10'
+                  ? 'bg-gradient-to-b from-[#1b1e2c] to-[#1a1009] border-2 border-amber-400 text-white shadow-2xl shadow-amber-400/10'
                   : isStarter
                   ? 'bg-white dark:bg-[#141624] border-2 border-[#1b5e20] dark:border-[#c5a059] shadow-xl'
                   : 'bg-white dark:bg-[#12141e] border border-slate-200 dark:border-[#242738] text-slate-900 dark:text-white'
@@ -369,8 +369,8 @@ export const PlansView: React.FC = () => {
                       isPro
                         ? 'bg-amber-400 hover:bg-amber-300 text-slate-950 font-black'
                         : isStarter
-                        ? 'bg-[#1b5e20] hover:bg-[#25732b] dark:bg-[#c5a059] dark:hover:bg-[#d6b068] text-white dark:text-[#0c0d11]'
-                        : 'bg-white dark:bg-[#1a1d29] hover:bg-slate-100 dark:hover:bg-[#222535] text-slate-800 dark:text-slate-200 border border-slate-300 dark:border-[#2f3348]'
+                        ? 'bg-[#1b5e20] hover:bg-[#25732b] dark:bg-[#c5a059] dark:hover:bg-[#d6b068] text-white dark:text-[#1e130c]'
+                        : 'bg-white dark:bg-[#251810] hover:bg-slate-100 dark:hover:bg-[#222535] text-slate-800 dark:text-slate-200 border border-slate-300 dark:border-[#2f3348]'
                     }`}
                   >
                     {isPro ? (
@@ -439,13 +439,13 @@ export const PlansView: React.FC = () => {
           <div className="flex items-center gap-3">
             <button
               onClick={() => setIsListModalOpen(true)}
-              className="flex-1 py-3 px-4 bg-[#1b5e20] dark:bg-[#c5a059] text-white dark:text-[#0c0d11] font-bold text-xs rounded-xl shadow cursor-pointer text-center"
+              className="flex-1 py-3 px-4 bg-[#1b5e20] dark:bg-[#c5a059] text-white dark:text-[#1e130c] font-bold text-xs rounded-xl shadow cursor-pointer text-center"
             >
               + Post Classified Ad Now
             </button>
             <button
               onClick={() => setActiveView('marketplace')}
-              className="py-3 px-4 bg-slate-100 dark:bg-[#1a1d29] text-slate-700 dark:text-slate-300 font-semibold text-xs rounded-xl hover:bg-slate-200 dark:hover:bg-[#222535] cursor-pointer"
+              className="py-3 px-4 bg-slate-100 dark:bg-[#251810] text-slate-700 dark:text-slate-300 font-semibold text-xs rounded-xl hover:bg-slate-200 dark:hover:bg-[#222535] cursor-pointer"
             >
               Back to Marketplace
             </button>

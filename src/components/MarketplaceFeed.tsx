@@ -7,6 +7,7 @@ import { HandshakeDealModal } from './HandshakeDealModal';
 import { BunaBlessingToken } from './BunaBlessingToken';
 import { CoffeeBeansIcon, JebenaIcon } from './EthiopianIcons';
 import { HeroBanner } from './HeroBanner';
+import { fmt } from '../i18n/translations';
 import { FilterBar } from './FilterBar';
 import { CustomerWiseBar } from './CustomerWiseBar';
 import {
@@ -31,8 +32,26 @@ export const MarketplaceFeed: React.FC = () => {
     setFilters,
     resetFilters,
     setSelectedCollectible,
+    formatPrice,
     t,
   } = useMarketplace();
+
+  // Gesture tip is dismissible and remembered per device.
+  const [showGestureTip, setShowGestureTip] = useState<boolean>(() => {
+    try {
+      return localStorage.getItem('agoza_gesture_tip_dismissed') !== '1';
+    } catch {
+      return true;
+    }
+  });
+  const dismissGestureTip = () => {
+    setShowGestureTip(false);
+    try {
+      localStorage.setItem('agoza_gesture_tip_dismissed', '1');
+    } catch {
+      /* ignore */
+    }
+  };
 
   // Layout View Mode (Grid vs Compact)
   const [viewMode, setViewMode] = useState<'grid' | 'compact'>('grid');
@@ -45,16 +64,25 @@ export const MarketplaceFeed: React.FC = () => {
   const [dismissedItemIds, setDismissedItemIds] = useState<string[]>([]);
   const [gestureNotice, setGestureNotice] = useState<string | null>(null);
 
+  const noticeTimer = React.useRef<ReturnType<typeof setTimeout> | null>(null);
+  const flashNotice = (msg: string, ms = 2500) => {
+    setGestureNotice(msg);
+    if (noticeTimer.current) clearTimeout(noticeTimer.current);
+    noticeTimer.current = setTimeout(() => setGestureNotice(null), ms);
+  };
+  React.useEffect(() => () => {
+    if (noticeTimer.current) clearTimeout(noticeTimer.current);
+  }, []);
+
   const handleRefresh = async () => {
     await new Promise((resolve) => setTimeout(resolve, 600));
-    setGestureNotice('Feed refreshed with fresh Ethiopian verified listings!');
-    setTimeout(() => setGestureNotice(null), 3000);
+    setDismissedItemIds([]);
+    flashNotice(t.feed.refreshed);
   };
 
   const handleDismissItem = (id: string) => {
     setDismissedItemIds((prev) => [...prev, id]);
-    setGestureNotice('Item passed and hidden from your feed.');
-    setTimeout(() => setGestureNotice(null), 2500);
+    flashNotice(t.feed.itemHidden);
   };
 
   const handleTriggerSampleHandshake = () => {
@@ -82,6 +110,14 @@ export const MarketplaceFeed: React.FC = () => {
     return collectibles.filter((item) => {
       // Exclude passed/dismissed items
       if (dismissedItemIds.includes(item.id)) {
+        return false;
+      }
+
+      // Only show live, non-flagged listings (sold/traded ads and moderated ads are hidden)
+      if (item.status === 'sold' || item.status === 'traded' || (item.status as string) === 'deleted') {
+        return false;
+      }
+      if (item.moderationStatus === 'flagged') {
         return false;
       }
 
@@ -123,13 +159,13 @@ export const MarketplaceFeed: React.FC = () => {
       }
 
       // 6. Max Budget Filter
-      if (filters.maxPrice && filters.maxPrice > 0 && item.priceETB > filters.maxPrice) {
+      if (filters.maxPrice > 0 && item.priceETB > filters.maxPrice) {
         return false;
       }
 
       // 7. Instant Search Query Filter
       if (filters.searchQuery?.trim()) {
-        const query = filters.searchQuery.toLowerCase().trim();
+        const terms = filters.searchQuery.toLowerCase().trim().split(/\s+/);
         const searchTarget = (
           item.title +
           ' ' +
@@ -150,7 +186,8 @@ export const MarketplaceFeed: React.FC = () => {
           (item.seller.location || '')
         ).toLowerCase();
 
-        if (!searchTarget.includes(query)) {
+        // Every word must match somewhere (so "iphone 256" finds "iPhone 15 Pro 256GB").
+        if (!terms.every((term) => searchTarget.includes(term))) {
           return false;
         }
       }
@@ -165,7 +202,7 @@ export const MarketplaceFeed: React.FC = () => {
       if (filters.sortBy === 'price-asc') return a.priceETB - b.priceETB;
       if (filters.sortBy === 'price-desc') return b.priceETB - a.priceETB;
       if (filters.sortBy === 'most-popular') return b.likesCount - a.likesCount;
-      return 0; // 'latest' maintains default order
+      return 0; // 'latest' keeps insertion order (newest listings are prepended)
     });
   }, [filteredCollectibles, filters.sortBy]);
 
@@ -178,7 +215,7 @@ export const MarketplaceFeed: React.FC = () => {
     (filters.location && filters.location !== 'all') ||
     (filters.condition && filters.condition !== 'all') ||
     filters.openToTradeOnly ||
-    (filters.maxPrice && filters.maxPrice > 0)
+    filters.maxPrice > 0
   );
 
   return (
@@ -203,10 +240,10 @@ export const MarketplaceFeed: React.FC = () => {
                 <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse shrink-0" />
                 <div>
                   <h2 className="text-sm sm:text-base font-bold text-slate-900 dark:text-[#f8edd6]">
-                    {sortedCollectibles.length} Verified {sortedCollectibles.length === 1 ? 'Listing' : 'Listings'} Available
+                    {fmt(t.feed.listingsAvailable, { count: sortedCollectibles.length.toLocaleString('en-US') })}
                   </h2>
                   <p className="text-[11px] text-slate-500 dark:text-[#a8907f]">
-                    In-person CBE safe hub exchange & escrow protected
+                    {t.feed.feedSubtitle}
                   </p>
                 </div>
               </div>
@@ -230,7 +267,7 @@ export const MarketplaceFeed: React.FC = () => {
                   title="Ethiopian Buna Blessing (የቡና ምርቃት)"
                 >
                   <JebenaIcon className="w-3.5 h-3.5 text-amber-700 dark:text-[#d4a373]" />
-                  <span>Buna Blessing</span>
+                  <span>{t.feed.bunaBlessing}</span>
                 </button>
 
                 {/* Handshake Deal Modal Trigger */}
@@ -241,7 +278,7 @@ export const MarketplaceFeed: React.FC = () => {
                   title="Preview Ethiopian Handshake Deal (ስምምነት)"
                 >
                   <Sparkles className="w-3.5 h-3.5 text-amber-500" />
-                  <span>Handshake Deal</span>
+                  <span>{t.feed.handshakeDeal}</span>
                 </button>
 
                 {/* Grid / Compact View Switcher */}
@@ -253,7 +290,9 @@ export const MarketplaceFeed: React.FC = () => {
                         ? 'bg-[#1b5e20] text-white dark:bg-[#d4a373] dark:text-[#1e130c]'
                         : 'text-slate-400 hover:text-slate-700 dark:hover:text-slate-200'
                     }`}
-                    title="Grid View (3-4 columns)"
+                    title={t.feed.gridView}
+                    aria-label={t.feed.gridView}
+                    aria-pressed={viewMode === 'grid'}
                   >
                     <Grid3X3 className="w-3.5 h-3.5" />
                   </button>
@@ -264,7 +303,9 @@ export const MarketplaceFeed: React.FC = () => {
                         ? 'bg-[#1b5e20] text-white dark:bg-[#d4a373] dark:text-[#1e130c]'
                         : 'text-slate-400 hover:text-slate-700 dark:hover:text-slate-200'
                     }`}
-                    title="Compact View"
+                    title={t.feed.compactView}
+                    aria-label={t.feed.compactView}
+                    aria-pressed={viewMode === 'compact'}
                   >
                     <Layers className="w-3.5 h-3.5" />
                   </button>
@@ -276,12 +317,12 @@ export const MarketplaceFeed: React.FC = () => {
             {hasActiveFilters && (
               <div className="mb-4 flex flex-wrap items-center gap-1.5 text-xs">
                 <span className="text-[11px] font-semibold text-slate-400 dark:text-[#a8907f] mr-1">
-                  Active Filters:
+                  {t.feed.activeFilters}
                 </span>
 
                 {filters.searchQuery && (
                   <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-amber-100/90 text-amber-950 dark:bg-[#342115] dark:text-[#f3ddc9] border border-amber-300 dark:border-[#473020]">
-                    <span>Search: "{filters.searchQuery}"</span>
+                    <span>{fmt(t.feed.searchChip, { q: filters.searchQuery })}</span>
                     <button
                       onClick={() => setFilters((prev) => ({ ...prev, searchQuery: '' }))}
                       className="p-0.5 hover:text-rose-600 cursor-pointer"
@@ -294,7 +335,7 @@ export const MarketplaceFeed: React.FC = () => {
 
                 {filters.category && filters.category !== 'all' && (
                   <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-emerald-50 text-emerald-900 dark:bg-emerald-950/40 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800">
-                    <span className="capitalize">{filters.category.replace('-', ' ')}</span>
+                    <span>{t.categoryNames[filters.category] || filters.category}</span>
                     <button
                       onClick={() => setFilters((prev) => ({ ...prev, category: 'all', subcategory: 'all' }))}
                       className="p-0.5 hover:text-rose-600 cursor-pointer"
@@ -307,7 +348,7 @@ export const MarketplaceFeed: React.FC = () => {
 
                 {filters.subcategory && filters.subcategory !== 'all' && (
                   <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-emerald-50 text-emerald-900 dark:bg-emerald-950/40 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800">
-                    <span className="capitalize">{filters.subcategory.replace('-', ' ')}</span>
+                    <span className="capitalize">{filters.subcategory.replace(/-/g, ' ')}</span>
                     <button
                       onClick={() => setFilters((prev) => ({ ...prev, subcategory: 'all' }))}
                       className="p-0.5 hover:text-rose-600 cursor-pointer"
@@ -347,7 +388,7 @@ export const MarketplaceFeed: React.FC = () => {
 
                 {filters.condition && filters.condition !== 'all' && (
                   <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-purple-50 text-purple-900 dark:bg-purple-950/40 dark:text-purple-300 border border-purple-200 dark:border-purple-800">
-                    <span>{filters.condition}</span>
+                    <span>{t.conditions[filters.condition as keyof typeof t.conditions] || filters.condition}</span>
                     <button
                       onClick={() => setFilters((prev) => ({ ...prev, condition: 'all' }))}
                       className="p-0.5 hover:text-rose-600 cursor-pointer"
@@ -360,7 +401,7 @@ export const MarketplaceFeed: React.FC = () => {
 
                 {filters.openToTradeOnly && (
                   <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-teal-50 text-teal-900 dark:bg-teal-950/40 dark:text-teal-300 border border-teal-200 dark:border-teal-800">
-                    <span>Swaps & Barter Only</span>
+                    <span>{t.filterSwapsOnly}</span>
                     <button
                       onClick={() => setFilters((prev) => ({ ...prev, openToTradeOnly: false }))}
                       className="p-0.5 hover:text-rose-600 cursor-pointer"
@@ -371,9 +412,9 @@ export const MarketplaceFeed: React.FC = () => {
                   </span>
                 )}
 
-                {filters.maxPrice && filters.maxPrice > 0 && (
+                {filters.maxPrice > 0 && (
                   <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-amber-50 text-amber-900 dark:bg-amber-950/40 dark:text-amber-300 border border-amber-200 dark:border-amber-800">
-                    <span>Under {filters.maxPrice.toLocaleString()} Br</span>
+                    <span>{fmt(t.feed.under, { price: formatPrice(filters.maxPrice) })}</span>
                     <button
                       onClick={() => setFilters((prev) => ({ ...prev, maxPrice: 0 }))}
                       className="p-0.5 hover:text-rose-600 cursor-pointer"
@@ -389,27 +430,35 @@ export const MarketplaceFeed: React.FC = () => {
                   className="inline-flex items-center gap-1 text-[11px] font-bold text-rose-600 hover:text-rose-700 dark:text-rose-400 ml-1 cursor-pointer"
                 >
                   <RotateCcw className="w-3 h-3" />
-                  <span>Reset All</span>
+                  <span>{t.feed.resetAll}</span>
                 </button>
               </div>
             )}
 
-            {/* Gesture Tip Bar */}
-            <div className="mb-5 flex items-center justify-between gap-2 p-2.5 px-3.5 rounded-xl bg-amber-100/50 dark:bg-[#251810] border border-amber-200/60 dark:border-[#3d2719] text-xs">
-              <div className="flex items-center gap-2">
-                <CoffeeBeansIcon className="w-4 h-4 text-amber-700 dark:text-[#d4a373] shrink-0" />
-                <span className="text-slate-700 dark:text-[#e4d4c4]">
-                  <strong className="text-slate-900 dark:text-[#f8edd6]">Customer Gestures:</strong> Swipe card right to save to Watchlist · Long-press for Quick Inspection
-                </span>
+            {/* Gesture Tip Bar (dismissible) */}
+            {showGestureTip && (
+              <div className="mb-5 flex items-center justify-between gap-2 p-2.5 px-3.5 rounded-xl bg-amber-100/50 dark:bg-[#251810] border border-amber-200/60 dark:border-[#3d2719] text-xs">
+                <div className="flex items-center gap-2">
+                  <CoffeeBeansIcon className="w-4 h-4 text-amber-700 dark:text-[#d4a373] shrink-0" />
+                  <span className="text-slate-700 dark:text-[#e4d4c4]">
+                    <strong className="text-slate-900 dark:text-[#f8edd6]">{t.feed.tipTitle}</strong> {t.feed.tip}
+                  </span>
+                </div>
+                <button
+                  type="button"
+                  onClick={dismissGestureTip}
+                  className="p-1.5 rounded-lg text-slate-500 hover:text-slate-900 dark:text-[#a8907f] dark:hover:text-white hover:bg-amber-200/50 dark:hover:bg-[#382214] cursor-pointer shrink-0"
+                  aria-label={t.feed.dismiss}
+                  title={t.feed.dismiss}
+                >
+                  <X className="w-3.5 h-3.5" />
+                </button>
               </div>
-              <span className="text-[11px] font-mono text-emerald-700 dark:text-emerald-400 font-bold hidden sm:inline">
-                Instant P2P
-              </span>
-            </div>
+            )}
 
             {/* Gesture Notice Toast */}
             {gestureNotice && (
-              <div className="mb-4 p-3 rounded-xl bg-[#1b5e20] dark:bg-[#d4a373] text-white dark:text-[#1e130c] text-xs font-bold flex items-center justify-between shadow-md animate-in fade-in">
+              <div role="status" aria-live="polite" className="fixed bottom-20 lg:bottom-6 left-1/2 -translate-x-1/2 z-50 w-[calc(100%-2rem)] max-w-sm p-3 rounded-xl bg-[#1b5e20] dark:bg-[#d4a373] text-white dark:text-[#1e130c] text-xs font-bold flex items-center justify-between shadow-xl animate-in fade-in">
                 <div className="flex items-center gap-2">
                   <CheckCircle2 className="w-4 h-4 stroke-[2.5]" />
                   <span>{gestureNotice}</span>
@@ -417,6 +466,7 @@ export const MarketplaceFeed: React.FC = () => {
                 <button
                   onClick={() => setGestureNotice(null)}
                   className="p-1 hover:opacity-80 cursor-pointer"
+                  aria-label={t.feed.dismiss}
                 >
                   <X className="w-3.5 h-3.5" />
                 </button>
@@ -448,10 +498,10 @@ export const MarketplaceFeed: React.FC = () => {
                   <Search className="w-6 h-6" />
                 </div>
                 <h3 className="text-base font-bold text-slate-900 dark:text-[#fbf5ef] mb-2">
-                  No matching items found
+                  {t.feed.noResultsTitle}
                 </h3>
                 <p className="text-xs text-slate-500 dark:text-[#a8907f] mb-6 leading-relaxed">
-                  No verified Ethiopian listings match your active filters or query. Try searching for phones, vehicles, electronics, or coffee.
+                  {t.feed.noResultsBody}
                 </p>
                 <div className="flex flex-wrap items-center justify-center gap-2 mb-6">
                   {['Toyota RAV4', 'iPhone 15 Pro', 'MacBook M3', 'Yirgacheffe Coffee'].map((q) => (
@@ -468,7 +518,7 @@ export const MarketplaceFeed: React.FC = () => {
                   onClick={resetFilters}
                   className="px-5 py-2.5 bg-[#1b5e20] hover:bg-[#25732b] dark:bg-[#d4a373] dark:hover:bg-[#e0b487] text-white dark:text-[#1e130c] font-bold text-xs rounded-xl shadow cursor-pointer transition-transform active:scale-95"
                 >
-                  Reset All Filters
+                  {t.feed.resetAllFilters}
                 </button>
               </div>
             )}

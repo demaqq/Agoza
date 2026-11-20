@@ -71,7 +71,7 @@ export const ImageWatermark: React.FC<ImageWatermarkProps> = ({
             className="w-full h-full object-cover object-center group-hover:scale-103 transition-transform duration-300"
           />
         ) : (
-          <div className="w-full h-full bg-slate-200 dark:bg-[#1a1d29] flex flex-col items-center justify-center p-4 text-center">
+          <div className="w-full h-full bg-slate-200 dark:bg-[#251810] flex flex-col items-center justify-center p-4 text-center">
             <div className="w-10 h-10 rounded-full bg-[#1b5e20]/15 dark:bg-[#c5a059]/15 flex items-center justify-center text-[#1b5e20] dark:text-[#c5a059] font-cinzel font-bold text-sm mb-1">
               AG
             </div>

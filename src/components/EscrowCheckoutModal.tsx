@@ -54,7 +54,7 @@ export const EscrowCheckoutModal: React.FC = () => {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/85 backdrop-blur-xs overflow-y-auto">
-      <div className="relative w-full max-w-2xl bg-white dark:bg-[#11131c] border border-slate-200 dark:border-[#262939] rounded-2xl shadow-2xl overflow-hidden my-auto transition-colors">
+      <div className="relative w-full max-w-2xl bg-white dark:bg-[#1a1009] border border-slate-200 dark:border-[#262939] rounded-2xl shadow-2xl overflow-hidden my-auto transition-colors">
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100 dark:border-[#212433] bg-slate-50 dark:bg-[#0e1017]">
           <div className="flex items-center gap-2">
@@ -65,7 +65,7 @@ export const EscrowCheckoutModal: React.FC = () => {
           </div>
           <button
             onClick={handleClose}
-            className="p-1.5 rounded-lg bg-slate-200 dark:bg-[#181a24] text-slate-600 dark:text-[#8e94a6] hover:text-slate-900 dark:hover:text-white border border-slate-300 dark:border-[#2a2d3e] transition-colors cursor-pointer"
+            className="p-1.5 rounded-lg bg-slate-200 dark:bg-[#251810] text-slate-600 dark:text-[#8e94a6] hover:text-slate-900 dark:hover:text-white border border-slate-300 dark:border-[#2a2d3e] transition-colors cursor-pointer"
           >
             <X className="w-4 h-4" />
           </button>
@@ -76,7 +76,7 @@ export const EscrowCheckoutModal: React.FC = () => {
           {!confirmedOrderId ? (
             <div className="space-y-6">
               {/* Item Summary */}
-              <div className="flex items-center gap-4 p-3 bg-slate-50 dark:bg-[#151722] border border-slate-200 dark:border-[#232637] rounded-xl">
+              <div className="flex items-center gap-4 p-3 bg-slate-50 dark:bg-[#151722] border border-slate-200 dark:border-[#382214] rounded-xl">
                 <div className="relative w-16 h-16 rounded-lg overflow-hidden shrink-0 border border-amber-400/40">
                   <img
                     src={selectedCollectible.imageUrl}
@@ -108,15 +108,15 @@ export const EscrowCheckoutModal: React.FC = () => {
                   <span>How Agoza Buyer Safeguard Protects You</span>
                 </h5>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
-                  <div className="p-2.5 rounded-lg bg-white dark:bg-[#1a1d2c] border border-slate-200 dark:border-[#2b2f42]">
+                  <div className="p-2.5 rounded-lg bg-white dark:bg-[#251810] border border-slate-200 dark:border-[#473020]">
                     <span className="font-mono text-xs font-bold text-[#1b5e20] dark:text-[#c5a059] block mb-1">01. Safe Hold</span>
                     <p className="text-[11px] text-slate-600 dark:text-[#8a91a4]">Funds are held securely by Agoza Trust; seller is not paid upfront.</p>
                   </div>
-                  <div className="p-2.5 rounded-lg bg-white dark:bg-[#1a1d2c] border border-slate-200 dark:border-[#2b2f42]">
+                  <div className="p-2.5 rounded-lg bg-white dark:bg-[#251810] border border-slate-200 dark:border-[#473020]">
                     <span className="font-mono text-xs font-bold text-[#1b5e20] dark:text-[#c5a059] block mb-1">02. Physical Inspection</span>
                     <p className="text-[11px] text-slate-600 dark:text-[#8a91a4]">Inspect item at verified safe hub or upon courier arrival with your private code.</p>
                   </div>
-                  <div className="p-2.5 rounded-lg bg-white dark:bg-[#1a1d2c] border border-slate-200 dark:border-[#2b2f42]">
+                  <div className="p-2.5 rounded-lg bg-white dark:bg-[#251810] border border-slate-200 dark:border-[#473020]">
                     <span className="font-mono text-xs font-bold text-emerald-600 dark:text-[#48bb78] block mb-1">03. Approval</span>
                     <p className="text-[11px] text-slate-600 dark:text-[#8a91a4]">Funds only released when you confirm physical authenticity and complete satisfaction.</p>
                   </div>
@@ -233,7 +233,7 @@ export const EscrowCheckoutModal: React.FC = () => {
                 type="button"
                 onClick={handleConfirmEscrow}
                 disabled={isProcessing}
-                className="w-full py-3 px-4 bg-[#1b5e20] hover:bg-[#25732b] dark:bg-[#c5a059] dark:hover:bg-[#d6b068] active:bg-[#1b5e20] text-white dark:text-[#0c0d11] font-bold text-sm rounded-xl transition-all shadow-md cursor-pointer flex items-center justify-center gap-2"
+                className="w-full py-3 px-4 bg-[#1b5e20] hover:bg-[#25732b] dark:bg-[#c5a059] dark:hover:bg-[#d6b068] active:bg-[#1b5e20] text-white dark:text-[#1e130c] font-bold text-sm rounded-xl transition-all shadow-md cursor-pointer flex items-center justify-center gap-2"
               >
                 {isProcessing ? (
                   <span>Securing Protected Funds...</span>
@@ -269,7 +269,7 @@ export const EscrowCheckoutModal: React.FC = () => {
                   </span>
                   <span className="font-mono text-[10px] text-amber-600 dark:text-amber-400 font-bold">DO NOT SHARE BEFORE INSPECTION</span>
                 </div>
-                <div className="font-mono text-xl font-bold text-center py-2.5 bg-white dark:bg-[#0e1017] rounded-lg border border-slate-200 dark:border-[#2b2f42] text-emerald-600 dark:text-emerald-400 tracking-wider">
+                <div className="font-mono text-xl font-bold text-center py-2.5 bg-white dark:bg-[#0e1017] rounded-lg border border-slate-200 dark:border-[#473020] text-emerald-600 dark:text-emerald-400 tracking-wider">
                   {inspectionCode}
                 </div>
                 <p className="text-[11px] text-slate-500 dark:text-[#787f94] mt-3">
@@ -281,7 +281,7 @@ export const EscrowCheckoutModal: React.FC = () => {
                 <button
                   type="button"
                   onClick={handleClose}
-                  className="px-6 py-2.5 bg-[#1b5e20] hover:bg-[#25732b] dark:bg-[#c5a059] dark:hover:bg-[#d6b068] text-white dark:text-[#0c0d11] font-bold text-xs rounded-xl shadow cursor-pointer transition-colors"
+                  className="px-6 py-2.5 bg-[#1b5e20] hover:bg-[#25732b] dark:bg-[#c5a059] dark:hover:bg-[#d6b068] text-white dark:text-[#1e130c] font-bold text-xs rounded-xl shadow cursor-pointer transition-colors"
                 >
                   Done & View Order
                 </button>

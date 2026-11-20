@@ -1,6 +1,7 @@
 import React from 'react';
 import { useMarketplace } from '../context/MarketplaceContext';
-import { CollectibleCategory } from '../types';
+import { CollectibleCategory, ItemCondition } from '../types';
+import { fmt } from '../i18n/translations';
 import {
   RotateCcw,
   ArrowUpDown,
@@ -24,30 +25,15 @@ import { CATEGORIES_WITH_SUBCATEGORIES } from '../data/categoriesData';
 import { ETHIOPIAN_CITIES } from '../data/citiesData';
 import { CustomDropdown } from './CustomDropdown';
 
-const cityFilterOptions = [
-  { value: 'all', label: 'All Ethiopia', sublabel: 'ሁሉም ከተሞች' },
+const cityOptionsBase = [
   ...ETHIOPIAN_CITIES.filter((c) => c.id !== 'all').map((c) => ({
-    value: c.name,
+    value: c.id, // ids are the plain city names used for matching (e.g. "Adama", not "Adama (Nazret)")
     label: c.name,
     sublabel: `${c.amharic} (${c.region})`,
   })),
 ];
 
-const conditionFilterOptions = [
-  { value: 'all', label: 'All Conditions', sublabel: 'ሁሉም ሁኔታዎች' },
-  { value: 'Brand New', label: 'Brand New', sublabel: 'Sealed / Unopened' },
-  { value: 'Like New', label: 'Like New', sublabel: 'Mint / Barely used' },
-  { value: 'Used - Excellent', label: 'Used - Excellent', sublabel: 'Minor signs' },
-  { value: 'Used - Good', label: 'Used - Good', sublabel: 'Normal wear' },
-  { value: 'Refurbished', label: 'Refurbished', sublabel: 'Certified restored' },
-];
-
-const sortFilterOptions = [
-  { value: 'latest', label: 'Latest First', sublabel: 'አዲስ የተጨመሩ' },
-  { value: 'price-asc', label: 'Price: Low to High', sublabel: 'ዝቅተኛ ዋጋ' },
-  { value: 'price-desc', label: 'Price: High to Low', sublabel: 'ከፍተኛ ዋጋ' },
-  { value: 'most-popular', label: 'Most Popular', sublabel: 'ተወዳጅ' },
-];
+const CONDITION_VALUES: ItemCondition[] = ['Brand New', 'Like New', 'Used - Excellent', 'Used - Good', 'Refurbished'];
 
 const CATEGORY_ICON_MAP: Record<string, React.ElementType> = {
   Sparkles,
@@ -71,6 +57,7 @@ export const FilterBar: React.FC = () => {
     collectibles,
     setIsMobileCategoriesOpen,
     t,
+    language,
   } = useMarketplace();
 
   const handleCategoryClick = (category: CollectibleCategory) => {
@@ -81,13 +68,18 @@ export const FilterBar: React.FC = () => {
     setFilters((prev) => ({ ...prev, subcategory: subId }));
   };
 
-  const handleConditionChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setFilters((prev) => ({ ...prev, condition: e.target.value }));
-  };
-
-  const handleSortChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setFilters((prev) => ({ ...prev, sortBy: e.target.value as any }));
-  };
+  const cityFilterOptions = [{ value: 'all', label: t.filters.allCities }, ...cityOptionsBase];
+  const conditionFilterOptions = [
+    { value: 'all', label: t.filters.allConditions },
+    ...CONDITION_VALUES.map((c) => ({ value: c, label: t.conditions[c] })),
+  ];
+  const sortFilterOptions = [
+    { value: 'latest', label: t.filters.sortLatest },
+    { value: 'price-asc', label: t.filters.sortPriceAsc },
+    { value: 'price-desc', label: t.filters.sortPriceDesc },
+    { value: 'most-popular', label: t.filters.sortPopular },
+  ];
+  const categoryName = (id: CollectibleCategory) => t.categoryNames[id] || id;
 
   const activeCategoryDef = CATEGORIES_WITH_SUBCATEGORIES.find(
     (c) => c.id === filters.category
@@ -110,6 +102,7 @@ export const FilterBar: React.FC = () => {
   }, [collectibles]);
 
   const hasActiveFilters =
+    filters.maxPrice > 0 ||
     filters.category !== 'all' ||
     filters.subcategory !== 'all' ||
     filters.condition !== 'all' ||
@@ -118,20 +111,20 @@ export const FilterBar: React.FC = () => {
     Boolean(filters.searchQuery);
 
   return (
-    <div className="bg-white dark:bg-[#10121a] border-b border-slate-200 dark:border-[#202330] py-2.5 sm:py-3 sticky top-18 z-30 shadow-xs transition-colors">
+    <div className="bg-white dark:bg-[#1a1009] border-b border-slate-200 dark:border-[#2d1c12] py-2.5 sm:py-3 sticky top-18 z-30 shadow-xs transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-3">
         {/* TOP LEVEL: Primary Categories + Filter Controls */}
-        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-2.5 sm:gap-3">
+        <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-2.5 sm:gap-3">
           {/* Main Category Pills Track */}
-          <div className="flex items-center gap-2 overflow-x-auto pb-1 lg:pb-0 scrollbar-none scroll-smooth">
+          <div className="flex items-center gap-2 overflow-x-auto pb-1 xl:pb-0 scrollbar-none scroll-smooth min-w-0 [mask-image:linear-gradient(to_right,black_92%,transparent)]">
             {/* All Categories Suite Trigger */}
             <button
               onClick={() => setIsMobileCategoriesOpen(true)}
               className="px-3 py-2 text-xs font-bold rounded-2xl whitespace-nowrap transition-all duration-200 cursor-pointer shrink-0 flex items-center gap-1.5 border bg-amber-50/90 dark:bg-amber-950/50 text-amber-900 dark:text-amber-300 border-amber-300 dark:border-amber-800 hover:bg-amber-100 dark:hover:bg-amber-900/60 shadow-2xs"
-              title="Explore all categories & subcategories"
+              title={t.filters.browseAll}
             >
               <Layers className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
-              <span>Browse All</span>
+              <span>{t.filters.browseAll}</span>
             </button>
 
             {CATEGORIES_WITH_SUBCATEGORIES.map((cat) => {
@@ -143,26 +136,27 @@ export const FilterBar: React.FC = () => {
                 <button
                   key={cat.id}
                   onClick={() => handleCategoryClick(cat.id)}
+                  aria-pressed={isActive}
                   className={`group relative px-3.5 py-2 text-xs font-semibold rounded-2xl whitespace-nowrap transition-all duration-200 cursor-pointer shrink-0 flex items-center gap-2 border ${
                     isActive
-                      ? 'bg-[#1b5e20] text-white border-[#1b5e20] dark:bg-[#c5a059] dark:text-[#110d07] dark:border-[#c5a059] shadow-sm ring-2 ring-[#1b5e20]/20 dark:ring-[#c5a059]/30 font-bold scale-[1.02]'
-                      : 'bg-slate-50 text-slate-700 hover:bg-slate-100 hover:text-slate-900 dark:bg-[#161824] dark:text-[#9ea4b8] dark:hover:text-[#f4f5f8] dark:hover:bg-[#1f2232] border-slate-200/90 dark:border-[#252839]'
+                      ? 'bg-[#1b5e20] text-white border-[#1b5e20] dark:bg-[#c5a059] dark:text-[#1e130c] dark:border-[#c5a059] shadow-sm ring-2 ring-[#1b5e20]/20 dark:ring-[#c5a059]/30 font-bold scale-[1.02]'
+                      : 'bg-slate-50 text-slate-700 hover:bg-slate-100 hover:text-slate-900 dark:bg-[#251810] dark:text-[#a8907f] dark:hover:text-[#fbf5ef] dark:hover:bg-[#2d1c12] border-slate-200/90 dark:border-[#382214]'
                   }`}
                 >
                   <Icon
                     className={`w-3.5 h-3.5 shrink-0 transition-transform group-hover:scale-110 ${
                       isActive
-                        ? 'text-white dark:text-[#110d07]'
+                        ? 'text-white dark:text-[#1e130c]'
                         : 'text-amber-600 dark:text-amber-400'
                     }`}
                   />
-                  <span>{cat.name}</span>
+                  <span>{categoryName(cat.id)}</span>
                   {count > 0 && (
                     <span
                       className={`text-[10px] font-mono px-1.5 py-0.2 rounded-full font-bold transition-colors ${
                         isActive
-                          ? 'bg-white/25 text-white dark:bg-black/20 dark:text-[#110d07]'
-                          : 'bg-slate-200/80 text-slate-600 dark:bg-[#23273a] dark:text-slate-400'
+                          ? 'bg-white/25 text-white dark:bg-black/20 dark:text-[#1e130c]'
+                          : 'bg-slate-200/80 text-slate-600 dark:bg-[#382214] dark:text-slate-400'
                       }`}
                     >
                       {count}
@@ -176,7 +170,7 @@ export const FilterBar: React.FC = () => {
           {/* Secondary Controls: City, Condition, Sort, Swaps, Reset */}
           <div className="flex flex-wrap items-center gap-2 shrink-0">
             {/* Ethiopian City Dropdown */}
-            <div className="min-w-[130px] max-w-[150px]">
+            <div className="min-w-[150px]">
               <CustomDropdown
                 value={filters.city || 'all'}
                 onChange={(val) => setFilters((prev) => ({ ...prev, city: val }))}
@@ -188,7 +182,7 @@ export const FilterBar: React.FC = () => {
             </div>
 
             {/* Condition Dropdown */}
-            <div className="min-w-[130px] max-w-[145px]">
+            <div className="min-w-[150px]">
               <CustomDropdown
                 value={filters.condition}
                 onChange={(val) => setFilters((prev) => ({ ...prev, condition: val }))}
@@ -198,7 +192,7 @@ export const FilterBar: React.FC = () => {
             </div>
 
             {/* Sort Dropdown */}
-            <div className="min-w-[130px] max-w-[145px]">
+            <div className="min-w-[150px]">
               <CustomDropdown
                 value={filters.sortBy}
                 onChange={(val) => setFilters((prev) => ({ ...prev, sortBy: val as any }))}
@@ -216,10 +210,11 @@ export const FilterBar: React.FC = () => {
                   openToTradeOnly: !prev.openToTradeOnly,
                 }))
               }
+              aria-pressed={filters.openToTradeOnly}
               className={`px-3 py-1.5 text-xs rounded-xl font-semibold border transition-all cursor-pointer flex items-center gap-1.5 ${
                 filters.openToTradeOnly
                   ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300 border-emerald-400 dark:border-emerald-700 shadow-xs'
-                  : 'bg-slate-50 text-slate-600 dark:bg-[#161824] dark:text-[#888fa0] border-slate-200 dark:border-[#252839] hover:border-slate-300'
+                  : 'bg-slate-50 text-slate-600 dark:bg-[#251810] dark:text-[#a8907f] border-slate-200 dark:border-[#382214] hover:border-slate-300'
               }`}
             >
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
@@ -234,7 +229,7 @@ export const FilterBar: React.FC = () => {
                 title={t.resetFilters}
               >
                 <RotateCcw className="w-3.5 h-3.5" />
-                <span className="hidden sm:inline">Reset</span>
+                <span className="hidden sm:inline">{t.filters.reset}</span>
               </button>
             )}
           </div>
@@ -242,16 +237,18 @@ export const FilterBar: React.FC = () => {
 
         {/* SUBCATEGORIES STRIP: Highly Polished, Sleek Ribbon with Native Ethio Context */}
         {activeCategoryDef && activeCategoryDef.subcategories.length > 0 && (
-          <div className="bg-slate-50/90 dark:bg-[#141622]/90 border border-slate-200/80 dark:border-[#232637] rounded-2xl p-2.5 transition-all animate-fadeIn">
+          <div className="bg-slate-50/90 dark:bg-[#1a1009]/90 border border-slate-200/80 dark:border-[#382214] rounded-2xl p-2.5 transition-all animate-fadeIn">
             <div className="flex items-center justify-between gap-2 mb-2 px-1">
               <div className="flex items-center gap-1.5 text-xs">
                 <span className="font-bold text-slate-900 dark:text-white flex items-center gap-1">
                   <Layers className="w-3.5 h-3.5 text-[#1b5e20] dark:text-[#c5a059]" />
-                  <span>{activeCategoryDef.name} Subcategories</span>
+                  <span>{fmt(t.filters.subcategories, { name: categoryName(activeCategoryDef.id) })}</span>
                 </span>
-                <span className="text-[11px] font-serif text-slate-500 dark:text-[#9ea4b8]">
-                  ({activeCategoryDef.amharic})
-                </span>
+                {language !== 'am' && (
+                  <span className="text-[11px] font-serif text-slate-500 dark:text-[#a8907f]">
+                    ({activeCategoryDef.amharic})
+                  </span>
+                )}
               </div>
 
               {filters.subcategory && filters.subcategory !== 'all' && (
@@ -259,7 +256,7 @@ export const FilterBar: React.FC = () => {
                   onClick={() => handleSubcategoryClick('all')}
                   className="text-[11px] text-amber-700 dark:text-amber-400 hover:underline flex items-center gap-1 cursor-pointer font-medium"
                 >
-                  <span>Show All {activeCategoryDef.name}</span>
+                  <span>{fmt(t.filters.showAll, { name: categoryName(activeCategoryDef.id) })}</span>
                   <X className="w-3 h-3" />
                 </button>
               )}
@@ -272,10 +269,10 @@ export const FilterBar: React.FC = () => {
                 className={`px-3 py-1.5 text-xs font-semibold rounded-xl whitespace-nowrap transition-all cursor-pointer shrink-0 border flex items-center gap-1.5 ${
                   !filters.subcategory || filters.subcategory === 'all'
                     ? 'bg-slate-900 text-white dark:bg-amber-400 dark:text-slate-950 border-slate-900 dark:border-amber-400 font-bold shadow-xs'
-                    : 'bg-white text-slate-700 dark:bg-[#1a1d2c] dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-[#222638] border-slate-200 dark:border-[#2b2f42]'
+                    : 'bg-white text-slate-700 dark:bg-[#251810] dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-[#2d1c12] border-slate-200 dark:border-[#473020]'
                 }`}
               >
-                <span>All {activeCategoryDef.name}</span>
+                <span>{fmt(t.filters.showAll, { name: categoryName(activeCategoryDef.id) })}</span>
                 <span className="text-[10px] opacity-70 font-mono">
                   ({categoryCounts[activeCategoryDef.id] || 0})
                 </span>
@@ -292,8 +289,8 @@ export const FilterBar: React.FC = () => {
                     onClick={() => handleSubcategoryClick(sub.id)}
                     className={`group px-3 py-1.5 text-xs font-medium rounded-xl whitespace-nowrap transition-all cursor-pointer shrink-0 border flex items-center gap-1.5 ${
                       isSubActive
-                        ? 'bg-[#1b5e20] text-white dark:bg-[#c5a059] dark:text-[#0c0d11] border-[#1b5e20] dark:border-[#c5a059] font-bold shadow-xs'
-                        : 'bg-white text-slate-700 dark:bg-[#1a1d2c] dark:text-slate-300 hover:bg-slate-100 hover:text-slate-900 dark:hover:bg-[#222638] dark:hover:text-white border-slate-200 dark:border-[#2b2f42]'
+                        ? 'bg-[#1b5e20] text-white dark:bg-[#c5a059] dark:text-[#1e130c] border-[#1b5e20] dark:border-[#c5a059] font-bold shadow-xs'
+                        : 'bg-white text-slate-700 dark:bg-[#251810] dark:text-slate-300 hover:bg-slate-100 hover:text-slate-900 dark:hover:bg-[#2d1c12] dark:hover:text-white border-slate-200 dark:border-[#473020]'
                     }`}
                     title={`${sub.name} (${sub.amharic})`}
                   >
@@ -309,8 +306,8 @@ export const FilterBar: React.FC = () => {
                       <span
                         className={`text-[9px] font-mono px-1 py-0.2 rounded font-bold ${
                           isSubActive
-                            ? 'bg-white/20 text-white dark:bg-black/20 dark:text-[#0c0d11]'
-                            : 'bg-slate-100 text-slate-500 dark:bg-[#24283b] dark:text-slate-400'
+                            ? 'bg-white/20 text-white dark:bg-black/20 dark:text-[#1e130c]'
+                            : 'bg-slate-100 text-slate-500 dark:bg-[#382214] dark:text-slate-400'
                         }`}
                       >
                         {subCount}

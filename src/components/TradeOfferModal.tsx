@@ -76,7 +76,7 @@ export const TradeOfferModal: React.FC = () => {
           {!isSubmitted ? (
             <form onSubmit={handleSubmit} className="space-y-4">
               {/* Item Preview */}
-              <div className="flex items-center gap-3 p-3 bg-[#151722] border border-[#232637] rounded-xl">
+              <div className="flex items-center gap-3 p-3 bg-[#151722] border border-[#382214] rounded-xl">
                 <div className="relative w-14 h-14 rounded-lg overflow-hidden shrink-0 border border-amber-400/40">
                   <img
                     src={selectedCollectible.imageUrl}

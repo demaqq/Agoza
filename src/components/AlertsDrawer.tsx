@@ -77,7 +77,7 @@ export const AlertsDrawer: React.FC = () => {
       onClick={() => setIsAlertsOpen(false)}
     >
       <div
-        className="w-full max-w-md bg-white dark:bg-[#11131c] border-l border-slate-200 dark:border-[#262939] h-full flex flex-col shadow-2xl transition-colors"
+        className="w-full max-w-md bg-white dark:bg-[#1a1009] border-l border-slate-200 dark:border-[#262939] h-full flex flex-col shadow-2xl transition-colors"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
@@ -90,20 +90,20 @@ export const AlertsDrawer: React.FC = () => {
           </div>
           <button
             onClick={() => setIsAlertsOpen(false)}
-            className="p-1.5 rounded-xl bg-slate-200 hover:bg-slate-300 dark:bg-[#181a24] text-slate-600 dark:text-[#8e94a6] hover:text-slate-900 dark:hover:text-white border border-slate-300 dark:border-[#2a2d3e] transition-colors cursor-pointer"
+            className="p-1.5 rounded-xl bg-slate-200 hover:bg-slate-300 dark:bg-[#251810] text-slate-600 dark:text-[#8e94a6] hover:text-slate-900 dark:hover:text-white border border-slate-300 dark:border-[#2a2d3e] transition-colors cursor-pointer"
           >
             <X className="w-4 h-4" />
           </button>
         </div>
 
         {/* Tab navigation */}
-        <div className="flex items-center justify-between px-3 py-2 bg-slate-100 dark:bg-[#141622] border-b border-slate-200 dark:border-[#202332] text-xs">
+        <div className="flex items-center justify-between px-3 py-2 bg-slate-100 dark:bg-[#1a1009] border-b border-slate-200 dark:border-[#202332] text-xs">
           <div className="flex items-center gap-1">
             <button
               onClick={() => setActiveTab('all')}
               className={`px-3 py-1 rounded-lg cursor-pointer transition-colors ${
                 activeTab === 'all'
-                  ? 'bg-white dark:bg-[#222638] text-slate-900 dark:text-white font-semibold shadow-xs'
+                  ? 'bg-white dark:bg-[#2d1c12] text-slate-900 dark:text-white font-semibold shadow-xs'
                   : 'text-slate-500 dark:text-[#858c9f] hover:text-slate-900 dark:hover:text-white'
               }`}
             >
@@ -113,7 +113,7 @@ export const AlertsDrawer: React.FC = () => {
               onClick={() => setActiveTab('sms')}
               className={`px-3 py-1 rounded-lg cursor-pointer transition-colors flex items-center gap-1 ${
                 activeTab === 'sms'
-                  ? 'bg-white dark:bg-[#222638] text-slate-900 dark:text-white font-semibold shadow-xs'
+                  ? 'bg-white dark:bg-[#2d1c12] text-slate-900 dark:text-white font-semibold shadow-xs'
                   : 'text-slate-500 dark:text-[#858c9f] hover:text-slate-900 dark:hover:text-white'
               }`}
             >
@@ -124,7 +124,7 @@ export const AlertsDrawer: React.FC = () => {
               onClick={() => setActiveTab('email')}
               className={`px-3 py-1 rounded-lg cursor-pointer transition-colors flex items-center gap-1 ${
                 activeTab === 'email'
-                  ? 'bg-white dark:bg-[#222638] text-slate-900 dark:text-white font-semibold shadow-xs'
+                  ? 'bg-white dark:bg-[#2d1c12] text-slate-900 dark:text-white font-semibold shadow-xs'
                   : 'text-slate-500 dark:text-[#858c9f] hover:text-slate-900 dark:hover:text-white'
               }`}
             >
@@ -137,7 +137,7 @@ export const AlertsDrawer: React.FC = () => {
             onClick={() => setActiveTab('settings')}
             className={`p-1.5 rounded-lg cursor-pointer transition-colors ${
               activeTab === 'settings'
-                ? 'bg-[#1b5e20] dark:bg-[#c5a059] text-white dark:text-[#0c0d11]'
+                ? 'bg-[#1b5e20] dark:bg-[#c5a059] text-white dark:text-[#1e130c]'
                 : 'text-slate-500 dark:text-[#858c9f] hover:text-slate-900 dark:hover:text-white'
             }`}
             title="Configure Alert Settings"
@@ -271,7 +271,7 @@ export const AlertsDrawer: React.FC = () => {
 
               {/* Toggles */}
               <div className="space-y-3 pt-2">
-                <div className="flex items-center justify-between p-3 rounded-2xl bg-white dark:bg-[#161824] border border-slate-200 dark:border-[#262939]">
+                <div className="flex items-center justify-between p-3 rounded-2xl bg-white dark:bg-[#251810] border border-slate-200 dark:border-[#262939]">
                   <div>
                     <span className="text-xs font-semibold text-slate-900 dark:text-[#f1f2f6] block">Enable SMS Alerts</span>
                     <span className="text-[10px] text-slate-500 dark:text-[#737a8e]">Instant SMS when counter-offer or inspection code is generated</span>
@@ -284,7 +284,7 @@ export const AlertsDrawer: React.FC = () => {
                   />
                 </div>
 
-                <div className="flex items-center justify-between p-3 rounded-2xl bg-white dark:bg-[#161824] border border-slate-200 dark:border-[#262939]">
+                <div className="flex items-center justify-between p-3 rounded-2xl bg-white dark:bg-[#251810] border border-slate-200 dark:border-[#262939]">
                   <div>
                     <span className="text-xs font-semibold text-slate-900 dark:text-[#f1f2f6] block">Enable Email Receipts</span>
                     <span className="text-[10px] text-slate-500 dark:text-[#737a8e]">Official buyer safeguard contracts & provenance receipts</span>
@@ -301,7 +301,7 @@ export const AlertsDrawer: React.FC = () => {
               <div className="pt-2">
                 <button
                   type="submit"
-                  className="w-full py-2.5 px-4 bg-[#1b5e20] hover:bg-[#25732b] dark:bg-[#c5a059] dark:hover:bg-[#d6b068] text-white dark:text-[#0c0d11] font-bold text-xs rounded-xl shadow transition-colors cursor-pointer"
+                  className="w-full py-2.5 px-4 bg-[#1b5e20] hover:bg-[#25732b] dark:bg-[#c5a059] dark:hover:bg-[#d6b068] text-white dark:text-[#1e130c] font-bold text-xs rounded-xl shadow transition-colors cursor-pointer"
                 >
                   {settingsSaved ? '✓ Settings Updated' : 'Save Notification Preferences'}
                 </button>

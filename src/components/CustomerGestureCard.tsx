@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Collectible } from '../types';
 import { useMarketplace } from '../context/MarketplaceContext';
 import { useTouchGestures } from '../hooks/useTouchGestures';
@@ -28,12 +28,20 @@ export const CustomerGestureCard: React.FC<CustomerGestureCardProps> = ({
 
   const isSaved = watchlist.includes(collectible.id);
   const [swipeFeedback, setSwipeFeedback] = useState<string | null>(null);
+  const feedbackTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  useEffect(() => () => {
+    if (feedbackTimer.current) clearTimeout(feedbackTimer.current);
+  }, []);
 
   const handleSaveGesture = () => {
     toggleWatchlist(collectible.id);
-    setSwipeFeedback(isSaved ? 'Removed from Saved' : 'Saved to Watchlist! (ተቀምጧል)');
-    setTimeout(() => setSwipeFeedback(null), 1800);
+    setSwipeFeedback(isSaved ? t.card.removedToast : t.card.savedToast);
+    if (feedbackTimer.current) clearTimeout(feedbackTimer.current);
+    feedbackTimer.current = setTimeout(() => setSwipeFeedback(null), 1800);
   };
+
+  const cityLabel = collectible.seller.city || collectible.seller.location.split(',')[0];
+  const isSellerVerified = Boolean(collectible.seller.verifiedKyc);
 
   const handleLongPress = () => {
     onQuickInspect(collectible);
@@ -68,7 +76,7 @@ export const CustomerGestureCard: React.FC<CustomerGestureCardProps> = ({
           }`}
         >
           <Heart className="w-5 h-5 fill-current" />
-          <span>Save (አስቀምጥ)</span>
+          <span>{t.card.save}</span>
         </div>
       </div>
 
@@ -83,9 +91,9 @@ export const CustomerGestureCard: React.FC<CustomerGestureCardProps> = ({
           }
         }}
         tabIndex={0}
-        role="button"
-        aria-label={`View details for ${collectible.title}`}
-        className="relative z-10 bg-white dark:bg-[#251810] border border-slate-200 dark:border-[#473020] hover:border-[#1b5e20] dark:hover:border-[#d4a373] rounded-2xl overflow-hidden flex flex-col transition-shadow duration-200 hover:-translate-y-0.5 hover:shadow-lg cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#1b5e20] dark:focus:ring-[#d4a373]"
+        role="article"
+        aria-label={`${collectible.title} — ${formatPrice(collectible.priceETB)}`}
+        className="relative z-10 bg-white dark:bg-[#251810] border border-slate-200 dark:border-[#473020] hover:border-[#1b5e20] dark:hover:border-[#d4a373] rounded-2xl overflow-hidden flex flex-col transition-shadow duration-200 hover:-translate-y-0.5 hover:shadow-lg cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-[#1b5e20] dark:focus-visible:ring-[#d4a373]"
         style={{
           transform: gestureState.isDragging
             ? `translate3d(${translateX}px, 0, 0) rotate(${rotateDeg}deg)`
@@ -95,7 +103,7 @@ export const CustomerGestureCard: React.FC<CustomerGestureCardProps> = ({
       >
         {/* Swipe Feedback Banner if triggered */}
         {swipeFeedback && (
-          <div className="absolute top-2 inset-x-2 z-30 bg-[#1b5e20] dark:bg-[#d4a373] text-white dark:text-[#1e130c] text-xs font-bold py-1.5 px-3 rounded-xl shadow-lg flex items-center justify-center gap-1.5 animate-in fade-in slide-in-from-top-2">
+          <div role="status" className="absolute top-2 inset-x-2 z-30 bg-[#1b5e20] dark:bg-[#d4a373] text-white dark:text-[#1e130c] text-xs font-bold py-1.5 px-3 rounded-xl shadow-lg flex items-center justify-center gap-1.5 animate-in fade-in slide-in-from-top-2">
             <Check className="w-4 h-4 stroke-[2.5]" />
             <span>{swipeFeedback}</span>
           </div>
@@ -106,6 +114,8 @@ export const CustomerGestureCard: React.FC<CustomerGestureCardProps> = ({
           <img
             src={collectible.imageUrl}
             alt={collectible.title}
+            loading="lazy"
+            decoding="async"
             referrerPolicy="no-referrer"
             className="w-full h-full object-cover object-center group-hover:scale-104 transition-transform duration-300 pointer-events-none"
             onError={(e) => {
@@ -120,7 +130,7 @@ export const CustomerGestureCard: React.FC<CustomerGestureCardProps> = ({
           {/* Fallback Container */}
           <div
             style={{ display: 'none' }}
-            className="w-full h-full flex flex-col items-center justify-center bg-slate-200 dark:bg-[#1a1d29] p-6 text-center"
+            className="w-full h-full flex flex-col items-center justify-center bg-slate-200 dark:bg-[#251810] p-6 text-center"
           >
             <div className="w-12 h-12 rounded-full bg-[#1b5e20]/15 dark:bg-[#c5a059]/15 flex items-center justify-center text-[#1b5e20] dark:text-[#c5a059] mb-2 font-cinzel font-bold text-lg">
               AG
@@ -144,7 +154,7 @@ export const CustomerGestureCard: React.FC<CustomerGestureCardProps> = ({
             <div className="flex items-center gap-1 text-[10px] text-amber-300 font-medium">
               <MapPin className="w-3 h-3 text-amber-400 shrink-0" />
               <span className="truncate max-w-[110px] text-slate-200">
-                {collectible.seller.city || collectible.seller.location.split(',')[0]}
+                {cityLabel}
               </span>
             </div>
           </div>
@@ -153,14 +163,16 @@ export const CustomerGestureCard: React.FC<CustomerGestureCardProps> = ({
           <button
             onClick={(e) => {
               e.stopPropagation();
-              toggleWatchlist(collectible.id);
+              handleSaveGesture();
             }}
+            aria-pressed={isSaved}
+            aria-label={isSaved ? t.card.removeSaved : t.card.save}
             className={`absolute top-2.5 right-2.5 p-2 rounded-xl backdrop-blur-md transition-colors cursor-pointer min-h-[44px] min-w-[44px] flex items-center justify-center z-20 ${
               isSaved
                 ? 'bg-[#1b5e20] text-white dark:bg-[#d4a373] dark:text-[#1e130c]'
-                : 'bg-white/85 dark:bg-[#0c0d11]/75 text-slate-700 dark:text-[#9ca3af] hover:text-slate-900 dark:hover:text-white shadow-xs'
+                : 'bg-white/85 dark:bg-[#1e130c]/75 text-slate-700 dark:text-[#9ca3af] hover:text-slate-900 dark:hover:text-white shadow-xs'
             }`}
-            title={isSaved ? 'Remove from saved' : 'Save ad (or swipe right)'}
+            title={isSaved ? t.card.removeSaved : t.card.save}
           >
             <Bookmark className={`w-4 h-4 ${isSaved ? 'fill-current' : ''}`} />
           </button>
@@ -172,7 +184,8 @@ export const CustomerGestureCard: React.FC<CustomerGestureCardProps> = ({
               onQuickInspect(collectible);
             }}
             className="absolute bottom-9 right-2.5 p-2 rounded-xl bg-black/70 hover:bg-black/90 text-amber-300 backdrop-blur-md border border-amber-400/40 transition-colors cursor-pointer min-h-[36px] min-w-[36px] flex items-center justify-center z-20 shadow-xs"
-            title="Inspect preview (or long-press)"
+            title={t.card.inspect}
+            aria-label={t.card.inspect}
           >
             <Eye className="w-3.5 h-3.5" />
           </button>
@@ -199,18 +212,18 @@ export const CustomerGestureCard: React.FC<CustomerGestureCardProps> = ({
             {/* Metadata Row: Category + Subcategory + Condition */}
             <div className="flex flex-wrap items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400 mb-1.5">
               <span className="font-bold uppercase tracking-wider text-[10px] text-[#1b5e20] dark:text-[#d4a373]">
-                {collectible.category.replace('-', ' ')}
+                {t.categoryNames[collectible.category] || collectible.category}
               </span>
               {collectible.subcategory && (
                 <>
                   <span aria-hidden="true">·</span>
                   <span className="text-[10px] font-medium text-slate-600 dark:text-slate-300 capitalize">
-                    {collectible.subcategory.replace('-', ' ')}
+                    {collectible.subcategory.replace(/-/g, ' ')}
                   </span>
                 </>
               )}
               <span aria-hidden="true">·</span>
-              <span className="text-[10px]">{collectible.condition}</span>
+              <span className="text-[10px]">{t.conditions[collectible.condition] || collectible.condition}</span>
             </div>
 
             {/* Title with Verified Badge */}
@@ -220,10 +233,12 @@ export const CustomerGestureCard: React.FC<CustomerGestureCardProps> = ({
               </h3>
             </div>
 
-            {/* Verified Listing Status */}
-            <div className="mb-2">
-              <VerifiedBadge variant="listing" size="xs" label="Verified Authenticated" />
-            </div>
+            {/* Verified Listing Status — only when the listing is actually backed by a guarantee */}
+            {collectible.authenticityGuaranteed && (
+              <div className="mb-2">
+                <VerifiedBadge variant="listing" size="xs" label={t.card.verifiedListing} />
+              </div>
+            )}
 
             {/* Short Excerpt */}
             <p className="text-xs text-slate-500 dark:text-slate-400 line-clamp-2 leading-relaxed mb-3">
@@ -247,10 +262,10 @@ export const CustomerGestureCard: React.FC<CustomerGestureCardProps> = ({
               <div className="text-right">
                 <div className="flex items-center justify-end gap-1 text-[11px] text-slate-700 dark:text-[#cbd0dc]">
                   <span className="font-medium">{collectible.seller.name}</span>
-                  <VerifiedBadge variant="seller" size="xs" label="Verified" />
+                  {isSellerVerified && <VerifiedBadge variant="seller" size="xs" label={t.card.verifiedSeller} />}
                 </div>
                 <span className="text-[10px] text-slate-400 font-mono">
-                  ★ {collectible.seller.rating} ({collectible.seller.totalTrades} deals)
+                  ★ {collectible.seller.rating} ({collectible.seller.totalTrades})
                 </span>
               </div>
             </div>

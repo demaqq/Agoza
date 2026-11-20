@@ -185,7 +185,7 @@ export const CustomCategorySubcategoryPicker: React.FC<CustomCategorySubcategory
           onClick={() => setIsOpen(false)}
         >
           <div
-            className="relative w-full max-w-4xl bg-white dark:bg-[#11131c] border border-slate-200 dark:border-[#262939] rounded-3xl shadow-2xl overflow-hidden my-auto max-h-[90vh] flex flex-col transition-colors animate-fadeIn"
+            className="relative w-full max-w-4xl bg-white dark:bg-[#1a1009] border border-slate-200 dark:border-[#262939] rounded-3xl shadow-2xl overflow-hidden my-auto max-h-[90vh] flex flex-col transition-colors animate-fadeIn"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Header with Search */}
@@ -208,7 +208,7 @@ export const CustomCategorySubcategoryPicker: React.FC<CustomCategorySubcategory
                 <button
                   type="button"
                   onClick={() => setIsOpen(false)}
-                  className="p-2 rounded-xl bg-slate-200 hover:bg-slate-300 dark:bg-[#181a24] text-slate-600 dark:text-[#8e94a6] hover:text-slate-900 dark:hover:text-white border border-slate-300 dark:border-[#2a2d3e] transition-colors cursor-pointer shrink-0"
+                  className="p-2 rounded-xl bg-slate-200 hover:bg-slate-300 dark:bg-[#251810] text-slate-600 dark:text-[#8e94a6] hover:text-slate-900 dark:hover:text-white border border-slate-300 dark:border-[#2a2d3e] transition-colors cursor-pointer shrink-0"
                   aria-label="Close category selector"
                 >
                   <X className="w-4 h-4" />
@@ -224,7 +224,7 @@ export const CustomCategorySubcategoryPicker: React.FC<CustomCategorySubcategory
                   placeholder="Instant search categories or items (e.g., 'iPhone', 'RAV4', 'Habesha Kemis', 'Mesob', 'Coffee')..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full bg-white dark:bg-[#161824] text-slate-900 dark:text-white text-xs pl-10 pr-9 py-2.5 rounded-xl border border-slate-200 dark:border-[#292c3f] focus:outline-none focus:border-[#1b5e20] dark:focus:border-[#c5a059] shadow-2xs font-medium"
+                  className="w-full bg-white dark:bg-[#251810] text-slate-900 dark:text-white text-xs pl-10 pr-9 py-2.5 rounded-xl border border-slate-200 dark:border-[#292c3f] focus:outline-none focus:border-[#1b5e20] dark:focus:border-[#c5a059] shadow-2xs font-medium"
                 />
                 {searchQuery && (
                   <button
@@ -297,7 +297,7 @@ export const CustomCategorySubcategoryPicker: React.FC<CustomCategorySubcategory
                             <div
                               className={`w-6 h-6 rounded-full flex items-center justify-center shrink-0 ${
                                 isCurrent
-                                  ? 'bg-[#1b5e20] dark:bg-[#c5a059] text-white dark:text-[#0c0d11]'
+                                  ? 'bg-[#1b5e20] dark:bg-[#c5a059] text-white dark:text-[#1e130c]'
                                   : 'border border-slate-300 dark:border-slate-600'
                               }`}
                             >
@@ -330,7 +330,7 @@ export const CustomCategorySubcategoryPicker: React.FC<CustomCategorySubcategory
                           className={`w-full p-2.5 rounded-xl text-left transition-all cursor-pointer flex items-center justify-between gap-2.5 ${
                             isSelectedCat
                               ? 'bg-[#1b5e20] text-white dark:bg-[#c5a059] dark:text-[#0b0c10] font-bold shadow-xs'
-                              : 'bg-transparent text-slate-700 dark:text-[#9ea4b8] hover:bg-slate-200/70 dark:hover:bg-[#181a26]'
+                              : 'bg-transparent text-slate-700 dark:text-[#a8907f] hover:bg-slate-200/70 dark:hover:bg-[#181a26]'
                           }`}
                         >
                           <div className="flex items-center gap-2.5 min-w-0">
@@ -358,7 +358,7 @@ export const CustomCategorySubcategoryPicker: React.FC<CustomCategorySubcategory
                               className={`text-[9px] font-mono px-1.5 py-0.5 rounded-md font-bold ${
                                 isSelectedCat
                                   ? 'bg-black/20 text-white dark:text-[#0b0c10]'
-                                  : 'bg-slate-200/80 dark:bg-[#1f2232] text-slate-500 dark:text-slate-400'
+                                  : 'bg-slate-200/80 dark:bg-[#2d1c12] text-slate-500 dark:text-slate-400'
                               }`}
                             >
                               {cat.subcategories.length}
@@ -408,7 +408,7 @@ export const CustomCategorySubcategoryPicker: React.FC<CustomCategorySubcategory
                             className={`p-3 rounded-2xl border text-left transition-all cursor-pointer flex items-center justify-between gap-3 group ${
                               isThisSelected
                                 ? 'bg-emerald-50 dark:bg-emerald-950/40 border-[#1b5e20] dark:border-[#c5a059] shadow-xs ring-1 ring-[#1b5e20]/20 dark:ring-[#c5a059]/30'
-                                : 'bg-slate-50/80 dark:bg-[#161825] border-slate-200 dark:border-[#252839] hover:bg-amber-50/50 dark:hover:bg-[#1d202f] hover:border-amber-300 dark:hover:border-amber-700/60'
+                                : 'bg-slate-50/80 dark:bg-[#161825] border-slate-200 dark:border-[#382214] hover:bg-amber-50/50 dark:hover:bg-[#1d202f] hover:border-amber-300 dark:hover:border-amber-700/60'
                             }`}
                           >
                             <div className="min-w-0 flex-1">

@@ -37,7 +37,7 @@ export const AdminDashboardView: React.FC = () => {
         </p>
         <button
           onClick={() => setActiveView('marketplace')}
-          className="px-5 py-2.5 bg-[#1b5e20] dark:bg-[#c5a059] text-white dark:text-[#0c0d11] font-bold text-xs rounded-xl cursor-pointer"
+          className="px-5 py-2.5 bg-[#1b5e20] dark:bg-[#c5a059] text-white dark:text-[#1e130c] font-bold text-xs rounded-xl cursor-pointer"
         >
           Return to Marketplace
         </button>
@@ -117,7 +117,7 @@ export const AdminDashboardView: React.FC = () => {
 
       {/* Overview Stat Metric Cards */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
-        <div className="bg-white dark:bg-[#141622] border border-slate-200 dark:border-[#262939] rounded-2xl p-4 shadow-sm">
+        <div className="bg-white dark:bg-[#1a1009] border border-slate-200 dark:border-[#262939] rounded-2xl p-4 shadow-sm">
           <span className="text-[10px] uppercase font-bold text-slate-500 block mb-1">
             Total Classified Ads
           </span>
@@ -129,7 +129,7 @@ export const AdminDashboardView: React.FC = () => {
           </span>
         </div>
 
-        <div className="bg-white dark:bg-[#141622] border border-slate-200 dark:border-[#262939] rounded-2xl p-4 shadow-sm">
+        <div className="bg-white dark:bg-[#1a1009] border border-slate-200 dark:border-[#262939] rounded-2xl p-4 shadow-sm">
           <span className="text-[10px] uppercase font-bold text-slate-500 block mb-1">
             Safety Violations / Flagged
           </span>
@@ -141,7 +141,7 @@ export const AdminDashboardView: React.FC = () => {
           </span>
         </div>
 
-        <div className="bg-white dark:bg-[#141622] border border-slate-200 dark:border-[#262939] rounded-2xl p-4 shadow-sm">
+        <div className="bg-white dark:bg-[#1a1009] border border-slate-200 dark:border-[#262939] rounded-2xl p-4 shadow-sm">
           <span className="text-[10px] uppercase font-bold text-slate-500 block mb-1">
             Total Marketplace Value
           </span>
@@ -153,7 +153,7 @@ export const AdminDashboardView: React.FC = () => {
           </span>
         </div>
 
-        <div className="bg-white dark:bg-[#141622] border border-slate-200 dark:border-[#262939] rounded-2xl p-4 shadow-sm">
+        <div className="bg-white dark:bg-[#1a1009] border border-slate-200 dark:border-[#262939] rounded-2xl p-4 shadow-sm">
           <span className="text-[10px] uppercase font-bold text-slate-500 block mb-1">
             Verified Safe Hubs
           </span>
@@ -172,7 +172,7 @@ export const AdminDashboardView: React.FC = () => {
           onClick={() => setActiveAdminTab('moderation')}
           className={`px-4 py-2 rounded-lg cursor-pointer transition-colors ${
             activeAdminTab === 'moderation'
-              ? 'bg-slate-900 text-white dark:bg-[#c5a059] dark:text-[#0c0d11]'
+              ? 'bg-slate-900 text-white dark:bg-[#c5a059] dark:text-[#1e130c]'
               : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
           }`}
         >
@@ -183,7 +183,7 @@ export const AdminDashboardView: React.FC = () => {
           onClick={() => setActiveAdminTab('safety')}
           className={`px-4 py-2 rounded-lg cursor-pointer transition-colors ${
             activeAdminTab === 'safety'
-              ? 'bg-slate-900 text-white dark:bg-[#c5a059] dark:text-[#0c0d11]'
+              ? 'bg-slate-900 text-white dark:bg-[#c5a059] dark:text-[#1e130c]'
               : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
           }`}
         >
@@ -194,7 +194,7 @@ export const AdminDashboardView: React.FC = () => {
           onClick={() => setActiveAdminTab('users')}
           className={`px-4 py-2 rounded-lg cursor-pointer transition-colors ${
             activeAdminTab === 'users'
-              ? 'bg-slate-900 text-white dark:bg-[#c5a059] dark:text-[#0c0d11]'
+              ? 'bg-slate-900 text-white dark:bg-[#c5a059] dark:text-[#1e130c]'
               : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
           }`}
         >
@@ -204,7 +204,7 @@ export const AdminDashboardView: React.FC = () => {
 
       {/* Tab Content: Moderation Queue */}
       {activeAdminTab === 'moderation' && (
-        <div className="bg-white dark:bg-[#141622] border border-slate-200 dark:border-[#262939] rounded-2xl overflow-hidden shadow-sm">
+        <div className="bg-white dark:bg-[#1a1009] border border-slate-200 dark:border-[#262939] rounded-2xl overflow-hidden shadow-sm">
           <div className="p-4 border-b border-slate-200 dark:border-[#212433] flex items-center justify-between">
             <span className="text-xs font-bold uppercase text-slate-600 dark:text-slate-300">
               Classified Items Under Surveillance
@@ -307,7 +307,7 @@ export const AdminDashboardView: React.FC = () => {
 
       {/* Tab Content: Drug & Harmful Item Safety Policy */}
       {activeAdminTab === 'safety' && (
-        <div className="bg-white dark:bg-[#141622] border border-slate-200 dark:border-[#262939] rounded-2xl p-6 shadow-sm space-y-6">
+        <div className="bg-white dark:bg-[#1a1009] border border-slate-200 dark:border-[#262939] rounded-2xl p-6 shadow-sm space-y-6">
           <div>
             <h3 className="text-base font-bold text-slate-900 dark:text-white mb-1 flex items-center gap-2">
               <ShieldAlert className="w-5 h-5 text-red-500" />
@@ -350,7 +350,7 @@ export const AdminDashboardView: React.FC = () => {
 
       {/* Tab Content: Users & Verification */}
       {activeAdminTab === 'users' && (
-        <div className="bg-white dark:bg-[#141622] border border-slate-200 dark:border-[#262939] rounded-2xl p-6 shadow-sm">
+        <div className="bg-white dark:bg-[#1a1009] border border-slate-200 dark:border-[#262939] rounded-2xl p-6 shadow-sm">
           <h3 className="text-base font-bold text-slate-900 dark:text-white mb-4">
             Merchant & Trader Verification Queue
           </h3>

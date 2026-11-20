@@ -33,12 +33,12 @@ export const Logo: React.FC<LogoProps> = ({
   // Attached/Full Variant
   if (variant === 'attached' || variant === 'full') {
     return (
-      <div className={`inline-flex items-center gap-3 px-3.5 py-2 rounded-2xl bg-white/95 dark:bg-[#12141f]/95 border border-[#1b5e20]/30 dark:border-[#c5a059]/40 shadow-sm backdrop-blur-md transition-colors ${className}`}>
+      <div className={`inline-flex items-center gap-3 px-3.5 py-2 rounded-2xl bg-white/95 dark:bg-[#1a1009]/95 border border-[#1b5e20]/30 dark:border-[#c5a059]/40 shadow-sm backdrop-blur-md transition-colors ${className}`}>
         <div className={`relative ${iconSizes[size]} shrink-0 rounded-xl overflow-hidden shadow-xs border border-amber-400/40 bg-amber-50 dark:bg-amber-950/30 flex items-center justify-center`}>
           <img
             src={agozaLogoImg}
             alt="Agoza"
-            className="w-full h-full object-cover object-center"
+            className="w-full h-full object-contain"
             onError={(e) => {
               const target = e.currentTarget;
               target.style.display = 'none';
@@ -69,11 +69,11 @@ export const Logo: React.FC<LogoProps> = ({
   // Standard Variant (used in Header, Cards, and Footer)
   return (
     <div className={`flex items-center gap-2.5 ${className}`}>
-      <div className={`relative ${iconSizes[size]} shrink-0 rounded-xl overflow-hidden shadow-xs border border-amber-400/30 dark:border-[#c5a059]/40 bg-amber-50 dark:bg-[#181a26] flex items-center justify-center`}>
+      <div className={`relative ${iconSizes[size]} shrink-0 rounded-xl overflow-hidden shadow-xs bg-[#1b5e20] flex items-center justify-center`}>
         <img
           src={agozaLogoImg}
           alt="Agoza"
-          className="w-full h-full object-cover object-center"
+          className="w-full h-full object-contain"
           onError={(e) => {
             const target = e.currentTarget;
             target.style.display = 'none';
