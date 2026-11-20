@@ -108,6 +108,7 @@ export const FilterBar: React.FC = () => {
     filters.condition !== 'all' ||
     (filters.city && filters.city !== 'all' && filters.city !== 'All Ethiopia') ||
     filters.openToTradeOnly ||
+    filters.verifiedSellersOnly ||
     Boolean(filters.searchQuery);
 
   return (

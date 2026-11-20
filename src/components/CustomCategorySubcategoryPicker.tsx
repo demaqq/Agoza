@@ -128,7 +128,7 @@ export const CustomCategorySubcategoryPicker: React.FC<CustomCategorySubcategory
   return (
     <div className={`space-y-2 ${className}`}>
       {label && (
-        <label className="block text-xs font-bold text-slate-700 dark:text-[#8b91a4] uppercase tracking-wider mb-1.5 flex items-center justify-between">
+        <label className="block text-xs font-bold text-slate-700 dark:text-[#a8907f] uppercase tracking-wider mb-1.5 flex items-center justify-between">
           <span>{label}</span>
           <span className="text-[11px] text-amber-700 dark:text-amber-400 font-semibold">
             Pro Selector
@@ -139,7 +139,7 @@ export const CustomCategorySubcategoryPicker: React.FC<CustomCategorySubcategory
       {/* Trigger Card: Sleek, high-density, professional */}
       <div
         onClick={() => setIsOpen(true)}
-        className="group relative w-full p-3.5 rounded-2xl bg-white dark:bg-[#151722] hover:bg-amber-50/40 dark:hover:bg-[#1a1d2d] border border-slate-200 dark:border-[#272a3b] hover:border-[#1b5e20] dark:hover:border-[#c5a059] text-left transition-all cursor-pointer shadow-xs hover:shadow-md flex items-center justify-between gap-3"
+        className="group relative w-full p-3.5 rounded-2xl bg-white dark:bg-[#251810] hover:bg-amber-50/40 dark:hover:bg-[#382214] border border-slate-200 dark:border-[#473020] hover:border-[#1b5e20] dark:hover:border-[#c5a059] text-left transition-all cursor-pointer shadow-xs hover:shadow-md flex items-center justify-between gap-3"
       >
         <div className="flex items-center gap-3.5 min-w-0">
           <div className={`w-11 h-11 rounded-xl flex items-center justify-center shrink-0 border ${currentCategoryDef.badgeColor} shadow-2xs group-hover:scale-105 transition-transform`}>
@@ -156,7 +156,7 @@ export const CustomCategorySubcategoryPicker: React.FC<CustomCategorySubcategory
               </span>
             </div>
 
-            <div className="flex items-center gap-1.5 mt-0.5 text-xs text-slate-600 dark:text-[#9fa6ba] truncate">
+            <div className="flex items-center gap-1.5 mt-0.5 text-xs text-slate-600 dark:text-[#c4b19f] truncate">
               <span className="font-semibold text-[#1b5e20] dark:text-[#c5a059] flex items-center gap-1 truncate">
                 <Layers className="w-3 h-3 shrink-0" />
                 {currentSubcategoryDef ? currentSubcategoryDef.name : 'General / All Subcategories'}
@@ -171,7 +171,7 @@ export const CustomCategorySubcategoryPicker: React.FC<CustomCategorySubcategory
         </div>
 
         <div className="flex items-center gap-2 shrink-0">
-          <span className="px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-[#202334] group-hover:bg-[#1b5e20] group-hover:text-white dark:group-hover:bg-[#c5a059] dark:group-hover:text-[#0f1118] text-slate-700 dark:text-[#d3d7e4] text-xs font-bold border border-slate-200 dark:border-[#2e3247] transition-all flex items-center gap-1">
+          <span className="px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-[#473020] group-hover:bg-[#1b5e20] group-hover:text-white dark:group-hover:bg-[#c5a059] dark:group-hover:text-[#1a1009] text-slate-700 dark:text-[#ede0d4] text-xs font-bold border border-slate-200 dark:border-[#5a3a24] transition-all flex items-center gap-1">
             <span>Change</span>
             <ChevronRight className="w-3.5 h-3.5" />
           </span>
@@ -185,11 +185,11 @@ export const CustomCategorySubcategoryPicker: React.FC<CustomCategorySubcategory
           onClick={() => setIsOpen(false)}
         >
           <div
-            className="relative w-full max-w-4xl bg-white dark:bg-[#1a1009] border border-slate-200 dark:border-[#262939] rounded-3xl shadow-2xl overflow-hidden my-auto max-h-[90vh] flex flex-col transition-colors animate-fadeIn"
+            className="relative w-full max-w-4xl bg-white dark:bg-[#1a1009] border border-slate-200 dark:border-[#473020] rounded-3xl shadow-2xl overflow-hidden my-auto max-h-[90vh] flex flex-col transition-colors animate-fadeIn"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Header with Search */}
-            <div className="p-4 sm:p-5 border-b border-slate-200 dark:border-[#212433] bg-slate-50 dark:bg-[#0d0f17] space-y-3">
+            <div className="p-4 sm:p-5 border-b border-slate-200 dark:border-[#473020] bg-slate-50 dark:bg-[#1a1009] space-y-3">
               <div className="flex items-center justify-between gap-3">
                 <div className="flex items-center gap-2.5">
                   <div className="w-8 h-8 rounded-xl bg-amber-100 dark:bg-amber-950/60 border border-amber-300 dark:border-amber-700 text-amber-800 dark:text-amber-300 flex items-center justify-center">
@@ -199,7 +199,7 @@ export const CustomCategorySubcategoryPicker: React.FC<CustomCategorySubcategory
                     <h3 className="font-cinzel text-base sm:text-lg font-bold text-slate-900 dark:text-white">
                       Marketplace Category & Subcategory Suite
                     </h3>
-                    <p className="text-xs text-slate-500 dark:text-[#8d93a7]">
+                    <p className="text-xs text-slate-500 dark:text-[#a8907f]">
                       Select standard classification for instant search indexing and verified handoff in Ethiopia
                     </p>
                   </div>
@@ -208,7 +208,7 @@ export const CustomCategorySubcategoryPicker: React.FC<CustomCategorySubcategory
                 <button
                   type="button"
                   onClick={() => setIsOpen(false)}
-                  className="p-2 rounded-xl bg-slate-200 hover:bg-slate-300 dark:bg-[#251810] text-slate-600 dark:text-[#8e94a6] hover:text-slate-900 dark:hover:text-white border border-slate-300 dark:border-[#2a2d3e] transition-colors cursor-pointer shrink-0"
+                  className="p-2 rounded-xl bg-slate-200 hover:bg-slate-300 dark:bg-[#251810] text-slate-600 dark:text-[#a8907f] hover:text-slate-900 dark:hover:text-white border border-slate-300 dark:border-[#5a3a24] transition-colors cursor-pointer shrink-0"
                   aria-label="Close category selector"
                 >
                   <X className="w-4 h-4" />
@@ -224,7 +224,7 @@ export const CustomCategorySubcategoryPicker: React.FC<CustomCategorySubcategory
                   placeholder="Instant search categories or items (e.g., 'iPhone', 'RAV4', 'Habesha Kemis', 'Mesob', 'Coffee')..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full bg-white dark:bg-[#251810] text-slate-900 dark:text-white text-xs pl-10 pr-9 py-2.5 rounded-xl border border-slate-200 dark:border-[#292c3f] focus:outline-none focus:border-[#1b5e20] dark:focus:border-[#c5a059] shadow-2xs font-medium"
+                  className="w-full bg-white dark:bg-[#251810] text-slate-900 dark:text-white text-xs pl-10 pr-9 py-2.5 rounded-xl border border-slate-200 dark:border-[#5a3a24] focus:outline-none focus:border-[#1b5e20] dark:focus:border-[#c5a059] shadow-2xs font-medium"
                 />
                 {searchQuery && (
                   <button
@@ -274,7 +274,7 @@ export const CustomCategorySubcategoryPicker: React.FC<CustomCategorySubcategory
                             className={`p-3 rounded-2xl border text-left transition-all cursor-pointer flex items-center justify-between gap-3 ${
                               isCurrent
                                 ? 'bg-emerald-50 dark:bg-emerald-950/40 border-[#1b5e20] dark:border-[#c5a059] shadow-xs'
-                                : 'bg-slate-50 dark:bg-[#161825] border-slate-200 dark:border-[#262939] hover:bg-slate-100 dark:hover:bg-[#1d202f] hover:border-slate-300'
+                                : 'bg-slate-50 dark:bg-[#2d1c12] border-slate-200 dark:border-[#473020] hover:bg-slate-100 dark:hover:bg-[#382214] hover:border-slate-300'
                             }`}
                           >
                             <div className="flex items-center gap-3 min-w-0">
@@ -313,7 +313,7 @@ export const CustomCategorySubcategoryPicker: React.FC<CustomCategorySubcategory
                 /* Dual-Pane Master Detail Layout */
                 <div className="flex-1 flex flex-col sm:flex-row overflow-hidden">
                   {/* LEFT PANE: Primary Categories List */}
-                  <div className="w-full sm:w-1/3 border-b sm:border-b-0 sm:border-r border-slate-200 dark:border-[#212433] bg-slate-50/70 dark:bg-[#0f1119] overflow-y-auto p-2 sm:p-3 space-y-1.5">
+                  <div className="w-full sm:w-1/3 border-b sm:border-b-0 sm:border-r border-slate-200 dark:border-[#473020] bg-slate-50/70 dark:bg-[#1a1009] overflow-y-auto p-2 sm:p-3 space-y-1.5">
                     <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider px-2 py-1 block">
                       Primary Categories (10)
                     </span>
@@ -330,7 +330,7 @@ export const CustomCategorySubcategoryPicker: React.FC<CustomCategorySubcategory
                           className={`w-full p-2.5 rounded-xl text-left transition-all cursor-pointer flex items-center justify-between gap-2.5 ${
                             isSelectedCat
                               ? 'bg-[#1b5e20] text-white dark:bg-[#c5a059] dark:text-[#0b0c10] font-bold shadow-xs'
-                              : 'bg-transparent text-slate-700 dark:text-[#a8907f] hover:bg-slate-200/70 dark:hover:bg-[#181a26]'
+                              : 'bg-transparent text-slate-700 dark:text-[#a8907f] hover:bg-slate-200/70 dark:hover:bg-[#2d1c12]'
                           }`}
                         >
                           <div className="flex items-center gap-2.5 min-w-0">
@@ -371,9 +371,9 @@ export const CustomCategorySubcategoryPicker: React.FC<CustomCategorySubcategory
                   </div>
 
                   {/* RIGHT PANE: Subcategories Matrix */}
-                  <div className="flex-1 bg-white dark:bg-[#12141e] overflow-y-auto p-4 sm:p-6 space-y-4">
+                  <div className="flex-1 bg-white dark:bg-[#251810] overflow-y-auto p-4 sm:p-6 space-y-4">
                     {/* Active Category Header */}
-                    <div className="flex items-center justify-between gap-2 pb-3 border-b border-slate-100 dark:border-[#1e2130]">
+                    <div className="flex items-center justify-between gap-2 pb-3 border-b border-slate-100 dark:border-[#473020]">
                       <div>
                         <div className="flex items-center gap-2">
                           <h4 className="text-sm sm:text-base font-bold text-slate-900 dark:text-white">
@@ -388,7 +388,7 @@ export const CustomCategorySubcategoryPicker: React.FC<CustomCategorySubcategory
                         </p>
                       </div>
 
-                      <span className="text-xs font-mono font-semibold px-2.5 py-1 rounded-xl bg-slate-100 dark:bg-[#1a1c29] text-slate-600 dark:text-slate-300">
+                      <span className="text-xs font-mono font-semibold px-2.5 py-1 rounded-xl bg-slate-100 dark:bg-[#382214] text-slate-600 dark:text-slate-300">
                         {activeCategoryTabDef.subcategories.length} Available
                       </span>
                     </div>
@@ -408,7 +408,7 @@ export const CustomCategorySubcategoryPicker: React.FC<CustomCategorySubcategory
                             className={`p-3 rounded-2xl border text-left transition-all cursor-pointer flex items-center justify-between gap-3 group ${
                               isThisSelected
                                 ? 'bg-emerald-50 dark:bg-emerald-950/40 border-[#1b5e20] dark:border-[#c5a059] shadow-xs ring-1 ring-[#1b5e20]/20 dark:ring-[#c5a059]/30'
-                                : 'bg-slate-50/80 dark:bg-[#161825] border-slate-200 dark:border-[#382214] hover:bg-amber-50/50 dark:hover:bg-[#1d202f] hover:border-amber-300 dark:hover:border-amber-700/60'
+                                : 'bg-slate-50/80 dark:bg-[#2d1c12] border-slate-200 dark:border-[#382214] hover:bg-amber-50/50 dark:hover:bg-[#382214] hover:border-amber-300 dark:hover:border-amber-700/60'
                             }`}
                           >
                             <div className="min-w-0 flex-1">
@@ -424,7 +424,7 @@ export const CustomCategorySubcategoryPicker: React.FC<CustomCategorySubcategory
                               className={`w-6 h-6 rounded-full flex items-center justify-center shrink-0 transition-colors ${
                                 isThisSelected
                                   ? 'bg-[#1b5e20] dark:bg-[#c5a059] text-white dark:text-[#0b0c10]'
-                                  : 'border border-slate-300 dark:border-slate-600 bg-white dark:bg-[#1a1c29] group-hover:border-amber-400'
+                                  : 'border border-slate-300 dark:border-slate-600 bg-white dark:bg-[#382214] group-hover:border-amber-400'
                               }`}
                             >
                               {isThisSelected && <Check className="w-3.5 h-3.5 stroke-[3]" />}
@@ -439,7 +439,7 @@ export const CustomCategorySubcategoryPicker: React.FC<CustomCategorySubcategory
             </div>
 
             {/* Modal Footer Summary */}
-            <div className="px-5 py-3.5 border-t border-slate-200 dark:border-[#212433] bg-slate-50 dark:bg-[#0d0f17] flex items-center justify-between gap-3">
+            <div className="px-5 py-3.5 border-t border-slate-200 dark:border-[#473020] bg-slate-50 dark:bg-[#1a1009] flex items-center justify-between gap-3">
               <div className="flex items-center gap-2 text-xs truncate min-w-0">
                 <span className="text-slate-500 hidden sm:inline">Active Choice:</span>
                 <span className="font-bold text-slate-900 dark:text-white flex items-center gap-1.5 truncate">
@@ -453,7 +453,7 @@ export const CustomCategorySubcategoryPicker: React.FC<CustomCategorySubcategory
                 <button
                   type="button"
                   onClick={() => setIsOpen(false)}
-                  className="px-4 py-2 rounded-xl text-xs font-semibold text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200 dark:hover:bg-[#1a1c29] transition-colors cursor-pointer"
+                  className="px-4 py-2 rounded-xl text-xs font-semibold text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200 dark:hover:bg-[#382214] transition-colors cursor-pointer"
                 >
                   Cancel
                 </button>

@@ -47,8 +47,8 @@ export const SwapProposalModal: React.FC = () => {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/85 backdrop-blur-sm overflow-y-auto">
-      <div className="relative w-full max-w-xl bg-[#1a1009] border border-[#262939] rounded-2xl shadow-2xl overflow-hidden my-auto">
-        <div className="flex items-center justify-between px-6 py-4 border-b border-[#212433] bg-[#0e1017]">
+      <div className="relative w-full max-w-xl bg-[#1a1009] border border-[#473020] rounded-2xl shadow-2xl overflow-hidden my-auto">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-[#473020] bg-[#1a1009]">
           <div className="flex items-center gap-2">
             <ArrowLeftRight className="w-4 h-4 text-emerald-400" />
             <h3 className="font-cinzel text-base font-bold text-[#f5f6f8]">
@@ -57,7 +57,7 @@ export const SwapProposalModal: React.FC = () => {
           </div>
           <button
             onClick={() => setIsSwapModalOpen(false)}
-            className="p-1.5 rounded-lg bg-[#251810] text-[#8e94a6] hover:text-white border border-[#2a2d3e] transition-colors cursor-pointer"
+            className="p-1.5 rounded-lg bg-[#251810] text-[#a8907f] hover:text-white border border-[#5a3a24] transition-colors cursor-pointer"
           >
             <X className="w-4 h-4" />
           </button>
@@ -67,7 +67,7 @@ export const SwapProposalModal: React.FC = () => {
           {!isSubmitted ? (
             <form onSubmit={handleSubmit} className="space-y-5">
               {/* Target Collectible */}
-              <div className="flex items-center justify-between p-3 bg-[#151722] border border-[#382214] rounded-xl text-xs">
+              <div className="flex items-center justify-between p-3 bg-[#251810] border border-[#382214] rounded-xl text-xs">
                 <div className="flex items-center gap-3">
                   <img
                     src={selectedCollectible.imageUrl}
@@ -75,7 +75,7 @@ export const SwapProposalModal: React.FC = () => {
                     className="w-12 h-12 rounded-lg object-cover"
                   />
                   <div>
-                    <span className="text-[10px] text-[#6e758a] uppercase block">You Want to Receive</span>
+                    <span className="text-[10px] text-[#a8907f] uppercase block">You Want to Receive</span>
                     <span className="font-semibold text-[#f1f2f6] line-clamp-1">{selectedCollectible.title}</span>
                     <span className="font-mono text-[#c5a059]">{formatPrice(selectedCollectible.priceETB)}</span>
                   </div>
@@ -84,7 +84,7 @@ export const SwapProposalModal: React.FC = () => {
 
               {/* What You Are Offering */}
               <div className="space-y-3">
-                <label className="block text-xs font-semibold text-[#8b91a4] uppercase tracking-wider">
+                <label className="block text-xs font-semibold text-[#a8907f] uppercase tracking-wider">
                   Item You Are Offering in Swap
                 </label>
 
@@ -93,22 +93,22 @@ export const SwapProposalModal: React.FC = () => {
                   placeholder="e.g., 1968 Omega Seamaster 300 or 19th C. Harari Silver Amulet"
                   value={offeredTitle}
                   onChange={(e) => setOfferedTitle(e.target.value)}
-                  className="w-full bg-[#171924] border border-[#282b3c] rounded-xl px-4 py-2.5 text-xs text-[#f2f3f6] focus:outline-none focus:border-[#c5a059]"
+                  className="w-full bg-[#2d1c12] border border-[#473020] rounded-xl px-4 py-2.5 text-xs text-[#f2f3f6] focus:outline-none focus:border-[#c5a059]"
                   required
                 />
 
                 {/* Authentic Photo Upload for Swapped Item */}
                 <div className="space-y-1.5">
-                  <span className="text-[11px] text-[#71788c]">Photo of your offered item:</span>
+                  <span className="text-[11px] text-[#a8907f]">Photo of your offered item:</span>
                   <input
                     type="url"
                     placeholder="Photo URL or image link (https://...)"
                     value={offeredImage}
                     onChange={(e) => setOfferedImage(e.target.value)}
-                    className="w-full bg-[#171924] border border-[#282b3c] rounded-xl px-4 py-2 text-xs text-[#f2f3f6] focus:outline-none focus:border-[#c5a059]"
+                    className="w-full bg-[#2d1c12] border border-[#473020] rounded-xl px-4 py-2 text-xs text-[#f2f3f6] focus:outline-none focus:border-[#c5a059]"
                   />
                   {offeredImage && (
-                    <div className="mt-2 w-20 h-16 rounded-lg overflow-hidden border border-[#282b3c]">
+                    <div className="mt-2 w-20 h-16 rounded-lg overflow-hidden border border-[#473020]">
                       <img src={offeredImage} alt="Offered swap" className="w-full h-full object-cover" />
                     </div>
                   )}
@@ -117,7 +117,7 @@ export const SwapProposalModal: React.FC = () => {
 
               {/* Cash Balancing */}
               <div>
-                <label className="block text-xs font-semibold text-[#8b91a4] uppercase tracking-wider mb-2">
+                <label className="block text-xs font-semibold text-[#a8907f] uppercase tracking-wider mb-2">
                   Cash Balance / Value Adjustment
                 </label>
                 <div className="grid grid-cols-3 gap-2 mb-2">
@@ -127,7 +127,7 @@ export const SwapProposalModal: React.FC = () => {
                     className={`py-2 px-1 text-xs rounded-lg border text-center cursor-pointer transition-colors ${
                       cashDirection === 'even'
                         ? 'bg-emerald-950/40 border-emerald-500 text-emerald-300 font-semibold'
-                        : 'bg-[#251810] border-[#26293a] text-[#858b9f]'
+                        : 'bg-[#251810] border-[#473020] text-[#a8907f]'
                     }`}
                   >
                     Even Swap (0 Br)
@@ -138,7 +138,7 @@ export const SwapProposalModal: React.FC = () => {
                     className={`py-2 px-1 text-xs rounded-lg border text-center cursor-pointer transition-colors ${
                       cashDirection === 'i-pay'
                         ? 'bg-[#c5a059]/20 border-[#c5a059] text-[#f5f6f8] font-semibold'
-                        : 'bg-[#251810] border-[#26293a] text-[#858b9f]'
+                        : 'bg-[#251810] border-[#473020] text-[#a8907f]'
                     }`}
                   >
                     + I Pay Difference
@@ -149,7 +149,7 @@ export const SwapProposalModal: React.FC = () => {
                     className={`py-2 px-1 text-xs rounded-lg border text-center cursor-pointer transition-colors ${
                       cashDirection === 'seller-pays'
                         ? 'bg-[#c5a059]/20 border-[#c5a059] text-[#f5f6f8] font-semibold'
-                        : 'bg-[#251810] border-[#26293a] text-[#858b9f]'
+                        : 'bg-[#251810] border-[#473020] text-[#a8907f]'
                     }`}
                   >
                     - Seller Pays Difference
@@ -165,10 +165,10 @@ export const SwapProposalModal: React.FC = () => {
                       value={cashAdjustment}
                       onChange={(e) => setCashAdjustment(Number(e.target.value))}
                       placeholder="Cash adjustment in Br"
-                      className="w-full bg-[#171924] border border-[#282b3c] rounded-xl px-4 py-2.5 text-sm font-mono text-[#f5f6f8] focus:outline-none focus:border-[#c5a059]"
+                      className="w-full bg-[#2d1c12] border border-[#473020] rounded-xl px-4 py-2.5 text-sm font-mono text-[#f5f6f8] focus:outline-none focus:border-[#c5a059]"
                       required
                     />
-                    <div className="absolute right-4 top-2.5 text-xs text-[#8c92a6] font-mono">
+                    <div className="absolute right-4 top-2.5 text-xs text-[#a8907f] font-mono">
                       ≈ {formatPrice(cashAdjustment)}
                     </div>
                   </div>
@@ -177,7 +177,7 @@ export const SwapProposalModal: React.FC = () => {
 
               {/* Note */}
               <div>
-                <label className="block text-xs font-semibold text-[#8b91a4] uppercase tracking-wider mb-2">
+                <label className="block text-xs font-semibold text-[#a8907f] uppercase tracking-wider mb-2">
                   Proposal Note
                 </label>
                 <textarea
@@ -185,7 +185,7 @@ export const SwapProposalModal: React.FC = () => {
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
                   placeholder="Share details regarding condition, original papers, or preferred inspection hub..."
-                  className="w-full bg-[#171924] border border-[#282b3c] rounded-xl p-3 text-xs text-[#f2f3f6] focus:outline-none focus:border-[#c5a059] resize-none"
+                  className="w-full bg-[#2d1c12] border border-[#473020] rounded-xl p-3 text-xs text-[#f2f3f6] focus:outline-none focus:border-[#c5a059] resize-none"
                 />
               </div>
 
@@ -207,7 +207,7 @@ export const SwapProposalModal: React.FC = () => {
               <h4 className="font-cinzel text-lg font-bold text-[#f5f6f8]">
                 Swap Proposal Transmitted
               </h4>
-              <p className="text-xs text-[#8c92a6] max-w-xs mx-auto">
+              <p className="text-xs text-[#a8907f] max-w-xs mx-auto">
                 The seller has been notified of your trade offer. Both items will undergo verified inspection at the safe hub if agreed.
               </p>
             </div>

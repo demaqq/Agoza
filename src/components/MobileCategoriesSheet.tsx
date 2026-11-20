@@ -104,7 +104,7 @@ export const MobileCategoriesSheet: React.FC = () => {
         <div className="w-12 h-1 bg-slate-300 dark:bg-[#473020] rounded-full mx-auto mt-3 mb-1" />
 
         {/* Header */}
-        <div className="px-5 py-3 flex items-center justify-between border-b border-slate-200 dark:border-[#212433]">
+        <div className="px-5 py-3 flex items-center justify-between border-b border-slate-200 dark:border-[#473020]">
           <div className="flex items-center gap-2">
             {selectedCatId && !searchQuery ? (
               <button
@@ -133,7 +133,7 @@ export const MobileCategoriesSheet: React.FC = () => {
               setIsMobileCategoriesOpen(false);
               setSelectedCatId(null);
             }}
-            className="p-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-[#181a26] text-slate-500 hover:text-slate-900 dark:hover:text-white cursor-pointer"
+            className="p-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-[#2d1c12] text-slate-500 hover:text-slate-900 dark:hover:text-white cursor-pointer"
             aria-label="Close"
           >
             <X className="w-4 h-4" />
@@ -141,7 +141,7 @@ export const MobileCategoriesSheet: React.FC = () => {
         </div>
 
         {/* Search Bar */}
-        <div className="px-4 py-2.5 bg-slate-50 dark:bg-[#0e1017] border-b border-slate-100 dark:border-[#1d202d]">
+        <div className="px-4 py-2.5 bg-slate-50 dark:bg-[#1a1009] border-b border-slate-100 dark:border-[#382214]">
           <div className="relative flex items-center">
             <Search className="w-3.5 h-3.5 text-slate-400 absolute left-3 pointer-events-none" />
             <input
@@ -149,7 +149,7 @@ export const MobileCategoriesSheet: React.FC = () => {
               placeholder="Search all categories & subcategories..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-white dark:bg-[#251810] text-slate-900 dark:text-white text-xs pl-8.5 pr-8 py-2 rounded-xl border border-slate-200 dark:border-[#272a3c] focus:outline-none focus:border-[#1b5e20] dark:focus:border-[#c5a059]"
+              className="w-full bg-white dark:bg-[#251810] text-slate-900 dark:text-white text-xs pl-8.5 pr-8 py-2 rounded-xl border border-slate-200 dark:border-[#473020] focus:outline-none focus:border-[#1b5e20] dark:focus:border-[#c5a059]"
             />
             {searchQuery && (
               <button
@@ -181,7 +181,7 @@ export const MobileCategoriesSheet: React.FC = () => {
                     key={`${cat.id}_${sub.id}`}
                     type="button"
                     onClick={() => handleSelect(cat.id, sub.id)}
-                    className="w-full p-2.5 rounded-xl border border-slate-200 dark:border-[#382214] bg-slate-50 dark:bg-[#161825] text-left flex items-center justify-between gap-2"
+                    className="w-full p-2.5 rounded-xl border border-slate-200 dark:border-[#382214] bg-slate-50 dark:bg-[#2d1c12] text-left flex items-center justify-between gap-2"
                   >
                     <div>
                       <span className="text-[10px] font-bold text-amber-700 dark:text-amber-400 uppercase tracking-wider block">
@@ -202,7 +202,7 @@ export const MobileCategoriesSheet: React.FC = () => {
           ) : selectedCatId && activeCategoryDef ? (
             /* Subcategories Drill-down View */
             <div className="space-y-3">
-              <div className="flex items-center justify-between pb-2 border-b border-slate-100 dark:border-[#1f2231]">
+              <div className="flex items-center justify-between pb-2 border-b border-slate-100 dark:border-[#473020]">
                 <div>
                   <h4 className="text-sm font-bold text-slate-900 dark:text-white">
                     {activeCategoryDef.name}
@@ -234,7 +234,7 @@ export const MobileCategoriesSheet: React.FC = () => {
                       className={`p-3 rounded-2xl border text-left flex items-center justify-between gap-3 transition-all ${
                         isSelectedSub
                           ? 'bg-emerald-50 dark:bg-emerald-950/40 border-[#1b5e20] dark:border-[#c5a059] shadow-xs'
-                          : 'bg-slate-50 dark:bg-[#161825] border-slate-200 dark:border-[#382214]'
+                          : 'bg-slate-50 dark:bg-[#2d1c12] border-slate-200 dark:border-[#382214]'
                       }`}
                     >
                       <div className="min-w-0">
@@ -270,7 +270,7 @@ export const MobileCategoriesSheet: React.FC = () => {
                 className={`p-3 rounded-2xl border text-left flex items-center gap-3 ${
                   filters.category === 'all'
                     ? 'border-[#1b5e20] dark:border-[#c5a059] bg-emerald-50 dark:bg-emerald-950/40'
-                    : 'border-slate-200 dark:border-[#382214] bg-slate-50 dark:bg-[#151724]'
+                    : 'border-slate-200 dark:border-[#382214] bg-slate-50 dark:bg-[#2d1c12]'
                 }`}
               >
                 <div className="w-10 h-10 rounded-xl bg-amber-100 dark:bg-amber-950/60 border border-amber-300 dark:border-amber-800 text-amber-700 dark:text-amber-400 flex items-center justify-center shrink-0">
@@ -299,7 +299,7 @@ export const MobileCategoriesSheet: React.FC = () => {
                     className={`p-3 rounded-2xl border text-left flex items-center justify-between gap-2.5 transition-all ${
                       isSelected
                         ? 'border-[#1b5e20] dark:border-[#c5a059] bg-emerald-50/70 dark:bg-emerald-950/30 ring-1 ring-[#1b5e20]/20'
-                        : 'border-slate-200 dark:border-[#382214] bg-slate-50 dark:bg-[#151724] hover:bg-slate-100 dark:hover:bg-[#251810]'
+                        : 'border-slate-200 dark:border-[#382214] bg-slate-50 dark:bg-[#2d1c12] hover:bg-slate-100 dark:hover:bg-[#251810]'
                     }`}
                   >
                     <div className="flex items-center gap-2.5 min-w-0">

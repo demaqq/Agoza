@@ -83,6 +83,7 @@ export interface UiStrings {
     pass: string;
     verifiedSeller: string;
     verifiedListing: string;
+    newSeller: string;
   };
   filters: {
     browseAll: string;
@@ -107,6 +108,59 @@ export interface UiStrings {
   common: {
     close: string;
   };
+  wise: {
+    title: string;
+    matches: string;
+    subtitle: string;
+    tailorForMe: string;
+    tailored: string;
+    myCity: string;
+    beans: string;
+    preferences: string;
+    reset: string;
+    budgetCap: string;
+    anyBudget: string;
+    under: string;
+    verifiedOnly: string;
+    interests: string;
+    safeTitle: string;
+    safeBody: string;
+    guarantee: string;
+  };
+  auth: {
+    titleSignup: string;
+    titleSignin: string;
+    subSignup: string;
+    subSignin: string;
+    tabSignup: string;
+    tabSignin: string;
+    fullName: string;
+    city: string;
+    telegram: string;
+    telegramHint: string;
+    optional: string;
+    phone: string;
+    email: string;
+    password: string;
+    trustTitle: string;
+    trustBody: string;
+    processing: string;
+    submitSignup: string;
+    submitSignin: string;
+    haveAccount: string;
+    noAccount: string;
+    createAccount: string;
+    forgot: string;
+    errName: string;
+    errEmail: string;
+    errPassword: string;
+    errPhone: string;
+    successSignup: string;
+    successSignin: string;
+    errResetEmail: string;
+    resetSent: string;
+  };
+
   categoryNames: Record<CollectibleCategory, string>;
 }
 
@@ -186,6 +240,7 @@ const en: UiStrings = {
     pass: 'Pass',
     verifiedSeller: "Verified",
     verifiedListing: "Guaranteed",
+    newSeller: 'New seller',
   },
   filters: {
     browseAll: 'Browse all',
@@ -216,6 +271,58 @@ const en: UiStrings = {
   },
   common: {
     close: 'Close',
+  },
+  wise: {
+    title: "For You",
+    matches: "{count} matches",
+    subtitle: "Tailor the marketplace to your city, budget and interests",
+    tailorForMe: "Tailor for me",
+    tailored: "Tailored for you",
+    myCity: "My city:",
+    beans: "{count} beans",
+    preferences: "Preferences",
+    reset: "Reset preferences",
+    budgetCap: "Budget cap:",
+    anyBudget: "Any budget",
+    under: "Under {price}",
+    verifiedOnly: "Verified sellers only",
+    interests: "Interests:",
+    safeTitle: "Safe handoff:",
+    safeBody: "Inspect the item in person before funds are released. Telebirr & CBE supported.",
+    guarantee: "Buyer protection on every deal",
+  },
+  auth: {
+    titleSignup: "Create your account",
+    titleSignin: "Welcome back",
+    subSignup: "Join verified Ethiopian buyers and sellers",
+    subSignin: "Sign in to manage your ads, offers and deals",
+    tabSignup: "Sign up",
+    tabSignin: "Sign in",
+    fullName: "Full name",
+    city: "Your city",
+    telegram: "Telegram username",
+    telegramHint: "Get instant alerts for offers and swaps on Telegram.",
+    optional: "optional",
+    phone: "Phone number",
+    email: "Email address",
+    password: "Password",
+    trustTitle: "Agoza trust & buyer protection",
+    trustBody: "By creating an account you agree to trade responsibly and meet at designated safe exchange hubs.",
+    processing: "Processing…",
+    submitSignup: "Create account",
+    submitSignin: "Sign in",
+    haveAccount: "Already have an account?",
+    noAccount: "Don't have an account yet?",
+    createAccount: "Create a free account",
+    forgot: "Forgot password?",
+    errName: "Please enter your full name.",
+    errEmail: "Please enter a valid email address.",
+    errPassword: "Password must be at least 6 characters.",
+    errPhone: "Please enter your phone number (+251…).",
+    successSignup: "Account created! Check your email to verify, then sign in.",
+    successSignin: "Signed in successfully!",
+    errResetEmail: "Enter your email above to reset your password.",
+    resetSent: "Password reset link sent to your email.",
   },
   categoryNames: {
     all: 'All Items',
@@ -306,6 +413,7 @@ const am: DeepPartial<UiStrings> = {
     pass: 'እለፍ',
     verifiedSeller: "የተረጋገጠ",
     verifiedListing: "ዋስትና ያለው",
+    newSeller: 'አዲስ ሻጭ',
   },
   filters: {
     browseAll: 'ሁሉንም ያስሱ',
@@ -335,6 +443,58 @@ const am: DeepPartial<UiStrings> = {
     rights: 'መብቱ በህግ የተጠበቀ ነው።',
   },
   common: { close: 'ዝጋ' },
+  wise: {
+    title: "ለእርስዎ",
+    matches: "{count} ተዛማጆች",
+    subtitle: "ገበያውን በከተማዎ፣ በበጀትዎ እና በፍላጎትዎ ያስተካክሉ",
+    tailorForMe: "ለእኔ አስተካክል",
+    tailored: "ለእርስዎ ተስተካክሏል",
+    myCity: "ከተማዬ፦",
+    beans: "{count} ፍሬዎች",
+    preferences: "ምርጫዎች",
+    reset: "ምርጫዎችን አፅዳ",
+    budgetCap: "የበጀት ገደብ፦",
+    anyBudget: "ማንኛውም በጀት",
+    under: "ከ{price} በታች",
+    verifiedOnly: "የተረጋገጡ ሻጮች ብቻ",
+    interests: "ፍላጎቶች፦",
+    safeTitle: "ደህንነቱ የተጠበቀ ርክክብ፦",
+    safeBody: "ገንዘቡ ከመለቀቁ በፊት ዕቃውን በአካል ይመርምሩ። ቴሌብር እና የንግድ ባንክ ይደገፋሉ።",
+    guarantee: "በሁሉም ግብይት የገዢ ጥበቃ",
+  },
+  auth: {
+    titleSignup: "መለያ ይፍጠሩ",
+    titleSignin: "እንኳን ደህና መጡ",
+    subSignup: "ከተረጋገጡ የኢትዮጵያ ገዢዎችና ሻጮች ጋር ይቀላቀሉ",
+    subSignin: "ማስታወቂያዎችዎን፣ ቅናሾችዎንና ስምምነቶችዎን ለማስተዳደር ይግቡ",
+    tabSignup: "ይመዝገቡ",
+    tabSignin: "ይግቡ",
+    fullName: "ሙሉ ስም",
+    city: "ከተማዎ",
+    telegram: "የቴሌግራም ስም",
+    telegramHint: "ስለ ቅናሾችና ልውውጦች ፈጣን ማሳወቂያ በቴሌግራም ያግኙ።",
+    optional: "አማራጭ",
+    phone: "ስልክ ቁጥር",
+    email: "ኢሜይል አድራሻ",
+    password: "የይለፍ ቃል",
+    trustTitle: "የአጎዛ እምነት እና የገዢ ጥበቃ",
+    trustBody: "መለያ በመፍጠር በኃላፊነት ለመገበያየትና በተወሰኑ ደህንነታቸው የተጠበቀ የልውውጥ ማዕከላት ለመገናኘት ተስማምተዋል።",
+    processing: "በሂደት ላይ…",
+    submitSignup: "መለያ ይፍጠሩ",
+    submitSignin: "ይግቡ",
+    haveAccount: "መለያ አለዎት?",
+    noAccount: "እስካሁን መለያ የለዎትም?",
+    createAccount: "በነፃ መለያ ይፍጠሩ",
+    forgot: "የይለፍ ቃል ረሱ?",
+    errName: "እባክዎ ሙሉ ስምዎን ያስገቡ።",
+    errEmail: "እባክዎ ትክክለኛ ኢሜይል ያስገቡ።",
+    errPassword: "የይለፍ ቃል ቢያንስ 6 ቁምፊዎች መሆን አለበት።",
+    errPhone: "እባክዎ ስልክ ቁጥርዎን ያስገቡ (+251…)።",
+    successSignup: "መለያዎ ተፈጥሯል! ኢሜይልዎን አረጋግጠው ይግቡ።",
+    successSignin: "በተሳካ ሁኔታ ገብተዋል!",
+    errResetEmail: "የይለፍ ቃል ለመቀየር ከላይ ኢሜይልዎን ያስገቡ።",
+    resetSent: "የይለፍ ቃል መቀየሪያ ሊንክ ወደ ኢሜይልዎ ተልኳል።",
+  },
   categoryNames: {
     all: 'ሁሉም ዕቃዎች',
     'art-collectibles': 'ማስጌጫ እና እደ-ጥበብ',
@@ -424,6 +584,7 @@ const ti: DeepPartial<UiStrings> = {
     pass: 'ሕለፍ',
     verifiedSeller: "ዝተረጋገጸ",
     verifiedListing: "ውሕስነት ዘለዎ",
+    newSeller: 'ሓድሽ ሸያጢ',
   },
   filters: {
     browseAll: 'ኩሉ ርአ',
@@ -453,6 +614,58 @@ const ti: DeepPartial<UiStrings> = {
     rights: 'ኩሉ መሰላት ዝተሓለወ እዩ።',
   },
   common: { close: 'ዕጸው' },
+  wise: {
+    title: "ንዓኻ",
+    matches: "{count} ዝሰማምዑ",
+    subtitle: "ዕዳጋ ብመሰረት ከተማኻ፣ በጀትካን ድሌትካን ኣመዓራርዮ",
+    tailorForMe: "ንዓይ ኣመዓራርዮ",
+    tailored: "ንዓኻ ተመዓራርዩ",
+    myCity: "ከተማይ፦",
+    beans: "{count} ፍረታት",
+    preferences: "ምርጫታት",
+    reset: "ምርጫታት ኣጽሪ",
+    budgetCap: "ደረት በጀት፦",
+    anyBudget: "ዝኾነ በጀት",
+    under: "ትሕቲ {price}",
+    verifiedOnly: "ዝተረጋገጹ ሸየጥቲ ጥራሕ",
+    interests: "ድሌታት፦",
+    safeTitle: "ውሑስ ምርካብ፦",
+    safeBody: "ገንዘብ ቅድሚ ምልቃቑ ነቲ ኣቕሓ ብኣካል መርምሮ። ቴሌብርን ንግዲ ባንክን ይድገፉ።",
+    guarantee: "ኣብ ኩሉ ዕዳጋ ሓለዋ ዓዳጊ",
+  },
+  auth: {
+    titleSignup: "ሕሳብ ፍጠር",
+    titleSignin: "እንቋዕ ብደሓን መጻእካ",
+    subSignup: "ምስ ዝተረጋገጹ ዓደግትን ሸየጥትን ኢትዮጵያ ተጸንበር",
+    subSignin: "መወዓውዒታትካ፣ ዋጋታትካን ስምምዓትካን ንምምሕዳር እቶ",
+    tabSignup: "ተመዝገብ",
+    tabSignin: "እቶ",
+    fullName: "ምሉእ ስም",
+    city: "ከተማኻ",
+    telegram: "ስም ቴሌግራም",
+    telegramHint: "ብዛዕባ ዋጋታትን ምልውዋጥን ቅልጡፍ መዘኻኸሪ ብቴሌግራም ርከብ።",
+    optional: "ኣማራጺ",
+    phone: "ቁጽሪ ተሌፎን",
+    email: "ኢመይል",
+    password: "መሕለፊ ቃል",
+    trustTitle: "እምነት ኣጎዛን ሓለዋ ዓዳጊን",
+    trustBody: "ሕሳብ ብምፍጣርካ ብሓላፍነት ክትዕደግን ኣብ ዝተወሰኑ ውሑሳት ማእከላት ክትራኸብን ተሰማሚዕካ ኣለኻ።",
+    processing: "ኣብ መስርሕ…",
+    submitSignup: "ሕሳብ ፍጠር",
+    submitSignin: "እቶ",
+    haveAccount: "ሕሳብ ኣለካ ድዩ?",
+    noAccount: "ገና ሕሳብ የብልካን?",
+    createAccount: "ብነጻ ሕሳብ ፍጠር",
+    forgot: "መሕለፊ ቃል ረሲዕካ?",
+    errName: "በጃኻ ምሉእ ስምካ ኣእቱ።",
+    errEmail: "በጃኻ ቅኑዕ ኢመይል ኣእቱ።",
+    errPassword: "መሕለፊ ቃል እንተወሓደ 6 ፊደላት ክኸውን ኣለዎ።",
+    errPhone: "በጃኻ ቁጽሪ ተሌፎንካ ኣእቱ (+251…)።",
+    successSignup: "ሕሳብ ተፈጢሩ! ኢመይልካ ኣረጋግጽ፣ ድሕሪኡ እቶ።",
+    successSignin: "ብዓወት ኣቲኻ!",
+    errResetEmail: "መሕለፊ ቃል ንምቕያር ኣብ ላዕሊ ኢመይልካ ኣእቱ።",
+    resetSent: "መቐየሪ መሕለፊ ቃል ናብ ኢመይልካ ተላኢኹ።",
+  },
   categoryNames: {
     all: 'ኩሉ ኣቑሑ',
     'art-collectibles': 'መስለጢን ኢደ-ጥበብን',
@@ -542,6 +755,7 @@ const om: DeepPartial<UiStrings> = {
     pass: 'Darbi',
     verifiedSeller: "Mirkanaa'e",
     verifiedListing: "Wabii qabu",
+    newSeller: 'Gurgurtaa haaraa',
   },
   filters: {
     browseAll: 'Hunda ilaali',
@@ -571,6 +785,58 @@ const om: DeepPartial<UiStrings> = {
     rights: 'Mirgi hundi seeraan eegamaadha.',
   },
   common: { close: 'Cufi' },
+  wise: {
+    title: "Siif",
+    matches: "Kan walsiman {count}",
+    subtitle: "Gabaa magaalaa, baajata fi fedhii keetiin qindeessi",
+    tailorForMe: "Anaaf qindeessi",
+    tailored: "Siif qindaa'eera",
+    myCity: "Magaalaa koo:",
+    beans: "Firii {count}",
+    preferences: "Filannoowwan",
+    reset: "Filannoowwan haqi",
+    budgetCap: "Daangaa baajataa:",
+    anyBudget: "Baajata kamiyyuu",
+    under: "{price} gadi",
+    verifiedOnly: "Gurgurtoota mirkanaa'an qofa",
+    interests: "Fedhii:",
+    safeTitle: "Walitti kennuu nageenya qabu:",
+    safeBody: "Maallaqni osoo hin gadhiifamin dura meeshaa qaamaan ilaali. Telebirr fi CBE ni deeggaramu.",
+    guarantee: "Daldala hunda irratti eegumsa bitaa",
+  },
+  auth: {
+    titleSignup: "Herrega uumi",
+    titleSignin: "Baga nagaan deebitan",
+    subSignup: "Bitootaa fi gurgurtoota Itoophiyaa mirkanaa'an waliin makamaa",
+    subSignin: "Beeksisa, gatii fi waliigaltee kee bulchuuf seeni",
+    tabSignup: "Galmaa'i",
+    tabSignin: "Seeni",
+    fullName: "Maqaa guutuu",
+    city: "Magaalaa kee",
+    telegram: "Maqaa Telegram",
+    telegramHint: "Gatii fi jijjiirraa irratti beeksisa ariifataa Telegram irratti argadhu.",
+    optional: "dirqama miti",
+    phone: "Lakkoofsa bilbilaa",
+    email: "Teessoo imeelii",
+    password: "Jecha icciitii",
+    trustTitle: "Amanamummaa Agoza fi eegumsa bitaa",
+    trustBody: "Herrega uumuudhaan itti gaafatamummaan daldaluu fi wiirtuuwwan jijjiirraa nageenya qaban irratti wal arguuf walii galteetta.",
+    processing: "Hojjechaa jira…",
+    submitSignup: "Herrega uumi",
+    submitSignin: "Seeni",
+    haveAccount: "Herrega qabdaa?",
+    noAccount: "Ammallee herrega hin qabduu?",
+    createAccount: "Bilisaan herrega uumi",
+    forgot: "Jecha icciitii irraanfattee?",
+    errName: "Maaloo maqaa kee guutuu galchi.",
+    errEmail: "Maaloo imeelii sirrii galchi.",
+    errPassword: "Jechi icciitii yoo xiqqaate qubee 6 qabaachuu qaba.",
+    errPhone: "Maaloo lakkoofsa bilbilaa kee galchi (+251…).",
+    successSignup: "Herregni uumameera! Imeelii kee mirkaneessiitii seeni.",
+    successSignin: "Milkaa'inaan seenteetta!",
+    errResetEmail: "Jecha icciitii jijjiiruuf imeelii kee olitti galchi.",
+    resetSent: "Liinkiin jecha icciitii jijjiiru imeelii keetti ergameera.",
+  },
   categoryNames: {
     all: 'Meeshaalee Hunda',
     'art-collectibles': 'Miidhagina fi Ogummaa Harkaa',
@@ -660,6 +926,7 @@ const so: DeepPartial<UiStrings> = {
     pass: 'Dhaaf',
     verifiedSeller: "La xaqiijiyey",
     verifiedListing: "Damaanad leh",
+    newSeller: 'Iibiye cusub',
   },
   filters: {
     browseAll: 'Daawo dhammaan',
@@ -689,6 +956,58 @@ const so: DeepPartial<UiStrings> = {
     rights: 'Xuquuqda oo dhan way dhowran tahay.',
   },
   common: { close: 'Xir' },
+  wise: {
+    title: "Adiga",
+    matches: "{count} ku habboon",
+    subtitle: "U habee suuqa magaaladaada, miisaaniyaddaada iyo xiisahaaga",
+    tailorForMe: "Ii habee",
+    tailored: "Adiga laguu habeeyey",
+    myCity: "Magaaladayda:",
+    beans: "{count} miro",
+    preferences: "Doorashooyinka",
+    reset: "Tirtir doorashooyinka",
+    budgetCap: "Xadka miisaaniyadda:",
+    anyBudget: "Miisaaniyad kasta",
+    under: "Ka hooseeya {price}",
+    verifiedOnly: "Iibiyeyaal la xaqiijiyey kaliya",
+    interests: "Xiisaha:",
+    safeTitle: "Gacan-gelin ammaan ah:",
+    safeBody: "Alaabta si toos ah u baar ka hor inta aan lacagta la sii dayn. Telebirr & CBE waa la taageeraa.",
+    guarantee: "Ilaalinta iibsadaha heshiis kasta",
+  },
+  auth: {
+    titleSignup: "Samee akoon",
+    titleSignin: "Ku soo dhowow",
+    subSignup: "Ku biir iibsadayaasha iyo iibiyeyaasha Itoobiya ee la xaqiijiyey",
+    subSignin: "Gal si aad u maamusho xayeysiisyadaada, dalabyada iyo heshiisyada",
+    tabSignup: "Is diiwaangeli",
+    tabSignin: "Gal",
+    fullName: "Magaca oo buuxa",
+    city: "Magaaladaada",
+    telegram: "Magaca Telegram",
+    telegramHint: "Hel ogeysiisyo degdeg ah oo ku saabsan dalabyada iyo isdhaafsiga Telegram.",
+    optional: "ikhtiyaari",
+    phone: "Lambarka taleefanka",
+    email: "Cinwaanka iimaylka",
+    password: "Furaha sirta",
+    trustTitle: "Kalsoonida Agoza & ilaalinta iibsadaha",
+    trustBody: "Markaad akoon samaysato waxaad oggolaatay inaad si mas'uuliyad leh u ganacsato oo aad ku kulanto xarumaha is-weydaarsiga ammaanka ah.",
+    processing: "Waa la socodsiinayaa…",
+    submitSignup: "Samee akoon",
+    submitSignin: "Gal",
+    haveAccount: "Akoon ma leedahay?",
+    noAccount: "Weli akoon ma lihid?",
+    createAccount: "Samee akoon bilaash ah",
+    forgot: "Ma ilowday furaha sirta?",
+    errName: "Fadlan geli magacaaga oo buuxa.",
+    errEmail: "Fadlan geli iimayl sax ah.",
+    errPassword: "Furaha sirtu waa inuu ahaadaa ugu yaraan 6 xaraf.",
+    errPhone: "Fadlan geli lambarkaaga taleefanka (+251…).",
+    successSignup: "Akoonka waa la sameeyey! Xaqiiji iimaylkaaga, kadibna gal.",
+    successSignin: "Si guul leh ayaad u gashay!",
+    errResetEmail: "Geli iimaylkaaga kor si aad u bedesho furaha sirta.",
+    resetSent: "Xiriirka bedelka furaha sirta waxaa loo diray iimaylkaaga.",
+  },
   categoryNames: {
     all: 'Dhammaan Alaabta',
     'art-collectibles': 'Qurxin & Farshaxan',

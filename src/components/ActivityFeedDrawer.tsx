@@ -43,11 +43,11 @@ export const ActivityFeedDrawer: React.FC = () => {
       onClick={() => setIsActivityFeedOpen(false)}
     >
       <div
-        className="w-full max-w-md bg-white dark:bg-[#1a1009] border-l border-slate-200 dark:border-[#262939] h-full flex flex-col shadow-2xl transition-colors"
+        className="w-full max-w-md bg-white dark:bg-[#1a1009] border-l border-slate-200 dark:border-[#473020] h-full flex flex-col shadow-2xl transition-colors"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="p-4 border-b border-slate-200 dark:border-[#212433] bg-slate-50 dark:bg-[#0e1017] flex items-center justify-between">
+        <div className="p-4 border-b border-slate-200 dark:border-[#473020] bg-slate-50 dark:bg-[#1a1009] flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Activity className="w-4 h-4 text-[#1b5e20] dark:text-[#c5a059]" />
             <h3 className="font-cinzel text-base font-bold text-slate-900 dark:text-[#f5f6f8]">
@@ -56,14 +56,14 @@ export const ActivityFeedDrawer: React.FC = () => {
           </div>
           <button
             onClick={() => setIsActivityFeedOpen(false)}
-            className="p-1.5 rounded-xl bg-slate-200 hover:bg-slate-300 dark:bg-[#251810] text-slate-600 dark:text-[#8e94a6] hover:text-slate-900 dark:hover:text-white border border-slate-300 dark:border-[#2a2d3e] transition-colors cursor-pointer"
+            className="p-1.5 rounded-xl bg-slate-200 hover:bg-slate-300 dark:bg-[#251810] text-slate-600 dark:text-[#a8907f] hover:text-slate-900 dark:hover:text-white border border-slate-300 dark:border-[#5a3a24] transition-colors cursor-pointer"
           >
             <X className="w-4 h-4" />
           </button>
         </div>
 
         {/* Filter bar */}
-        <div className="px-3 py-2 bg-slate-100 dark:bg-[#1a1009] border-b border-slate-200 dark:border-[#202332] flex gap-1.5 overflow-x-auto scrollbar-none text-xs">
+        <div className="px-3 py-2 bg-slate-100 dark:bg-[#1a1009] border-b border-slate-200 dark:border-[#473020] flex gap-1.5 overflow-x-auto scrollbar-none text-xs">
           {[
             { id: 'all', label: 'All' },
             { id: 'escrow', label: '🛡️ Protected' },
@@ -77,7 +77,7 @@ export const ActivityFeedDrawer: React.FC = () => {
               className={`px-3 py-1 rounded-lg whitespace-nowrap cursor-pointer transition-colors ${
                 filterType === tab.id
                   ? 'bg-[#1b5e20] dark:bg-[#c5a059] text-white dark:text-[#1e130c] font-bold shadow-xs'
-                  : 'bg-white dark:bg-[#251810] text-slate-600 dark:text-[#838a9d] hover:text-slate-900 dark:hover:text-white border border-slate-200 dark:border-transparent'
+                  : 'bg-white dark:bg-[#251810] text-slate-600 dark:text-[#a8907f] hover:text-slate-900 dark:hover:text-white border border-slate-200 dark:border-transparent'
               }`}
             >
               {tab.label}
@@ -96,7 +96,7 @@ export const ActivityFeedDrawer: React.FC = () => {
             return (
               <div
                 key={item.id}
-                className="bg-white dark:bg-[#151722] border border-slate-200 dark:border-[#242738] hover:border-[#1b5e20] dark:hover:border-[#383c52] rounded-2xl p-3.5 transition-colors shadow-xs"
+                className="bg-white dark:bg-[#251810] border border-slate-200 dark:border-[#473020] hover:border-[#1b5e20] dark:hover:border-[#5a3a24] rounded-2xl p-3.5 transition-colors shadow-xs"
               >
                 <div className="flex items-start gap-3">
                   <div
@@ -128,16 +128,16 @@ export const ActivityFeedDrawer: React.FC = () => {
                       </span>
                     </div>
 
-                    <p className="text-xs text-slate-600 dark:text-[#979eaf] leading-relaxed">
+                    <p className="text-xs text-slate-600 dark:text-[#c4b19f] leading-relaxed">
                       {item.actionText}{' '}
                       <strong className="text-slate-900 dark:text-white font-semibold">
                         "{item.targetTitle}"
                       </strong>
                     </p>
 
-                    <div className="flex items-center justify-between mt-2 pt-2 border-t border-slate-100 dark:border-[#1d202d] text-[11px]">
+                    <div className="flex items-center justify-between mt-2 pt-2 border-t border-slate-100 dark:border-[#382214] text-[11px]">
                       {item.location && (
-                        <span className="text-slate-500 dark:text-[#6a7185] flex items-center gap-1">
+                        <span className="text-slate-500 dark:text-[#a8907f] flex items-center gap-1">
                           <MapPin className="w-3 h-3 text-amber-500" />
                           {item.location}
                         </span>

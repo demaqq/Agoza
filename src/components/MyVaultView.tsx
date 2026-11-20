@@ -56,7 +56,7 @@ export const MyVaultView: React.FC = () => {
       )}
 
       {/* Header Profile Section */}
-      <div className="bg-[#131520] border border-[#382214] rounded-2xl p-6 sm:p-8 mb-8">
+      <div className="bg-[#251810] border border-[#382214] rounded-2xl p-6 sm:p-8 mb-8">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
           <div className="flex items-center gap-4">
             <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#c5a059] to-[#8c6b2b] p-0.5 shadow-lg">
@@ -71,7 +71,7 @@ export const MyVaultView: React.FC = () => {
                 </h1>
                 <VerifiedBadge variant="profile" size="xs" label="Verified Member" />
               </div>
-              <p className="text-xs text-[#8c92a6] mt-1">
+              <p className="text-xs text-[#a8907f] mt-1">
                 Addis Ababa, Bole Hub · Member since 2024 · 100% Verified Completion Rate
               </p>
             </div>
@@ -87,13 +87,13 @@ export const MyVaultView: React.FC = () => {
         </div>
 
         {/* Tabbed Vault Navigation */}
-        <div className="flex items-center gap-2 mt-8 pt-6 border-t border-[#202332] overflow-x-auto scrollbar-none">
+        <div className="flex items-center gap-2 mt-8 pt-6 border-t border-[#473020] overflow-x-auto scrollbar-none">
           <button
             onClick={() => setActiveVaultTab('escrow')}
             className={`px-4 py-2 rounded-lg text-xs font-semibold whitespace-nowrap cursor-pointer transition-colors ${
               activeVaultTab === 'escrow'
                 ? 'bg-[#c5a059] text-[#1e130c]'
-                : 'bg-[#251810] text-[#8c92a6] hover:text-white border border-[#252837]'
+                : 'bg-[#251810] text-[#a8907f] hover:text-white border border-[#473020]'
             }`}
           >
             <span className="flex items-center gap-1.5">
@@ -107,7 +107,7 @@ export const MyVaultView: React.FC = () => {
             className={`px-4 py-2 rounded-lg text-xs font-semibold whitespace-nowrap cursor-pointer transition-colors ${
               activeVaultTab === 'offers'
                 ? 'bg-[#c5a059] text-[#1e130c]'
-                : 'bg-[#251810] text-[#8c92a6] hover:text-white border border-[#252837]'
+                : 'bg-[#251810] text-[#a8907f] hover:text-white border border-[#473020]'
             }`}
           >
             <span className="flex items-center gap-1.5">
@@ -121,7 +121,7 @@ export const MyVaultView: React.FC = () => {
             className={`px-4 py-2 rounded-lg text-xs font-semibold whitespace-nowrap cursor-pointer transition-colors ${
               activeVaultTab === 'saved'
                 ? 'bg-[#c5a059] text-[#1e130c]'
-                : 'bg-[#251810] text-[#8c92a6] hover:text-white border border-[#252837]'
+                : 'bg-[#251810] text-[#a8907f] hover:text-white border border-[#473020]'
             }`}
           >
             <span className="flex items-center gap-1.5">
@@ -135,7 +135,7 @@ export const MyVaultView: React.FC = () => {
             className={`px-4 py-2 rounded-lg text-xs font-semibold whitespace-nowrap cursor-pointer transition-colors ${
               activeVaultTab === 'my-listings'
                 ? 'bg-[#c5a059] text-[#1e130c]'
-                : 'bg-[#251810] text-[#8c92a6] hover:text-white border border-[#252837]'
+                : 'bg-[#251810] text-[#a8907f] hover:text-white border border-[#473020]'
             }`}
           >
             <span>{t.myListings} ({userListings.length})</span>
@@ -147,14 +147,14 @@ export const MyVaultView: React.FC = () => {
       {activeVaultTab === 'escrow' && (
         <div className="space-y-4">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-sm font-semibold uppercase tracking-wider text-[#9ba2b5]">
+            <h2 className="text-sm font-semibold uppercase tracking-wider text-[#c4b19f]">
               Active Verified Handoffs
             </h2>
-            <span className="text-xs text-[#6e758a]">Protected by Agoza Safe Safeguard</span>
+            <span className="text-xs text-[#a8907f]">Protected by Agoza Safe Safeguard</span>
           </div>
 
           {escrowOrders.length === 0 ? (
-            <div className="text-center py-12 bg-[#12141d] rounded-2xl border border-[#212433] p-6 text-[#7d8498]">
+            <div className="text-center py-12 bg-[#1e130c] rounded-2xl border border-[#473020] p-6 text-[#a8907f]">
               <ShieldCheck className="w-10 h-10 mx-auto mb-2 opacity-50" />
               <p className="text-xs">No active verified orders at present.</p>
             </div>
@@ -165,10 +165,10 @@ export const MyVaultView: React.FC = () => {
                 return (
                   <div
                     key={order.id}
-                    className="bg-[#1a1009] border border-[#262939] rounded-2xl p-5 flex flex-col justify-between"
+                    className="bg-[#1a1009] border border-[#473020] rounded-2xl p-5 flex flex-col justify-between"
                   >
                     <div>
-                      <div className="flex items-center justify-between text-xs text-[#8c92a6] mb-3 pb-3 border-b border-[#212434]">
+                      <div className="flex items-center justify-between text-xs text-[#a8907f] mb-3 pb-3 border-b border-[#473020]">
                         <span className="font-mono">Order: {order.id}</span>
                         <span
                           className={`font-semibold text-[11px] px-2 py-0.5 rounded ${
@@ -194,18 +194,18 @@ export const MyVaultView: React.FC = () => {
                           <span className="font-mono text-sm font-bold text-[#c5a059]">
                             {formatPrice(order.priceETB)}
                           </span>
-                          <p className="text-[11px] text-[#7d8499] mt-0.5">
+                          <p className="text-[11px] text-[#a8907f] mt-0.5">
                             Seller: {order.sellerName}
                           </p>
                         </div>
                       </div>
 
-                      <div className="bg-[#181b29] rounded-xl p-3 text-xs space-y-1.5 mb-4 border border-[#282c3f]">
-                        <div className="flex items-center justify-between text-[#8c92a6]">
+                      <div className="bg-[#382214] rounded-xl p-3 text-xs space-y-1.5 mb-4 border border-[#5a3a24]">
+                        <div className="flex items-center justify-between text-[#a8907f]">
                           <span>Safe Hub:</span>
                           <span className="text-[#f1f2f6] font-medium">{order.selectedHub}</span>
                         </div>
-                        <div className="flex items-center justify-between text-[#8c92a6]">
+                        <div className="flex items-center justify-between text-[#a8907f]">
                           <span>Inspection Code:</span>
                           <span className="font-mono text-emerald-400 font-bold tracking-wider">
                             {order.inspectionCode}
@@ -239,14 +239,14 @@ export const MyVaultView: React.FC = () => {
       {activeVaultTab === 'offers' && (
         <div className="space-y-4">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-sm font-semibold uppercase tracking-wider text-[#9ba2b5]">
+            <h2 className="text-sm font-semibold uppercase tracking-wider text-[#c4b19f]">
               Bargain Offers & Barter Proposals
             </h2>
-            <span className="text-xs text-[#6e758a]">Direct Buyer-to-Seller Negotiations</span>
+            <span className="text-xs text-[#a8907f]">Direct Buyer-to-Seller Negotiations</span>
           </div>
 
           {tradeOffers.length === 0 ? (
-            <div className="text-center py-12 bg-[#12141d] rounded-2xl border border-[#212433] p-6 text-[#7d8498]">
+            <div className="text-center py-12 bg-[#1e130c] rounded-2xl border border-[#473020] p-6 text-[#a8907f]">
               <Tag className="w-10 h-10 mx-auto mb-2 opacity-50" />
               <p className="text-xs">No active bargaining offers or swap proposals.</p>
             </div>
@@ -257,20 +257,20 @@ export const MyVaultView: React.FC = () => {
                 return (
                   <div
                     key={offer.id}
-                    className="bg-[#1a1009] border border-[#262939] rounded-2xl p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4"
+                    className="bg-[#1a1009] border border-[#473020] rounded-2xl p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4"
                   >
                     <div className="flex items-start gap-4">
                       <img
                         src={offer.buyerAvatar}
                         alt={offer.buyerName}
-                        className="w-10 h-10 rounded-full object-cover border border-[#35394d]"
+                        className="w-10 h-10 rounded-full object-cover border border-[#5a3a24]"
                       />
                       <div>
                         <div className="flex items-center gap-2">
                           <span className="text-xs font-semibold text-[#f1f2f6]">
                             {offer.buyerName}
                           </span>
-                          <span className="text-[11px] text-[#7b8196]">· {offer.createdAt}</span>
+                          <span className="text-[11px] text-[#a8907f]">· {offer.createdAt}</span>
                           <span
                             className={`text-[10px] font-mono uppercase px-2 py-0.5 rounded font-bold ${
                               offer.status === 'accepted'
@@ -284,11 +284,11 @@ export const MyVaultView: React.FC = () => {
                           </span>
                         </div>
 
-                        <h4 className="text-xs font-semibold text-[#dce0ec] mt-1">
+                        <h4 className="text-xs font-semibold text-[#ede0d4] mt-1">
                           For: {offer.collectibleTitle}
                         </h4>
 
-                        <div className="text-xs text-[#a5abbf] mt-1.5">
+                        <div className="text-xs text-[#c4b19f] mt-1.5">
                           {offer.type === 'cash-offer' ? (
                             <span className="flex items-center gap-1.5 font-mono text-[#f5f6f8]">
                               <Tag className="w-3.5 h-3.5 text-[#c5a059]" />
@@ -303,7 +303,7 @@ export const MyVaultView: React.FC = () => {
                           )}
                         </div>
 
-                        <p className="text-xs text-[#7e859a] italic mt-1.5 max-w-lg">
+                        <p className="text-xs text-[#a8907f] italic mt-1.5 max-w-lg">
                           "{offer.message}"
                         </p>
                       </div>
@@ -319,7 +319,7 @@ export const MyVaultView: React.FC = () => {
                         </button>
                         <button
                           onClick={() => handleOfferAction(offer.id, 'declined')}
-                          className="flex-1 sm:flex-initial py-2 px-3.5 bg-[#202332] hover:bg-[#2a2e40] text-[#a4abbe] text-xs font-medium rounded-xl border border-[#2d3144] transition-colors cursor-pointer"
+                          className="flex-1 sm:flex-initial py-2 px-3.5 bg-[#473020] hover:bg-[#5a3a24] text-[#c4b19f] text-xs font-medium rounded-xl border border-[#5a3a24] transition-colors cursor-pointer"
                         >
                           Decline
                         </button>
@@ -337,7 +337,7 @@ export const MyVaultView: React.FC = () => {
       {activeVaultTab === 'saved' && (
         <div>
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-sm font-semibold uppercase tracking-wider text-[#9ba2b5]">
+            <h2 className="text-sm font-semibold uppercase tracking-wider text-[#c4b19f]">
               Watched Items ({savedCollectibles.length})
             </h2>
             <button
@@ -349,7 +349,7 @@ export const MyVaultView: React.FC = () => {
           </div>
 
           {savedCollectibles.length === 0 ? (
-            <div className="text-center py-12 bg-[#12141d] rounded-2xl border border-[#212433] p-6 text-[#7d8498]">
+            <div className="text-center py-12 bg-[#1e130c] rounded-2xl border border-[#473020] p-6 text-[#a8907f]">
               <Bookmark className="w-10 h-10 mx-auto mb-2 opacity-50" />
               <p className="text-xs">You have not bookmarked any collectibles yet.</p>
             </div>
@@ -367,7 +367,7 @@ export const MyVaultView: React.FC = () => {
       {activeVaultTab === 'my-listings' && (
         <div>
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-sm font-semibold uppercase tracking-wider text-[#9ba2b5]">
+            <h2 className="text-sm font-semibold uppercase tracking-wider text-[#c4b19f]">
               Your Published Listings ({userListings.length})
             </h2>
             <button
@@ -379,7 +379,7 @@ export const MyVaultView: React.FC = () => {
           </div>
 
           {userListings.length === 0 ? (
-            <div className="text-center py-12 bg-[#12141d] rounded-2xl border border-[#212433] p-6 text-[#7d8498]">
+            <div className="text-center py-12 bg-[#1e130c] rounded-2xl border border-[#473020] p-6 text-[#a8907f]">
               <Plus className="w-10 h-10 mx-auto mb-2 opacity-50" />
               <p className="text-xs mb-3">You have not listed any collectibles yet.</p>
               <button

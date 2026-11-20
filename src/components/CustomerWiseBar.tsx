@@ -1,3 +1,4 @@
+import { fmt } from '../i18n/translations';
 import React, { useState, useEffect } from 'react';
 import { useMarketplace } from '../context/MarketplaceContext';
 import {
@@ -54,27 +55,31 @@ export const CustomerWiseBar: React.FC = () => {
     collectibles,
     currentUser,
     selectedCity,
-    setSelectedCity,
+    formatPrice,
+    t,
   } = useMarketplace();
+  const w = t.wise;
+  const myCity = currentUser?.city || selectedCity || 'Addis Ababa';
 
   const [isCustomerWiseActive, setIsCustomerWiseActive] = useState(false);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isRewardsOpen, setIsRewardsOpen] = useState(false);
   const [selectedMaxBudget, setSelectedMaxBudget] = useState<number>(0);
   const [selectedInterests, setSelectedInterests] = useState<CollectibleCategory[]>([]);
-  const [onlyVerifiedSellers, setOnlyVerifiedSellers] = useState(false);
+  const onlyVerifiedSellers = filters.verifiedSellersOnly;
+  const setOnlyVerifiedSellers = (v: boolean) => setFilters((prev) => ({ ...prev, verifiedSellersOnly: v }));
 
   // When customer-wise mode is activated, apply personal preferences
   useEffect(() => {
     if (isCustomerWiseActive) {
       setFilters((prev) => ({
         ...prev,
-        city: currentUser?.city || selectedCity || 'Addis Ababa',
+        city: myCity,
         maxPrice: selectedMaxBudget > 0 ? selectedMaxBudget : 0,
         category: selectedInterests.length === 1 ? selectedInterests[0] : 'all',
       }));
     }
-  }, [isCustomerWiseActive, selectedMaxBudget, selectedInterests, currentUser, selectedCity, setFilters]);
+  }, [isCustomerWiseActive, selectedMaxBudget, selectedInterests, myCity, setFilters]);
 
   const toggleInterest = (catId: CollectibleCategory) => {
     setSelectedInterests((prev) =>
@@ -86,9 +91,9 @@ export const CustomerWiseBar: React.FC = () => {
     setIsCustomerWiseActive(false);
     setSelectedMaxBudget(0);
     setSelectedInterests([]);
-    setOnlyVerifiedSellers(false);
     setFilters((prev) => ({
       ...prev,
+      verifiedSellersOnly: false,
       city: 'all',
       maxPrice: 0,
       category: 'all',
@@ -130,17 +135,14 @@ export const CustomerWiseBar: React.FC = () => {
             <div>
               <div className="flex items-center gap-2">
                 <span className="font-bold text-xs sm:text-sm text-slate-900 dark:text-[#fbf5ef] flex items-center gap-1.5">
-                  <span>Customer-Wise</span>
-                  <span className="text-amber-800 dark:text-[#d4a373] font-serif text-xs">
-                    (የደንበኛ ማዕከል)
-                  </span>
+                  <span>{w.title}</span>
                 </span>
                 <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-amber-100 dark:bg-[#3d2719] text-amber-900 dark:text-[#e4c4a8] font-bold border border-amber-200 dark:border-[#523522]">
-                  {matchingCustomerItems} Matches
+                  {fmt(w.matches, { count: matchingCustomerItems })}
                 </span>
               </div>
               <p className="text-[11px] text-slate-600 dark:text-[#c4a996] leading-tight hidden sm:block">
-                Tailor your marketplace view by city, budget cap, verified handoffs & coffee-to-tech items
+                {w.subtitle}
               </p>
             </div>
           </div>
@@ -155,6 +157,7 @@ export const CustomerWiseBar: React.FC = () => {
                 setIsCustomerWiseActive(nextState);
                 if (nextState && !isDrawerOpen) setIsDrawerOpen(true);
               }}
+              aria-pressed={isCustomerWiseActive}
               className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 border shadow-2xs ${
                 isCustomerWiseActive
                   ? 'bg-[#1b5e20] text-white border-[#1b5e20] dark:bg-[#d4a373] dark:text-[#1e130c] dark:border-[#d4a373]'
@@ -162,16 +165,14 @@ export const CustomerWiseBar: React.FC = () => {
               }`}
             >
               <UserCheck className="w-3.5 h-3.5" />
-              <span>{isCustomerWiseActive ? 'Tailored for You ✓' : 'Tailor for Me'}</span>
+              <span>{isCustomerWiseActive ? `${w.tailored} ✓` : w.tailorForMe}</span>
             </button>
 
             {/* Customer City Chip */}
             <div className="flex items-center gap-1 px-2.5 py-1 rounded-xl bg-white dark:bg-[#2e1d14] border border-slate-200 dark:border-[#4a3221] text-xs">
               <MapPin className="w-3.5 h-3.5 text-amber-600 dark:text-[#d4a373]" />
-              <span className="text-slate-500 dark:text-[#9e8471] text-[11px]">My City:</span>
-              <span className="font-bold text-slate-900 dark:text-white">
-                {currentUser?.city || selectedCity || 'Addis Ababa'}
-              </span>
+              <span className="text-slate-500 dark:text-[#9e8471] text-[11px]">{w.myCity}</span>
+              <span className="font-bold text-slate-900 dark:text-white">{myCity}</span>
             </div>
 
             {/* Customer Loyalty Coffee Beans Pill */}
@@ -179,10 +180,10 @@ export const CustomerWiseBar: React.FC = () => {
               type="button"
               onClick={() => setIsRewardsOpen(true)}
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-100 hover:bg-amber-200 dark:bg-[#342318] dark:hover:bg-[#422919] border border-amber-300 dark:border-[#523522] text-xs font-bold text-amber-900 dark:text-[#d4a373] transition-colors cursor-pointer"
-              title="View Customer Loyalty Coffee Beans & Perks"
+              title={fmt(w.beans, { count: 195 })}
             >
               <CoffeeBeansIcon className="w-3.5 h-3.5" />
-              <span>195 Beans</span>
+              <span>{fmt(w.beans, { count: 195 })}</span>
               <Gift className="w-3 h-3 text-amber-700 dark:text-[#e0b487]" />
             </button>
 
@@ -190,10 +191,11 @@ export const CustomerWiseBar: React.FC = () => {
             <button
               type="button"
               onClick={() => setIsDrawerOpen(!isDrawerOpen)}
+              aria-expanded={isDrawerOpen}
               className="px-2.5 py-1.5 rounded-xl text-xs font-semibold bg-white dark:bg-[#2e1d14] text-slate-700 dark:text-[#d7beaa] border border-slate-200 dark:border-[#4a3221] hover:bg-amber-50 dark:hover:bg-[#392419] transition-colors cursor-pointer flex items-center gap-1"
             >
               <SlidersHorizontal className="w-3.5 h-3.5 text-amber-600 dark:text-[#d4a373]" />
-              <span>Preferences</span>
+              <span>{w.preferences}</span>
               {isDrawerOpen ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
             </button>
 
@@ -203,7 +205,8 @@ export const CustomerWiseBar: React.FC = () => {
                 type="button"
                 onClick={handleResetPreferences}
                 className="p-1.5 text-slate-500 hover:text-rose-600 dark:text-[#9e8471] dark:hover:text-rose-400 transition-colors"
-                title="Reset customer preferences"
+                title={w.reset}
+                aria-label={w.reset}
               >
                 <RotateCcw className="w-3.5 h-3.5" />
               </button>
@@ -219,7 +222,7 @@ export const CustomerWiseBar: React.FC = () => {
               {/* Budget Cap Selector */}
               <div className="flex flex-wrap items-center gap-1.5">
                 <span className="text-xs font-bold text-slate-700 dark:text-[#d7beaa]">
-                  Budget Cap (የዋጋ ገደብ):
+                  {w.budgetCap}
                 </span>
                 <div className="flex flex-wrap gap-1.5">
                   {BUDGET_OPTIONS.map((opt) => (
@@ -240,7 +243,7 @@ export const CustomerWiseBar: React.FC = () => {
                           : 'bg-white dark:bg-[#1f140e] text-slate-700 dark:text-[#d7beaa] border-slate-200 dark:border-[#4a3221] hover:border-amber-400'
                       }`}
                     >
-                      {opt.label}
+                      {opt.value === 0 ? w.anyBudget : fmt(w.under, { price: formatPrice(opt.value) })}
                     </button>
                   ))}
                 </div>
@@ -250,6 +253,7 @@ export const CustomerWiseBar: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setOnlyVerifiedSellers(!onlyVerifiedSellers)}
+                aria-pressed={onlyVerifiedSellers}
                 className={`px-3 py-1 text-xs rounded-xl font-semibold border transition-all cursor-pointer flex items-center gap-1.5 ${
                   onlyVerifiedSellers
                     ? 'bg-emerald-100 text-emerald-900 border-emerald-400 dark:bg-emerald-950/60 dark:text-emerald-300 dark:border-emerald-700'
@@ -257,7 +261,7 @@ export const CustomerWiseBar: React.FC = () => {
                 }`}
               >
                 <ShieldCheck className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
-                <span>Verified Sellers Only</span>
+                <span>{w.verifiedOnly}</span>
                 {onlyVerifiedSellers && <Check className="w-3 h-3 text-emerald-600 dark:text-emerald-400" />}
               </button>
             </div>
@@ -265,7 +269,7 @@ export const CustomerWiseBar: React.FC = () => {
             {/* Row 2: Customer Category Interests (With Coffee, Jonia & Artisan Motifs) */}
             <div className="flex flex-wrap items-center gap-2 pt-1">
               <span className="text-xs font-bold text-slate-700 dark:text-[#d7beaa] shrink-0">
-                Customer Interests:
+                {w.interests}
               </span>
               <div className="flex flex-wrap gap-1.5">
                 {CUSTOMER_INTERESTS.map((interest) => {
@@ -287,10 +291,7 @@ export const CustomerWiseBar: React.FC = () => {
                       }`}
                     >
                       <Icon className={`w-3.5 h-3.5 ${isSelected ? 'text-white dark:text-[#1e130c]' : 'text-amber-700 dark:text-[#d4a373]'}`} />
-                      <span>{interest.label}</span>
-                      <span className={`text-[10px] font-serif ${isSelected ? 'opacity-90' : 'text-slate-400 dark:text-[#9e8471]'}`}>
-                        ({interest.amharic})
-                      </span>
+                      <span>{t.categoryNames[interest.id] || interest.label}</span>
                     </button>
                   );
                 })}
@@ -302,11 +303,11 @@ export const CustomerWiseBar: React.FC = () => {
               <div className="flex items-center gap-2">
                 <CoffeeSackIcon className="w-4 h-4 text-amber-700 dark:text-[#d4a373] shrink-0" />
                 <span>
-                  <strong>Customer Safe Handoff:</strong> Inspect item in-person before funds release. Telebirr & CBE integrated.
+                  <strong>{w.safeTitle}</strong> {w.safeBody}
                 </span>
               </div>
               <span className="font-mono text-amber-800 dark:text-[#d4a373] font-bold">
-                100% Buyer Protection Guaranteed
+                {w.guarantee}
               </span>
             </div>
           </div>

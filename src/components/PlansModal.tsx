@@ -65,9 +65,9 @@ export const PlansModal: React.FC = () => {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/85 backdrop-blur-xs overflow-y-auto">
-      <div className="relative w-full max-w-5xl bg-white dark:bg-[#1a1009] border border-slate-200 dark:border-[#262939] rounded-3xl shadow-2xl overflow-hidden my-auto max-h-[94vh] flex flex-col transition-colors">
+      <div className="relative w-full max-w-5xl bg-white dark:bg-[#1a1009] border border-slate-200 dark:border-[#473020] rounded-3xl shadow-2xl overflow-hidden my-auto max-h-[94vh] flex flex-col transition-colors">
         {/* Modal Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100 dark:border-[#212433] bg-slate-50 dark:bg-[#0e1017]">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100 dark:border-[#473020] bg-slate-50 dark:bg-[#1a1009]">
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 rounded-full overflow-hidden border border-amber-400 bg-black shrink-0">
               <img src={agozaLogoImg} alt="Agoza" className="w-full h-full object-cover" />
@@ -92,7 +92,7 @@ export const PlansModal: React.FC = () => {
               setSelectedPlanForCheckout(null);
               setIsPlansModalOpen(false);
             }}
-            className="p-1.5 rounded-xl bg-white dark:bg-[#251810] text-slate-600 dark:text-[#8e94a6] hover:text-slate-900 dark:hover:text-white border border-slate-200 dark:border-[#2a2d3e] transition-colors cursor-pointer"
+            className="p-1.5 rounded-xl bg-white dark:bg-[#251810] text-slate-600 dark:text-[#a8907f] hover:text-slate-900 dark:hover:text-white border border-slate-200 dark:border-[#5a3a24] transition-colors cursor-pointer"
           >
             <X className="w-4 h-4" />
           </button>
@@ -102,8 +102,8 @@ export const PlansModal: React.FC = () => {
         <div className="overflow-y-auto flex-1 p-4 sm:p-8 space-y-8">
           {/* CHECKOUT STEP MODAL IF UPGRADING */}
           {selectedPlanForCheckout && checkoutPlan && (
-            <div className="p-5 sm:p-6 rounded-2xl bg-amber-50 dark:bg-[#161928] border-2 border-amber-400/80 shadow-lg space-y-5 animate-in fade-in">
-              <div className="flex items-center justify-between border-b border-amber-200 dark:border-[#2a2f47] pb-4">
+            <div className="p-5 sm:p-6 rounded-2xl bg-amber-50 dark:bg-[#2d1c12] border-2 border-amber-400/80 shadow-lg space-y-5 animate-in fade-in">
+              <div className="flex items-center justify-between border-b border-amber-200 dark:border-[#473020] pb-4">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-xl bg-amber-500 text-slate-950 flex items-center justify-center font-bold">
                     <Crown className="w-6 h-6" />
@@ -139,7 +139,7 @@ export const PlansModal: React.FC = () => {
                     className={`p-3 rounded-xl border text-left cursor-pointer transition-all ${
                       paymentMethod === 'telebirr'
                         ? 'border-[#0072ce] bg-[#0072ce]/10 text-slate-900 dark:text-white ring-2 ring-[#0072ce]'
-                        : 'border-slate-200 dark:border-[#282d42] bg-white dark:bg-[#1a1009] text-slate-600 dark:text-slate-300'
+                        : 'border-slate-200 dark:border-[#5a3a24] bg-white dark:bg-[#1a1009] text-slate-600 dark:text-slate-300'
                     }`}
                   >
                     <div className="flex items-center justify-between mb-1">
@@ -155,7 +155,7 @@ export const PlansModal: React.FC = () => {
                     className={`p-3 rounded-xl border text-left cursor-pointer transition-all ${
                       paymentMethod === 'cbe'
                         ? 'border-[#7b1480] bg-[#7b1480]/10 text-slate-900 dark:text-white ring-2 ring-[#7b1480]'
-                        : 'border-slate-200 dark:border-[#282d42] bg-white dark:bg-[#1a1009] text-slate-600 dark:text-slate-300'
+                        : 'border-slate-200 dark:border-[#5a3a24] bg-white dark:bg-[#1a1009] text-slate-600 dark:text-slate-300'
                     }`}
                   >
                     <div className="flex items-center justify-between mb-1">
@@ -171,7 +171,7 @@ export const PlansModal: React.FC = () => {
                     className={`p-3 rounded-xl border text-left cursor-pointer transition-all ${
                       paymentMethod === 'chapa'
                         ? 'border-emerald-500 bg-emerald-500/10 text-slate-900 dark:text-white ring-2 ring-emerald-500'
-                        : 'border-slate-200 dark:border-[#282d42] bg-white dark:bg-[#1a1009] text-slate-600 dark:text-slate-300'
+                        : 'border-slate-200 dark:border-[#5a3a24] bg-white dark:bg-[#1a1009] text-slate-600 dark:text-slate-300'
                     }`}
                   >
                     <div className="flex items-center justify-between mb-1">
@@ -187,7 +187,7 @@ export const PlansModal: React.FC = () => {
                     className={`p-3 rounded-xl border text-left cursor-pointer transition-all ${
                       paymentMethod === 'awash'
                         ? 'border-amber-600 bg-amber-600/10 text-slate-900 dark:text-white ring-2 ring-amber-600'
-                        : 'border-slate-200 dark:border-[#282d42] bg-white dark:bg-[#1a1009] text-slate-600 dark:text-slate-300'
+                        : 'border-slate-200 dark:border-[#5a3a24] bg-white dark:bg-[#1a1009] text-slate-600 dark:text-slate-300'
                     }`}
                   >
                     <div className="flex items-center justify-between mb-1">
@@ -209,7 +209,7 @@ export const PlansModal: React.FC = () => {
                   value={phoneNumber}
                   onChange={(e) => setPhoneNumber(e.target.value)}
                   placeholder="+251 9... / 09..."
-                  className="w-full sm:w-80 px-3.5 py-2 text-xs rounded-xl border border-slate-300 dark:border-[#32374e] bg-white dark:bg-[#10121d] text-slate-900 dark:text-white font-mono"
+                  className="w-full sm:w-80 px-3.5 py-2 text-xs rounded-xl border border-slate-300 dark:border-[#5a3a24] bg-white dark:bg-[#1e130c] text-slate-900 dark:text-white font-mono"
                 />
               </div>
 
@@ -233,7 +233,7 @@ export const PlansModal: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setSelectedPlanForCheckout(null)}
-                  className="py-3 px-4 bg-white dark:bg-[#181a26] text-slate-700 dark:text-slate-300 text-xs font-semibold rounded-xl border border-slate-300 dark:border-[#32364c] hover:bg-slate-50 cursor-pointer"
+                  className="py-3 px-4 bg-white dark:bg-[#2d1c12] text-slate-700 dark:text-slate-300 text-xs font-semibold rounded-xl border border-slate-300 dark:border-[#5a3a24] hover:bg-slate-50 cursor-pointer"
                 >
                   Cancel
                 </button>
@@ -260,10 +260,10 @@ export const PlansModal: React.FC = () => {
                   key={plan.id}
                   className={`relative rounded-3xl p-6 sm:p-7 flex flex-col justify-between transition-all duration-300 ${
                     isPro
-                      ? 'bg-gradient-to-b from-[#1b1e2c] to-[#1a1009] border-2 border-amber-400 text-white shadow-xl shadow-amber-400/10'
+                      ? 'bg-gradient-to-b from-[#382214] to-[#1a1009] border-2 border-amber-400 text-white shadow-xl shadow-amber-400/10'
                       : isStarter
-                      ? 'bg-white dark:bg-[#141624] border-2 border-[#1b5e20] dark:border-[#c5a059] shadow-lg'
-                      : 'bg-white dark:bg-[#12141e] border border-slate-200 dark:border-[#242738] text-slate-900 dark:text-white'
+                      ? 'bg-white dark:bg-[#2d1c12] border-2 border-[#1b5e20] dark:border-[#c5a059] shadow-lg'
+                      : 'bg-white dark:bg-[#251810] border border-slate-200 dark:border-[#473020] text-slate-900 dark:text-white'
                   }`}
                 >
                   {/* Top Badges */}
@@ -319,7 +319,7 @@ export const PlansModal: React.FC = () => {
                     </div>
 
                     {/* Key Limits Overview */}
-                    <div className="p-3 rounded-2xl bg-slate-50 dark:bg-[#0c0d13] border border-slate-100 dark:border-[#1f2233] space-y-1.5 mb-5 text-xs font-mono">
+                    <div className="p-3 rounded-2xl bg-slate-50 dark:bg-[#140c07] border border-slate-100 dark:border-[#473020] space-y-1.5 mb-5 text-xs font-mono">
                       <div className="flex justify-between">
                         <span className="text-slate-500">Active Listings:</span>
                         <strong className="text-slate-900 dark:text-white">
@@ -377,7 +377,7 @@ export const PlansModal: React.FC = () => {
                   {/* Plan CTA Button */}
                   <div className="pt-2">
                     {isCurrent ? (
-                      <div className="w-full py-2.5 px-4 rounded-xl bg-slate-200 dark:bg-[#202336] text-slate-700 dark:text-slate-300 font-bold text-xs text-center flex items-center justify-center gap-1.5 cursor-default">
+                      <div className="w-full py-2.5 px-4 rounded-xl bg-slate-200 dark:bg-[#473020] text-slate-700 dark:text-slate-300 font-bold text-xs text-center flex items-center justify-center gap-1.5 cursor-default">
                         <Check className="w-4 h-4 text-emerald-500" />
                         <span>Your Current Active Plan</span>
                       </div>
@@ -390,7 +390,7 @@ export const PlansModal: React.FC = () => {
                             ? 'bg-amber-400 hover:bg-amber-300 text-slate-950 font-black'
                             : isStarter
                             ? 'bg-[#1b5e20] hover:bg-[#25732b] dark:bg-[#c5a059] dark:hover:bg-[#d6b068] text-white dark:text-[#1e130c]'
-                            : 'bg-white dark:bg-[#251810] hover:bg-slate-100 dark:hover:bg-[#222535] text-slate-800 dark:text-slate-200 border border-slate-300 dark:border-[#2f3348]'
+                            : 'bg-white dark:bg-[#251810] hover:bg-slate-100 dark:hover:bg-[#473020] text-slate-800 dark:text-slate-200 border border-slate-300 dark:border-[#5a3a24]'
                         }`}
                       >
                         {isPro ? (
@@ -415,7 +415,7 @@ export const PlansModal: React.FC = () => {
           </div>
 
           {/* DETAILED COMPARISON TABLE */}
-          <div className="bg-slate-50 dark:bg-[#131522] rounded-3xl p-5 sm:p-7 border border-slate-200 dark:border-[#242738] space-y-4">
+          <div className="bg-slate-50 dark:bg-[#251810] rounded-3xl p-5 sm:p-7 border border-slate-200 dark:border-[#473020] space-y-4">
             <div className="flex items-center justify-between">
               <div>
                 <h4 className="font-bold text-sm sm:text-base text-slate-900 dark:text-white">
@@ -431,14 +431,14 @@ export const PlansModal: React.FC = () => {
             <div className="overflow-x-auto">
               <table className="w-full text-xs text-left">
                 <thead>
-                  <tr className="border-b border-slate-200 dark:border-[#272a3d] text-slate-500 font-mono">
+                  <tr className="border-b border-slate-200 dark:border-[#473020] text-slate-500 font-mono">
                     <th className="py-2.5 pr-4">Features</th>
                     <th className="py-2.5 px-3">Free (0 Br)</th>
                     <th className="py-2.5 px-3 text-[#1b5e20] dark:text-[#c5a059] font-bold">Starter (699 Br/mo)</th>
                     <th className="py-2.5 px-3 text-amber-500 font-bold">Pro (1,499 Br/mo)</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-100 dark:divide-[#1d2030] text-slate-700 dark:text-slate-300">
+                <tbody className="divide-y divide-slate-100 dark:divide-[#473020] text-slate-700 dark:text-slate-300">
                   <tr>
                     <td className="py-2.5 pr-4 font-semibold">Active Classified Listings</td>
                     <td className="py-2.5 px-3 font-mono">3 Listings</td>
@@ -500,7 +500,7 @@ export const PlansModal: React.FC = () => {
         </div>
 
         {/* Modal Footer */}
-        <div className="px-6 py-4 border-t border-slate-100 dark:border-[#212433] bg-slate-50 dark:bg-[#0e1017] flex flex-col sm:flex-row items-center justify-between gap-3">
+        <div className="px-6 py-4 border-t border-slate-100 dark:border-[#473020] bg-slate-50 dark:bg-[#1a1009] flex flex-col sm:flex-row items-center justify-between gap-3">
           <div className="flex items-center gap-2 text-xs text-slate-500">
             <ShieldCheck className="w-4 h-4 text-emerald-500 shrink-0" />
             <span>Pay safely with Telebirr, CBE Birr, Chapa, or Awash Bank. Cancel or switch plans anytime.</span>
@@ -509,7 +509,7 @@ export const PlansModal: React.FC = () => {
           <button
             type="button"
             onClick={() => setIsPlansModalOpen(false)}
-            className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-slate-900 dark:bg-[#202334] hover:bg-black text-white text-xs font-bold transition-colors cursor-pointer"
+            className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-slate-900 dark:bg-[#473020] hover:bg-black text-white text-xs font-bold transition-colors cursor-pointer"
           >
             Close
           </button>

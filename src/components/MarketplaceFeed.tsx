@@ -158,6 +158,11 @@ export const MarketplaceFeed: React.FC = () => {
         return false;
       }
 
+      // 5b. Verified sellers only (from the "For You" preferences)
+      if (filters.verifiedSellersOnly && !item.seller.verifiedKyc) {
+        return false;
+      }
+
       // 6. Max Budget Filter
       if (filters.maxPrice > 0 && item.priceETB > filters.maxPrice) {
         return false;
@@ -215,6 +220,7 @@ export const MarketplaceFeed: React.FC = () => {
     (filters.location && filters.location !== 'all') ||
     (filters.condition && filters.condition !== 'all') ||
     filters.openToTradeOnly ||
+    filters.verifiedSellersOnly ||
     filters.maxPrice > 0
   );
 

@@ -88,6 +88,7 @@ export interface FilterState {
   rarity: ItemRarity | 'all';
   eraPeriod: HistoricalEraPeriod;
   openToTradeOnly: boolean;
+  verifiedSellersOnly: boolean;
   location: string;
   city: string;
   minPrice: number;
@@ -241,6 +242,7 @@ const defaultFilters: FilterState = {
   rarity: 'all',
   eraPeriod: 'all',
   openToTradeOnly: false,
+  verifiedSellersOnly: false,
   location: 'all',
   city: 'all',
   minPrice: 0,
@@ -352,7 +354,11 @@ export const MarketplaceProvider: React.FC<{ children: React.ReactNode }> = ({ c
   };
 
   const login = async (emailOrPhone: string, password: string) => {
-    const email = emailOrPhone.includes('@') ? emailOrPhone : `${emailOrPhone}@trader.et`;
+    // Accounts are email-based; the old phone fallback (`<phone>@trader.et`) could never match.
+    const email = emailOrPhone.trim();
+    if (!email.includes('@')) {
+      return { success: false, error: getTranslations(language).auth.errEmail };
+    }
     const result = await loginUser(email, password);
     if (result.success) {
       setIsAuthModalOpen(false);
@@ -863,7 +869,7 @@ export const MarketplaceProvider: React.FC<{ children: React.ReactNode }> = ({ c
     setCollectibles((prev) => [newItem, ...prev]);
 
     // Persist to Firestore (best-effort; offline cache keeps UI responsive)
-    persist('saveListing', () => saveListing(newItem));
+    if (currentUser) persist('saveListing', () => saveListing(newItem));
 
     // Push to Activity Feed
     const activity: ActivityItem = {
@@ -1216,7 +1222,7 @@ export const MarketplaceProvider: React.FC<{ children: React.ReactNode }> = ({ c
   };
 
   const userListings = collectibles.filter(
-    (c) => c.seller.id === 'usr-me' || c.seller.name.includes('You')
+    (c) => c.seller.id === 'usr-me' || (currentUser != null && c.seller.id === currentUser.id) || c.seller.name.includes('You')
   );
 
   const isAdmin = Boolean(currentUser?.isAdmin);

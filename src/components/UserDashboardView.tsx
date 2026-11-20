@@ -64,7 +64,7 @@ export const UserDashboardView: React.FC = () => {
       )}
 
       {/* User Header Profile Card */}
-      <div className="bg-white dark:bg-[#131520] border border-slate-200 dark:border-[#382214] rounded-2xl p-6 sm:p-8 mb-8 shadow-sm">
+      <div className="bg-white dark:bg-[#251810] border border-slate-200 dark:border-[#382214] rounded-2xl p-6 sm:p-8 mb-8 shadow-sm">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
           <div className="flex items-center gap-4">
             <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#1b5e20] to-[#2e7d32] dark:from-[#c5a059] dark:to-[#8c6b2b] p-0.5 shadow-md">
@@ -120,7 +120,7 @@ export const UserDashboardView: React.FC = () => {
 
         {/* Admin Switcher Card (Admins Only) */}
         {isAdmin && (
-        <div className="mt-6 pt-5 border-t border-slate-100 dark:border-[#202334] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div className="mt-6 pt-5 border-t border-slate-100 dark:border-[#473020] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div className="flex items-center gap-2.5">
             <div className="w-8 h-8 rounded-xl bg-amber-100 dark:bg-amber-950/50 flex items-center justify-center text-amber-700 dark:text-amber-400 shrink-0">
               <ShieldAlert className="w-4 h-4" />
@@ -144,13 +144,13 @@ export const UserDashboardView: React.FC = () => {
         )}
 
         {/* Tab Navigation */}
-        <div className="flex items-center gap-2 mt-8 pt-6 border-t border-slate-200 dark:border-[#202332] overflow-x-auto scrollbar-none">
+        <div className="flex items-center gap-2 mt-8 pt-6 border-t border-slate-200 dark:border-[#473020] overflow-x-auto scrollbar-none">
           <button
             onClick={() => setActiveTab('ads')}
             className={`px-4 py-2 rounded-lg text-xs font-semibold whitespace-nowrap cursor-pointer transition-colors flex items-center gap-1.5 ${
               activeTab === 'ads'
                 ? 'bg-slate-900 text-white dark:bg-[#c5a059] dark:text-[#1e130c]'
-                : 'bg-slate-100 dark:bg-[#251810] text-slate-600 dark:text-[#8c92a6] hover:text-slate-900 dark:hover:text-white'
+                : 'bg-slate-100 dark:bg-[#251810] text-slate-600 dark:text-[#a8907f] hover:text-slate-900 dark:hover:text-white'
             }`}
           >
             <Package className="w-3.5 h-3.5" />
@@ -162,7 +162,7 @@ export const UserDashboardView: React.FC = () => {
             className={`px-4 py-2 rounded-lg text-xs font-semibold whitespace-nowrap cursor-pointer transition-colors flex items-center gap-1.5 ${
               activeTab === 'offers'
                 ? 'bg-slate-900 text-white dark:bg-[#c5a059] dark:text-[#1e130c]'
-                : 'bg-slate-100 dark:bg-[#251810] text-slate-600 dark:text-[#8c92a6] hover:text-slate-900 dark:hover:text-white'
+                : 'bg-slate-100 dark:bg-[#251810] text-slate-600 dark:text-[#a8907f] hover:text-slate-900 dark:hover:text-white'
             }`}
           >
             <Tag className="w-3.5 h-3.5" />
@@ -174,7 +174,7 @@ export const UserDashboardView: React.FC = () => {
             className={`px-4 py-2 rounded-lg text-xs font-semibold whitespace-nowrap cursor-pointer transition-colors flex items-center gap-1.5 ${
               activeTab === 'escrow'
                 ? 'bg-slate-900 text-white dark:bg-[#c5a059] dark:text-[#1e130c]'
-                : 'bg-slate-100 dark:bg-[#251810] text-slate-600 dark:text-[#8c92a6] hover:text-slate-900 dark:hover:text-white'
+                : 'bg-slate-100 dark:bg-[#251810] text-slate-600 dark:text-[#a8907f] hover:text-slate-900 dark:hover:text-white'
             }`}
           >
             <ShieldCheck className="w-3.5 h-3.5" />
@@ -186,7 +186,7 @@ export const UserDashboardView: React.FC = () => {
             className={`px-4 py-2 rounded-lg text-xs font-semibold whitespace-nowrap cursor-pointer transition-colors flex items-center gap-1.5 ${
               activeTab === 'profile'
                 ? 'bg-slate-900 text-white dark:bg-[#c5a059] dark:text-[#1e130c]'
-                : 'bg-slate-100 dark:bg-[#251810] text-slate-600 dark:text-[#8c92a6] hover:text-slate-900 dark:hover:text-white'
+                : 'bg-slate-100 dark:bg-[#251810] text-slate-600 dark:text-[#a8907f] hover:text-slate-900 dark:hover:text-white'
             }`}
           >
             <User className="w-3.5 h-3.5" />
@@ -198,7 +198,7 @@ export const UserDashboardView: React.FC = () => {
             className={`px-4 py-2 rounded-lg text-xs font-semibold whitespace-nowrap cursor-pointer transition-colors flex items-center gap-1.5 ${
               activeTab === 'plans'
                 ? 'bg-slate-900 text-white dark:bg-[#c5a059] dark:text-[#1e130c]'
-                : 'bg-slate-100 dark:bg-[#251810] text-slate-600 dark:text-[#8c92a6] hover:text-slate-900 dark:hover:text-white'
+                : 'bg-slate-100 dark:bg-[#251810] text-slate-600 dark:text-[#a8907f] hover:text-slate-900 dark:hover:text-white'
             }`}
           >
             <Crown className="w-3.5 h-3.5 text-amber-500 fill-amber-500" />
@@ -223,7 +223,7 @@ export const UserDashboardView: React.FC = () => {
           </div>
 
           {userListings.length === 0 ? (
-            <div className="text-center py-16 bg-white dark:bg-[#12141d] rounded-2xl border border-slate-200 dark:border-[#212433] p-6 text-slate-500">
+            <div className="text-center py-16 bg-white dark:bg-[#1e130c] rounded-2xl border border-slate-200 dark:border-[#473020] p-6 text-slate-500">
               <Package className="w-12 h-12 mx-auto mb-3 opacity-40 text-slate-400" />
               <h3 className="text-sm font-semibold text-slate-900 dark:text-white mb-1">
                 You have no active ads yet
@@ -243,7 +243,7 @@ export const UserDashboardView: React.FC = () => {
               {userListings.map((ad) => (
                 <div
                   key={ad.id}
-                  className="bg-white dark:bg-[#1a1009] border border-slate-200 dark:border-[#262939] rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-sm"
+                  className="bg-white dark:bg-[#1a1009] border border-slate-200 dark:border-[#473020] rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-sm"
                 >
                   <div className="flex items-start gap-4">
                     <img
@@ -289,14 +289,14 @@ export const UserDashboardView: React.FC = () => {
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-2 w-full sm:w-auto pt-3 sm:pt-0 border-t sm:border-t-0 border-slate-100 dark:border-[#212433]">
+                  <div className="flex items-center gap-2 w-full sm:w-auto pt-3 sm:pt-0 border-t sm:border-t-0 border-slate-100 dark:border-[#473020]">
                     {ad.status !== 'sold' && (
                       <button
                         onClick={() => {
                           markAsSold(ad.id);
                           handleActionToast(`"${ad.title}" marked as sold.`);
                         }}
-                        className="flex-1 sm:flex-initial py-2 px-3 bg-slate-100 dark:bg-[#1f2231] hover:bg-slate-200 dark:hover:bg-[#2c3044] text-slate-700 dark:text-slate-200 text-xs font-semibold rounded-lg transition-colors cursor-pointer"
+                        className="flex-1 sm:flex-initial py-2 px-3 bg-slate-100 dark:bg-[#473020] hover:bg-slate-200 dark:hover:bg-[#5a3a24] text-slate-700 dark:text-slate-200 text-xs font-semibold rounded-lg transition-colors cursor-pointer"
                       >
                         Mark as Sold
                       </button>
@@ -329,7 +329,7 @@ export const UserDashboardView: React.FC = () => {
           </div>
 
           {tradeOffers.length === 0 ? (
-            <div className="text-center py-16 bg-white dark:bg-[#12141d] rounded-2xl border border-slate-200 dark:border-[#212433] p-6 text-slate-500">
+            <div className="text-center py-16 bg-white dark:bg-[#1e130c] rounded-2xl border border-slate-200 dark:border-[#473020] p-6 text-slate-500">
               <Tag className="w-12 h-12 mx-auto mb-3 opacity-40 text-slate-400" />
               <p className="text-xs">No active price offers or barter proposals.</p>
             </div>
@@ -340,7 +340,7 @@ export const UserDashboardView: React.FC = () => {
                 return (
                   <div
                     key={offer.id}
-                    className="bg-white dark:bg-[#1a1009] border border-slate-200 dark:border-[#262939] rounded-2xl p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-sm"
+                    className="bg-white dark:bg-[#1a1009] border border-slate-200 dark:border-[#473020] rounded-2xl p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-sm"
                   >
                     <div className="flex items-start gap-4">
                       <img
@@ -391,7 +391,7 @@ export const UserDashboardView: React.FC = () => {
                             updateOfferStatus(offer.id, 'declined');
                             handleActionToast('Offer declined.');
                           }}
-                          className="flex-1 sm:flex-initial py-2 px-3.5 bg-slate-100 dark:bg-[#202332] text-slate-700 dark:text-slate-300 text-xs font-medium rounded-xl border border-slate-300 dark:border-[#2d3144] transition-colors cursor-pointer"
+                          className="flex-1 sm:flex-initial py-2 px-3.5 bg-slate-100 dark:bg-[#473020] text-slate-700 dark:text-slate-300 text-xs font-medium rounded-xl border border-slate-300 dark:border-[#5a3a24] transition-colors cursor-pointer"
                         >
                           Decline
                         </button>
@@ -420,10 +420,10 @@ export const UserDashboardView: React.FC = () => {
               return (
                 <div
                   key={order.id}
-                  className="bg-white dark:bg-[#1a1009] border border-slate-200 dark:border-[#262939] rounded-2xl p-5 flex flex-col justify-between shadow-sm"
+                  className="bg-white dark:bg-[#1a1009] border border-slate-200 dark:border-[#473020] rounded-2xl p-5 flex flex-col justify-between shadow-sm"
                 >
                   <div>
-                    <div className="flex items-center justify-between text-xs text-slate-500 mb-3 pb-3 border-b border-slate-100 dark:border-[#212434]">
+                    <div className="flex items-center justify-between text-xs text-slate-500 mb-3 pb-3 border-b border-slate-100 dark:border-[#473020]">
                       <span className="font-mono">Order: {order.id}</span>
                       <span className={`font-semibold text-[11px] px-2 py-0.5 rounded ${
                         isReleased
@@ -453,7 +453,7 @@ export const UserDashboardView: React.FC = () => {
                       </div>
                     </div>
 
-                    <div className="bg-slate-50 dark:bg-[#181b29] rounded-xl p-3 text-xs space-y-1.5 mb-4 border border-slate-200 dark:border-[#282c3f]">
+                    <div className="bg-slate-50 dark:bg-[#382214] rounded-xl p-3 text-xs space-y-1.5 mb-4 border border-slate-200 dark:border-[#5a3a24]">
                       <div className="flex items-center justify-between text-slate-600 dark:text-slate-400">
                         <span>Inspection Code:</span>
                         <span className="font-mono text-emerald-600 dark:text-emerald-400 font-bold tracking-wider">
@@ -488,7 +488,7 @@ export const UserDashboardView: React.FC = () => {
 
       {/* Tab 4: Profile & KYC */}
       {activeTab === 'profile' && (
-        <div className="max-w-xl bg-white dark:bg-[#1a1009] border border-slate-200 dark:border-[#262939] rounded-2xl p-6 shadow-sm">
+        <div className="max-w-xl bg-white dark:bg-[#1a1009] border border-slate-200 dark:border-[#473020] rounded-2xl p-6 shadow-sm">
           <div className="flex items-center justify-between mb-4">
             <h3 className="font-bold text-base text-slate-900 dark:text-white">
               Trader Identity & Profile
@@ -505,7 +505,7 @@ export const UserDashboardView: React.FC = () => {
           </div>
 
           <div className="space-y-4 text-xs">
-            <div className="flex items-center justify-between p-3 bg-slate-50 dark:bg-[#181a26] rounded-xl border border-slate-200 dark:border-[#262939]">
+            <div className="flex items-center justify-between p-3 bg-slate-50 dark:bg-[#2d1c12] rounded-xl border border-slate-200 dark:border-[#473020]">
               <div>
                 <span className="font-semibold text-slate-900 dark:text-white block">City / Base in Ethiopia</span>
                 <span className="text-[11px] text-slate-500">📍 {currentUser?.city || selectedCity || 'Addis Ababa'}</span>
@@ -515,7 +515,7 @@ export const UserDashboardView: React.FC = () => {
               </span>
             </div>
 
-            <div className="flex items-center justify-between p-3 bg-slate-50 dark:bg-[#181a26] rounded-xl border border-slate-200 dark:border-[#262939]">
+            <div className="flex items-center justify-between p-3 bg-slate-50 dark:bg-[#2d1c12] rounded-xl border border-slate-200 dark:border-[#473020]">
               <div>
                 <span className="font-semibold text-slate-900 dark:text-white block">Telegram Handle</span>
                 <span className="text-[11px] text-slate-500">For direct trade alerts & notifications</span>
@@ -525,7 +525,7 @@ export const UserDashboardView: React.FC = () => {
               </span>
             </div>
 
-            <div className="flex items-center justify-between p-3 bg-slate-50 dark:bg-[#181a26] rounded-xl border border-slate-200 dark:border-[#262939]">
+            <div className="flex items-center justify-between p-3 bg-slate-50 dark:bg-[#2d1c12] rounded-xl border border-slate-200 dark:border-[#473020]">
               <div>
                 <span className="font-semibold text-slate-900 dark:text-white block">Mobile Number</span>
                 <span className="text-[11px] text-slate-500">{currentUser?.phone || '+251 91 199 8877'}</span>
@@ -535,7 +535,7 @@ export const UserDashboardView: React.FC = () => {
               </span>
             </div>
 
-            <div className="flex items-center justify-between p-3 bg-slate-50 dark:bg-[#181a26] rounded-xl border border-slate-200 dark:border-[#262939]">
+            <div className="flex items-center justify-between p-3 bg-slate-50 dark:bg-[#2d1c12] rounded-xl border border-slate-200 dark:border-[#473020]">
               <div>
                 <span className="font-semibold text-slate-900 dark:text-white block">Safety Rating</span>
                 <span className="text-[11px] text-slate-500">Based on verified safe transactions</span>
@@ -550,8 +550,8 @@ export const UserDashboardView: React.FC = () => {
       {activeTab === 'plans' && (
         <div className="space-y-6 max-w-4xl">
           {/* Active Plan Overview Card */}
-          <div className="bg-white dark:bg-[#131522] border-2 border-amber-400/80 rounded-3xl p-6 sm:p-8 shadow-sm space-y-6">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 dark:border-[#212435] pb-6">
+          <div className="bg-white dark:bg-[#251810] border-2 border-amber-400/80 rounded-3xl p-6 sm:p-8 shadow-sm space-y-6">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 dark:border-[#473020] pb-6">
               <div className="flex items-center gap-4">
                 <div className="w-14 h-14 rounded-2xl bg-amber-500 text-slate-950 flex items-center justify-center font-bold shadow-md">
                   <Crown className="w-8 h-8" />
@@ -582,7 +582,7 @@ export const UserDashboardView: React.FC = () => {
 
             {/* Quota & Feature Usage Grid */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-              <div className="p-3.5 rounded-2xl bg-slate-50 dark:bg-[#181a28] border border-slate-200 dark:border-[#272b3e]">
+              <div className="p-3.5 rounded-2xl bg-slate-50 dark:bg-[#2d1c12] border border-slate-200 dark:border-[#5a3a24]">
                 <span className="text-[10px] text-slate-400 uppercase font-mono block">Classified Listings</span>
                 <span className="text-sm font-bold text-slate-900 dark:text-white font-mono mt-1 block">
                   {userListings.length} / {activePlanDetails.maxListings === 'Unlimited' ? '∞ Unlimited' : `${activePlanDetails.maxListings} max`}
@@ -590,7 +590,7 @@ export const UserDashboardView: React.FC = () => {
                 <span className="text-[9px] text-slate-500">Active ads</span>
               </div>
 
-              <div className="p-3.5 rounded-2xl bg-slate-50 dark:bg-[#181a28] border border-slate-200 dark:border-[#272b3e]">
+              <div className="p-3.5 rounded-2xl bg-slate-50 dark:bg-[#2d1c12] border border-slate-200 dark:border-[#5a3a24]">
                 <span className="text-[10px] text-slate-400 uppercase font-mono block">Photos per Ad</span>
                 <span className="text-sm font-bold text-slate-900 dark:text-white font-mono mt-1 block">
                   {activePlanDetails.maxPhotosPerListing} Photos
@@ -598,7 +598,7 @@ export const UserDashboardView: React.FC = () => {
                 <span className="text-[9px] text-emerald-600 dark:text-emerald-400">High resolution</span>
               </div>
 
-              <div className="p-3.5 rounded-2xl bg-slate-50 dark:bg-[#181a28] border border-slate-200 dark:border-[#272b3e]">
+              <div className="p-3.5 rounded-2xl bg-slate-50 dark:bg-[#2d1c12] border border-slate-200 dark:border-[#5a3a24]">
                 <span className="text-[10px] text-slate-400 uppercase font-mono block">Protection Fee Rate</span>
                 <span className="text-sm font-bold text-emerald-600 dark:text-emerald-400 font-mono mt-1 block">
                   {activePlanDetails.commissionEscrowRate === 0 ? '0% Free' : `${activePlanDetails.commissionEscrowRate}%`}
@@ -606,7 +606,7 @@ export const UserDashboardView: React.FC = () => {
                 <span className="text-[9px] text-slate-500">Platform fee</span>
               </div>
 
-              <div className="p-3.5 rounded-2xl bg-slate-50 dark:bg-[#181a28] border border-slate-200 dark:border-[#272b3e]">
+              <div className="p-3.5 rounded-2xl bg-slate-50 dark:bg-[#2d1c12] border border-slate-200 dark:border-[#5a3a24]">
                 <span className="text-[10px] text-slate-400 uppercase font-mono block">Feed Visibility</span>
                 <span className="text-xs font-bold text-amber-600 dark:text-amber-400 font-mono mt-1 block">
                   {activePlanDetails.visibilityBoost}
@@ -616,12 +616,12 @@ export const UserDashboardView: React.FC = () => {
             </div>
 
             {/* Quick Switch Options Banner */}
-            <div className="p-4 rounded-2xl bg-slate-50 dark:bg-[#161826] border border-slate-200 dark:border-[#282d42] space-y-3">
+            <div className="p-4 rounded-2xl bg-slate-50 dark:bg-[#2d1c12] border border-slate-200 dark:border-[#5a3a24] space-y-3">
               <span className="text-xs font-bold text-slate-800 dark:text-slate-200 block">
                 Available Agoza Seller Plans:
               </span>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
-                <div className={`p-3 rounded-xl border ${userPlan === 'free' ? 'border-emerald-500 bg-emerald-50/50 dark:bg-emerald-950/20' : 'border-slate-200 dark:border-[#292c3f]'}`}>
+                <div className={`p-3 rounded-xl border ${userPlan === 'free' ? 'border-emerald-500 bg-emerald-50/50 dark:bg-emerald-950/20' : 'border-slate-200 dark:border-[#5a3a24]'}`}>
                   <div className="flex items-center justify-between">
                     <span className="font-bold">Free Forever</span>
                     <span className="font-mono text-slate-500">0 Br</span>
@@ -629,7 +629,7 @@ export const UserDashboardView: React.FC = () => {
                   <p className="text-[10px] text-slate-500 mt-1">3 listings · 1 photo · standard</p>
                 </div>
 
-                <div className={`p-3 rounded-xl border ${userPlan === 'starter' ? 'border-emerald-500 bg-emerald-50/50 dark:bg-emerald-950/20' : 'border-slate-200 dark:border-[#292c3f]'}`}>
+                <div className={`p-3 rounded-xl border ${userPlan === 'starter' ? 'border-emerald-500 bg-emerald-50/50 dark:bg-emerald-950/20' : 'border-slate-200 dark:border-[#5a3a24]'}`}>
                   <div className="flex items-center justify-between">
                     <span className="font-bold">Starter Plan</span>
                     <span className="font-mono font-bold text-[#1b5e20] dark:text-[#c5a059]">699 Br/mo</span>
@@ -637,7 +637,7 @@ export const UserDashboardView: React.FC = () => {
                   <p className="text-[10px] text-slate-500 mt-1">15 listings · 4 photos · 2x boost</p>
                 </div>
 
-                <div className={`p-3 rounded-xl border ${userPlan === 'pro' ? 'border-amber-400 bg-amber-50/50 dark:bg-amber-950/20' : 'border-slate-200 dark:border-[#292c3f]'}`}>
+                <div className={`p-3 rounded-xl border ${userPlan === 'pro' ? 'border-amber-400 bg-amber-50/50 dark:bg-amber-950/20' : 'border-slate-200 dark:border-[#5a3a24]'}`}>
                   <div className="flex items-center justify-between">
                     <span className="font-bold">Pro Merchant</span>
                     <span className="font-mono font-bold text-amber-500">1,499 Br/mo</span>

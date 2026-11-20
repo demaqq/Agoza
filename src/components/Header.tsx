@@ -171,7 +171,7 @@ export const Header: React.FC = () => {
           </div>
 
           {/* Zone 2: Primary Navigation Links (Nike-style category nav) */}
-          <nav className="hidden lg:flex items-center gap-5 text-xs sm:text-sm font-semibold text-slate-700 dark:text-[#d5c3b1] whitespace-nowrap shrink-0">
+          <nav className="hidden xl:flex items-center gap-5 text-xs sm:text-sm font-semibold text-slate-700 dark:text-[#d5c3b1] whitespace-nowrap shrink-0">
             <button
               onClick={() => {
                 setActiveView('marketplace');
@@ -215,7 +215,7 @@ export const Header: React.FC = () => {
                 setActiveView('marketplace');
                 setFilters((f) => ({ ...f, category: 'fashion-clothes' }));
               }}
-              className={`hover:opacity-75 transition-opacity cursor-pointer py-5 border-b-2 whitespace-nowrap shrink-0 ${
+              className={`hidden 2xl:block hover:opacity-75 transition-opacity cursor-pointer py-5 border-b-2 whitespace-nowrap shrink-0 ${
                 filters.category === 'fashion-clothes' ? 'border-[#1b5e20] dark:border-[#d4a373] text-[#1b5e20] dark:text-[#d4a373] font-bold' : 'border-transparent'
               }`}
             >
@@ -227,7 +227,7 @@ export const Header: React.FC = () => {
                 setActiveView('marketplace');
                 setFilters((f) => ({ ...f, category: 'home-furniture' }));
               }}
-              className={`hover:opacity-75 transition-opacity cursor-pointer py-5 border-b-2 whitespace-nowrap shrink-0 ${
+              className={`hidden 2xl:block hover:opacity-75 transition-opacity cursor-pointer py-5 border-b-2 whitespace-nowrap shrink-0 ${
                 filters.category === 'home-furniture' ? 'border-[#1b5e20] dark:border-[#d4a373] text-[#1b5e20] dark:text-[#d4a373] font-bold' : 'border-transparent'
               }`}
             >
@@ -293,13 +293,13 @@ export const Header: React.FC = () => {
             {/* 2. Nike Pill Search Trigger */}
             <button
               onClick={() => setIsSearchModalOpen(true)}
-              className="hidden sm:flex items-center gap-2 bg-amber-100/70 dark:bg-[#251810] hover:bg-amber-200/60 dark:hover:bg-[#2d1c12] px-3.5 py-2 rounded-full text-xs text-slate-700 dark:text-[#d5c3b1] cursor-pointer transition-colors min-w-[140px] xl:min-w-[180px]"
+              className="hidden sm:flex items-center gap-2 bg-amber-100/70 dark:bg-[#251810] hover:bg-amber-200/60 dark:hover:bg-[#2d1c12] px-3.5 py-2 rounded-full text-xs text-slate-700 dark:text-[#d5c3b1] cursor-pointer transition-colors min-w-[120px] 2xl:min-w-[180px]"
               title={`${t.header.search} (⌘K)`}
               aria-label={t.header.search}
             >
               <Search className="w-4 h-4 text-[#1b5e20] dark:text-[#d4a373] shrink-0" />
-              <span className="truncate max-w-[100px] xl:max-w-[140px] text-slate-500 dark:text-[#a8907f] font-medium">{t.header.search}</span>
-              <kbd className="hidden xl:inline text-[9px] bg-white dark:bg-black/40 px-1.5 py-0.5 rounded border border-amber-300 dark:border-[#473020] font-mono ml-auto">⌘K</kbd>
+              <span className="truncate max-w-[80px] 2xl:max-w-[140px] text-slate-500 dark:text-[#a8907f] font-medium">{t.header.search}</span>
+              <kbd className="hidden 2xl:inline text-[9px] bg-white dark:bg-black/40 px-1.5 py-0.5 rounded border border-amber-300 dark:border-[#473020] font-mono ml-auto">⌘K</kbd>
             </button>
 
             {/* 3. Notifications & Chat Quick Buttons */}
@@ -528,7 +528,7 @@ export const Header: React.FC = () => {
               aria-label={currentUser ? `${t.nav.myAccount}: ${currentUser.name}` : t.header.signIn}
             >
               <User className="w-3.5 h-3.5 text-[#1b5e20] dark:text-[#d4a373]" />
-              <span className="hidden md:inline">
+              <span className="hidden md:inline xl:hidden 2xl:inline max-w-[90px] truncate">
                 {currentUser ? currentUser.name.split(' ')[0] : t.header.signIn}
               </span>
               {currentUser && (
@@ -548,7 +548,7 @@ export const Header: React.FC = () => {
             {/* Mobile Hamburger Drawer Trigger */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden p-2 text-slate-800 dark:text-[#f8edd6] hover:bg-amber-100/80 dark:hover:bg-[#2d1c12] rounded-xl cursor-pointer min-w-[38px] min-h-[38px] flex items-center justify-center border border-amber-200/80 dark:border-[#473020]"
+              className="xl:hidden p-2 text-slate-800 dark:text-[#f8edd6] hover:bg-amber-100/80 dark:hover:bg-[#2d1c12] rounded-xl cursor-pointer min-w-[38px] min-h-[38px] flex items-center justify-center border border-amber-200/80 dark:border-[#473020]"
               aria-label={t.header.menu}
               aria-expanded={mobileMenuOpen}
             >
@@ -559,7 +559,7 @@ export const Header: React.FC = () => {
 
         {/* Mobile Navigation Drawer Sheet */}
         {mobileMenuOpen && (
-          <div className="lg:hidden border-t border-amber-200/80 dark:border-[#382214] bg-[#fffdf7] dark:bg-[#1e130c] px-4 py-5 space-y-4 shadow-2xl animate-in fade-in slide-in-from-top-2">
+          <div className="xl:hidden border-t border-amber-200/80 dark:border-[#382214] bg-[#fffdf7] dark:bg-[#1e130c] px-4 py-5 space-y-4 shadow-2xl animate-in fade-in slide-in-from-top-2">
             {/* Primary Mobile Nav Links */}
             <div className="grid grid-cols-2 gap-2">
               <button

@@ -124,7 +124,7 @@ export const CollectibleCard: React.FC<CollectibleCardProps> = ({ collectible })
           <div className="flex items-center justify-between text-xs text-neutral-500 dark:text-neutral-400 mb-3">
             <span className="font-medium truncate max-w-[120px]">{collectible.seller.name}</span>
             <span className="font-mono text-[11px] text-amber-600 dark:text-amber-400 font-bold">
-              ★ {collectible.seller.rating} ({collectible.seller.totalTrades})
+              {collectible.seller.totalTrades > 0 ? `★ ${collectible.seller.rating} (${collectible.seller.totalTrades})` : t.card.newSeller}
             </span>
           </div>
         </div>

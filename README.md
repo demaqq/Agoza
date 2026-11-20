@@ -1,25 +1,47 @@
-<<<<<<< HEAD
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://ai.google.dev/static/site-assets/images/share-ais-513315318.png" />
-</div>
+# Agoza (አጎዛ)
 
-# Run and deploy your AI Studio app
+Ethiopia's verified peer-to-peer marketplace — buy, sell and swap phones, vehicles,
+electronics, fashion, property and more, with safe in-person exchange hubs.
 
-This contains everything you need to run your app locally.
+Built with React 19, Vite, Tailwind CSS 4 and (optionally) Firebase.
 
-View your app in AI Studio: https://ai.studio/apps/976a0640-9077-4dd7-8a20-1724c2e1ad47
+## Run locally
 
-## Run Locally
+Prerequisites: Node.js 20+
 
-**Prerequisites:**  Node.js
+```bash
+npm install
+cp .env.example .env.local   # then fill in the values you have
+npm run dev                  # http://localhost:3000
+```
 
+Firebase is optional. Without `VITE_FIREBASE_*` values the app runs in **offline demo
+mode**: browsing, filters, offers and chat work against local data, and sign-in shows a
+friendly "accounts unavailable" message.
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
-=======
-# Agoza
-Ethiopia's verified peer-to-peer e-commerce marketplace
->>>>>>> b7b30ff481c667f31370da9e878584e61bfa6084
+## Scripts
+
+| Command           | What it does                    |
+| ----------------- | ------------------------------- |
+| `npm run dev`     | Start the dev server            |
+| `npm run build`   | Production build into `dist/`   |
+| `npm run preview` | Serve the production build      |
+| `npm run lint`    | Type-check with `tsc --noEmit`  |
+
+## Languages
+
+UI strings live in `src/i18n/` and cover English, Amharic (አማርኛ), Tigrinya (ትግርኛ),
+Afaan Oromoo and Somali. English is the source of truth; any key missing in another
+language falls back to English automatically. Non-English strings should be reviewed by
+native speakers before launch.
+
+## Security notes
+
+- Deploy `firestore.rules` with the app. Admin rights come from `isAdmin: true` on
+  `users/{uid}`, which only the Firebase console / Admin SDK can set.
+- `VITE_GEMINI_API_KEY` is bundled into client JavaScript and is visible to anyone.
+  For production, move Gemini calls behind a server/Cloud Function and restrict the key.
+
+## License
+
+MIT

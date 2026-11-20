@@ -170,7 +170,7 @@ export const CustomerGestureCard: React.FC<CustomerGestureCardProps> = ({
             className={`absolute top-2.5 right-2.5 p-2 rounded-xl backdrop-blur-md transition-colors cursor-pointer min-h-[44px] min-w-[44px] flex items-center justify-center z-20 ${
               isSaved
                 ? 'bg-[#1b5e20] text-white dark:bg-[#d4a373] dark:text-[#1e130c]'
-                : 'bg-white/85 dark:bg-[#1e130c]/75 text-slate-700 dark:text-[#9ca3af] hover:text-slate-900 dark:hover:text-white shadow-xs'
+                : 'bg-white/85 dark:bg-[#1e130c]/75 text-slate-700 dark:text-[#c4b19f] hover:text-slate-900 dark:hover:text-white shadow-xs'
             }`}
             title={isSaved ? t.card.removeSaved : t.card.save}
           >
@@ -248,24 +248,24 @@ export const CustomerGestureCard: React.FC<CustomerGestureCardProps> = ({
 
           {/* Pricing & Verified Seller Details */}
           <div className="pt-3 border-t border-slate-100 dark:border-[#3d2719] mt-2">
-            <div className="flex items-baseline justify-between mb-3">
+            <div className="flex items-start justify-between gap-2 mb-3">
               <div>
                 <span className="text-[10px] uppercase font-bold tracking-wider text-slate-400 dark:text-[#a8907f] block">
                   {t.listingPrice}
                 </span>
-                <span className="font-mono text-base sm:text-lg font-bold text-[#1b5e20] dark:text-[#d4a373] tabular-nums">
+                <span className="font-mono text-base sm:text-lg font-bold text-[#1b5e20] dark:text-[#d4a373] tabular-nums whitespace-nowrap">
                   {formatPrice(collectible.priceETB)}
                 </span>
               </div>
 
               {/* Seller Reputation with Verified Seller Badge */}
-              <div className="text-right">
-                <div className="flex items-center justify-end gap-1 text-[11px] text-slate-700 dark:text-[#cbd0dc]">
+              <div className="text-right min-w-0">
+                <div className="flex items-center justify-end gap-1 text-[11px] text-slate-700 dark:text-[#ede0d4]">
                   <span className="font-medium">{collectible.seller.name}</span>
                   {isSellerVerified && <VerifiedBadge variant="seller" size="xs" label={t.card.verifiedSeller} />}
                 </div>
                 <span className="text-[10px] text-slate-400 font-mono">
-                  ★ {collectible.seller.rating} ({collectible.seller.totalTrades})
+                  {collectible.seller.totalTrades > 0 ? `★ ${collectible.seller.rating} (${collectible.seller.totalTrades})` : t.card.newSeller}
                 </span>
               </div>
             </div>
@@ -278,7 +278,7 @@ export const CustomerGestureCard: React.FC<CustomerGestureCardProps> = ({
                   setSelectedCollectible(collectible);
                   setIsOfferModalOpen(true);
                 }}
-                className="py-2.5 px-2 bg-slate-100 hover:bg-slate-200 dark:bg-[#1a110a] dark:hover:bg-[#251810] text-slate-800 dark:text-[#e3e6ee] text-xs font-semibold rounded-xl border border-slate-200 dark:border-[#422919] transition-colors cursor-pointer text-center whitespace-nowrap min-h-[44px]"
+                className="py-2.5 px-2 bg-slate-100 hover:bg-slate-200 dark:bg-[#1a110a] dark:hover:bg-[#251810] text-slate-800 dark:text-[#ede0d4] text-xs font-semibold rounded-xl border border-slate-200 dark:border-[#422919] transition-colors cursor-pointer text-center whitespace-nowrap min-h-[44px]"
               >
                 {t.makeOffer}
               </button>
